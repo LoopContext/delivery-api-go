@@ -1,0 +1,56 @@
+type Delivery @entity {
+  sender: Person! @relationship(inverse: "deliveriesSent")
+  receiver: Person! @relationship(inverse: "deliveriesReceived")
+  deliver: Deliver! @relationship(inverse: "deliveries")
+  vehicleType: VehicleType
+  paymentForm: PaymentForm
+  mode: String @column
+  collectDateTime: Time @column
+  collectAddress: String @column
+  collectPoint: String @column
+  dropDateTime: Time @column
+  dropAddress: String @column
+  dropPoint: String @column
+  paymentTotal: Float @column
+  paymentOnDeliver: Boolean @column
+  expectedDistance: String @column
+  expectedCost: Float @column
+  status: String @column
+  completed: Boolean @column
+  smsToken: String @column
+  instructions: String @column(type: "text")
+}
+
+type VehicleType @entity {
+  name: String @column
+  description: String @column(type: "text")
+}
+
+type PaymentForm @entity {
+  name: String @column
+  description: String @column(type: "text")
+}
+
+type Deliver @entity {
+  email: String! @column(unique: true)
+  phone: String @column
+  avatarURL: String @column(type: "text")
+  displayName: String @column
+  firstName: String @column
+  lastName: String @column
+  nickName: String @column
+  description: String @column(type: "text")
+  location: String @column
+  deliveries: [Delivery!]! @relationship(inverse: "deliver")
+  userId: String @column #Comes from auth-api
+}
+
+type Person @entity {
+  name: String @column
+  phone: String @column
+  email: String! @column(unique: true)
+  documentNo: String @column
+  deliveriesSent: Delivery @relationship(inverse: "sender")
+  deliveriesReceived: Delivery @relationship(inverse: "receiver")
+  userId: String @column #Comes from auth-api
+}
