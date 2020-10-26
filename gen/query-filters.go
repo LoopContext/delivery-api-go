@@ -52,14 +52,6 @@ func (qf *DeliveryQueryFilter) applyQueryWithFields(dialect gorm.Dialect, fields
 		fieldsMap[f.Name] = append(fieldsMap[f.Name], f)
 	}
 
-	if _, ok := fieldsMap["mode"]; ok {
-
-		column := dialect.Quote(alias) + "." + dialect.Quote("mode")
-
-		*ors = append(*ors, fmt.Sprintf("%[1]s LIKE ? OR %[1]s LIKE ?", column))
-		*values = append(*values, query+"%", "% "+query+"%")
-	}
-
 	if _, ok := fieldsMap["collectAddress"]; ok {
 
 		column := dialect.Quote(alias) + "." + dialect.Quote("collectAddress")
@@ -124,17 +116,17 @@ func (qf *DeliveryQueryFilter) applyQueryWithFields(dialect gorm.Dialect, fields
 		*values = append(*values, query+"%", "% "+query+"%")
 	}
 
-	if _, ok := fieldsMap["status"]; ok {
+	if _, ok := fieldsMap["smsToken"]; ok {
 
-		column := dialect.Quote(alias) + "." + dialect.Quote("status")
+		column := dialect.Quote(alias) + "." + dialect.Quote("smsToken")
 
 		*ors = append(*ors, fmt.Sprintf("%[1]s LIKE ? OR %[1]s LIKE ?", column))
 		*values = append(*values, query+"%", "% "+query+"%")
 	}
 
-	if _, ok := fieldsMap["smsToken"]; ok {
+	if _, ok := fieldsMap["status"]; ok {
 
-		column := dialect.Quote(alias) + "." + dialect.Quote("smsToken")
+		column := dialect.Quote(alias) + "." + dialect.Quote("status")
 
 		*ors = append(*ors, fmt.Sprintf("%[1]s LIKE ? OR %[1]s LIKE ?", column))
 		*values = append(*values, query+"%", "% "+query+"%")
@@ -189,7 +181,7 @@ func (qf *DeliveryQueryFilter) applyQueryWithFields(dialect gorm.Dialect, fields
 	if fs, ok := fieldsMap["deliver"]; ok {
 		_fields := []*ast.Field{}
 		_alias := alias + "_deliver"
-		*joins = append(*joins, "LEFT JOIN "+dialect.Quote(TableName("delivers"))+" "+dialect.Quote(_alias)+" ON "+dialect.Quote(_alias)+".id = "+alias+"."+dialect.Quote("deliverId"))
+		*joins = append(*joins, "LEFT JOIN "+dialect.Quote(TableName("people"))+" "+dialect.Quote(_alias)+" ON "+dialect.Quote(_alias)+".id = "+alias+"."+dialect.Quote("deliverId"))
 
 		for _, f := range fs {
 			for _, s := range f.SelectionSet {
@@ -198,11 +190,364 @@ func (qf *DeliveryQueryFilter) applyQueryWithFields(dialect gorm.Dialect, fields
 				}
 			}
 		}
-		q := DeliverQueryFilter{qf.Query}
+		q := PersonQueryFilter{qf.Query}
 		err := q.applyQueryWithFields(dialect, _fields, query, _alias, ors, values, joins)
 		if err != nil {
 			return err
 		}
+	}
+
+	return nil
+}
+
+// PersonQueryFilter struct
+type PersonQueryFilter struct {
+	Query *string
+}
+
+// Apply ...
+func (qf *PersonQueryFilter) Apply(ctx context.Context, dialect gorm.Dialect, selectionSet *ast.SelectionSet, wheres *[]string, values *[]interface{}, joins *[]string) error {
+	if qf.Query == nil {
+		return nil
+	}
+
+	fields := []*ast.Field{}
+	if selectionSet != nil {
+		for _, s := range *selectionSet {
+			if f, ok := s.(*ast.Field); ok {
+				fields = append(fields, f)
+			}
+		}
+	} else {
+		return fmt.Errorf("Cannot query with 'q' attribute without items field")
+	}
+
+	queryParts := strings.Split(*qf.Query, " ")
+	for _, part := range queryParts {
+		ors := []string{}
+		if err := qf.applyQueryWithFields(dialect, fields, part, TableName("people"), &ors, values, joins); err != nil {
+			return err
+		}
+		*wheres = append(*wheres, "("+strings.Join(ors, " OR ")+")")
+	}
+	return nil
+}
+
+func (qf *PersonQueryFilter) applyQueryWithFields(dialect gorm.Dialect, fields []*ast.Field, query, alias string, ors *[]string, values *[]interface{}, joins *[]string) error {
+	if len(fields) == 0 {
+		return nil
+	}
+
+	fieldsMap := map[string][]*ast.Field{}
+	for _, f := range fields {
+		fieldsMap[f.Name] = append(fieldsMap[f.Name], f)
+	}
+
+	if _, ok := fieldsMap["email"]; ok {
+
+		column := dialect.Quote(alias) + "." + dialect.Quote("email")
+
+		*ors = append(*ors, fmt.Sprintf("%[1]s LIKE ? OR %[1]s LIKE ?", column))
+		*values = append(*values, query+"%", "% "+query+"%")
+	}
+
+	if _, ok := fieldsMap["phone"]; ok {
+
+		column := dialect.Quote(alias) + "." + dialect.Quote("phone")
+
+		*ors = append(*ors, fmt.Sprintf("%[1]s LIKE ? OR %[1]s LIKE ?", column))
+		*values = append(*values, query+"%", "% "+query+"%")
+	}
+
+	if _, ok := fieldsMap["documentNo"]; ok {
+
+		column := dialect.Quote(alias) + "." + dialect.Quote("documentNo")
+
+		*ors = append(*ors, fmt.Sprintf("%[1]s LIKE ? OR %[1]s LIKE ?", column))
+		*values = append(*values, query+"%", "% "+query+"%")
+	}
+
+	if _, ok := fieldsMap["avatarURL"]; ok {
+
+		column := dialect.Quote(alias) + "." + dialect.Quote("avatarURL")
+
+		*ors = append(*ors, fmt.Sprintf("%[1]s LIKE ? OR %[1]s LIKE ?", column))
+		*values = append(*values, query+"%", "% "+query+"%")
+	}
+
+	if _, ok := fieldsMap["displayName"]; ok {
+
+		column := dialect.Quote(alias) + "." + dialect.Quote("displayName")
+
+		*ors = append(*ors, fmt.Sprintf("%[1]s LIKE ? OR %[1]s LIKE ?", column))
+		*values = append(*values, query+"%", "% "+query+"%")
+	}
+
+	if _, ok := fieldsMap["firstName"]; ok {
+
+		column := dialect.Quote(alias) + "." + dialect.Quote("firstName")
+
+		*ors = append(*ors, fmt.Sprintf("%[1]s LIKE ? OR %[1]s LIKE ?", column))
+		*values = append(*values, query+"%", "% "+query+"%")
+	}
+
+	if _, ok := fieldsMap["lastName"]; ok {
+
+		column := dialect.Quote(alias) + "." + dialect.Quote("lastName")
+
+		*ors = append(*ors, fmt.Sprintf("%[1]s LIKE ? OR %[1]s LIKE ?", column))
+		*values = append(*values, query+"%", "% "+query+"%")
+	}
+
+	if _, ok := fieldsMap["nickName"]; ok {
+
+		column := dialect.Quote(alias) + "." + dialect.Quote("nickName")
+
+		*ors = append(*ors, fmt.Sprintf("%[1]s LIKE ? OR %[1]s LIKE ?", column))
+		*values = append(*values, query+"%", "% "+query+"%")
+	}
+
+	if _, ok := fieldsMap["description"]; ok {
+
+		column := dialect.Quote(alias) + "." + dialect.Quote("description")
+
+		*ors = append(*ors, fmt.Sprintf("%[1]s LIKE ? OR %[1]s LIKE ?", column))
+		*values = append(*values, query+"%", "% "+query+"%")
+	}
+
+	if _, ok := fieldsMap["location"]; ok {
+
+		column := dialect.Quote(alias) + "." + dialect.Quote("location")
+
+		*ors = append(*ors, fmt.Sprintf("%[1]s LIKE ? OR %[1]s LIKE ?", column))
+		*values = append(*values, query+"%", "% "+query+"%")
+	}
+
+	if _, ok := fieldsMap["userId"]; ok {
+
+		column := dialect.Quote(alias) + "." + dialect.Quote("userId")
+
+		*ors = append(*ors, fmt.Sprintf("%[1]s LIKE ? OR %[1]s LIKE ?", column))
+		*values = append(*values, query+"%", "% "+query+"%")
+	}
+
+	if fs, ok := fieldsMap["deliveries"]; ok {
+		_fields := []*ast.Field{}
+		_alias := alias + "_deliveries"
+		*joins = append(*joins, "LEFT JOIN "+dialect.Quote(TableName("deliveries"))+" "+dialect.Quote(_alias)+" ON "+dialect.Quote(_alias)+"."+dialect.Quote("deliverId")+" = "+dialect.Quote(alias)+".id")
+
+		for _, f := range fs {
+			for _, s := range f.SelectionSet {
+				if f, ok := s.(*ast.Field); ok {
+					_fields = append(_fields, f)
+				}
+			}
+		}
+		q := DeliveryQueryFilter{qf.Query}
+		err := q.applyQueryWithFields(dialect, _fields, query, _alias, ors, values, joins)
+		if err != nil {
+			return err
+		}
+	}
+
+	if fs, ok := fieldsMap["deliveriesSent"]; ok {
+		_fields := []*ast.Field{}
+		_alias := alias + "_deliveriesSent"
+		*joins = append(*joins, "LEFT JOIN "+dialect.Quote(TableName("deliveries"))+" "+dialect.Quote(_alias)+" ON "+dialect.Quote(_alias)+"."+dialect.Quote("senderId")+" = "+dialect.Quote(alias)+".id")
+
+		for _, f := range fs {
+			for _, s := range f.SelectionSet {
+				if f, ok := s.(*ast.Field); ok {
+					_fields = append(_fields, f)
+				}
+			}
+		}
+		q := DeliveryQueryFilter{qf.Query}
+		err := q.applyQueryWithFields(dialect, _fields, query, _alias, ors, values, joins)
+		if err != nil {
+			return err
+		}
+	}
+
+	if fs, ok := fieldsMap["deliveriesReceived"]; ok {
+		_fields := []*ast.Field{}
+		_alias := alias + "_deliveriesReceived"
+		*joins = append(*joins, "LEFT JOIN "+dialect.Quote(TableName("deliveries"))+" "+dialect.Quote(_alias)+" ON "+dialect.Quote(_alias)+"."+dialect.Quote("receiverId")+" = "+dialect.Quote(alias)+".id")
+
+		for _, f := range fs {
+			for _, s := range f.SelectionSet {
+				if f, ok := s.(*ast.Field); ok {
+					_fields = append(_fields, f)
+				}
+			}
+		}
+		q := DeliveryQueryFilter{qf.Query}
+		err := q.applyQueryWithFields(dialect, _fields, query, _alias, ors, values, joins)
+		if err != nil {
+			return err
+		}
+	}
+
+	if fs, ok := fieldsMap["paymentStatus"]; ok {
+		_fields := []*ast.Field{}
+		_alias := alias + "_paymentStatus"
+		*joins = append(*joins, "LEFT JOIN "+dialect.Quote(TableName("payment_statuses"))+" "+dialect.Quote(_alias)+" ON "+dialect.Quote(_alias)+".id = "+alias+"."+dialect.Quote("paymentStatusId"))
+
+		for _, f := range fs {
+			for _, s := range f.SelectionSet {
+				if f, ok := s.(*ast.Field); ok {
+					_fields = append(_fields, f)
+				}
+			}
+		}
+		q := PaymentStatusQueryFilter{qf.Query}
+		err := q.applyQueryWithFields(dialect, _fields, query, _alias, ors, values, joins)
+		if err != nil {
+			return err
+		}
+	}
+
+	if fs, ok := fieldsMap["paymentHistory"]; ok {
+		_fields := []*ast.Field{}
+		_alias := alias + "_paymentHistory"
+		*joins = append(*joins, "LEFT JOIN "+dialect.Quote(TableName("payment_histories"))+" "+dialect.Quote(_alias)+" ON "+dialect.Quote(_alias)+".id = "+alias+"."+dialect.Quote("paymentHistoryId"))
+
+		for _, f := range fs {
+			for _, s := range f.SelectionSet {
+				if f, ok := s.(*ast.Field); ok {
+					_fields = append(_fields, f)
+				}
+			}
+		}
+		q := PaymentHistoryQueryFilter{qf.Query}
+		err := q.applyQueryWithFields(dialect, _fields, query, _alias, ors, values, joins)
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+// DeliveryTypeQueryFilter struct
+type DeliveryTypeQueryFilter struct {
+	Query *string
+}
+
+// Apply ...
+func (qf *DeliveryTypeQueryFilter) Apply(ctx context.Context, dialect gorm.Dialect, selectionSet *ast.SelectionSet, wheres *[]string, values *[]interface{}, joins *[]string) error {
+	if qf.Query == nil {
+		return nil
+	}
+
+	fields := []*ast.Field{}
+	if selectionSet != nil {
+		for _, s := range *selectionSet {
+			if f, ok := s.(*ast.Field); ok {
+				fields = append(fields, f)
+			}
+		}
+	} else {
+		return fmt.Errorf("Cannot query with 'q' attribute without items field")
+	}
+
+	queryParts := strings.Split(*qf.Query, " ")
+	for _, part := range queryParts {
+		ors := []string{}
+		if err := qf.applyQueryWithFields(dialect, fields, part, TableName("delivery_types"), &ors, values, joins); err != nil {
+			return err
+		}
+		*wheres = append(*wheres, "("+strings.Join(ors, " OR ")+")")
+	}
+	return nil
+}
+
+func (qf *DeliveryTypeQueryFilter) applyQueryWithFields(dialect gorm.Dialect, fields []*ast.Field, query, alias string, ors *[]string, values *[]interface{}, joins *[]string) error {
+	if len(fields) == 0 {
+		return nil
+	}
+
+	fieldsMap := map[string][]*ast.Field{}
+	for _, f := range fields {
+		fieldsMap[f.Name] = append(fieldsMap[f.Name], f)
+	}
+
+	if _, ok := fieldsMap["name"]; ok {
+
+		column := dialect.Quote(alias) + "." + dialect.Quote("name")
+
+		*ors = append(*ors, fmt.Sprintf("%[1]s LIKE ? OR %[1]s LIKE ?", column))
+		*values = append(*values, query+"%", "% "+query+"%")
+	}
+
+	if _, ok := fieldsMap["description"]; ok {
+
+		column := dialect.Quote(alias) + "." + dialect.Quote("description")
+
+		*ors = append(*ors, fmt.Sprintf("%[1]s LIKE ? OR %[1]s LIKE ?", column))
+		*values = append(*values, query+"%", "% "+query+"%")
+	}
+
+	return nil
+}
+
+// DeliveryChannelQueryFilter struct
+type DeliveryChannelQueryFilter struct {
+	Query *string
+}
+
+// Apply ...
+func (qf *DeliveryChannelQueryFilter) Apply(ctx context.Context, dialect gorm.Dialect, selectionSet *ast.SelectionSet, wheres *[]string, values *[]interface{}, joins *[]string) error {
+	if qf.Query == nil {
+		return nil
+	}
+
+	fields := []*ast.Field{}
+	if selectionSet != nil {
+		for _, s := range *selectionSet {
+			if f, ok := s.(*ast.Field); ok {
+				fields = append(fields, f)
+			}
+		}
+	} else {
+		return fmt.Errorf("Cannot query with 'q' attribute without items field")
+	}
+
+	queryParts := strings.Split(*qf.Query, " ")
+	for _, part := range queryParts {
+		ors := []string{}
+		if err := qf.applyQueryWithFields(dialect, fields, part, TableName("delivery_channels"), &ors, values, joins); err != nil {
+			return err
+		}
+		*wheres = append(*wheres, "("+strings.Join(ors, " OR ")+")")
+	}
+	return nil
+}
+
+func (qf *DeliveryChannelQueryFilter) applyQueryWithFields(dialect gorm.Dialect, fields []*ast.Field, query, alias string, ors *[]string, values *[]interface{}, joins *[]string) error {
+	if len(fields) == 0 {
+		return nil
+	}
+
+	fieldsMap := map[string][]*ast.Field{}
+	for _, f := range fields {
+		fieldsMap[f.Name] = append(fieldsMap[f.Name], f)
+	}
+
+	if _, ok := fieldsMap["name"]; ok {
+
+		column := dialect.Quote(alias) + "." + dialect.Quote("name")
+
+		*ors = append(*ors, fmt.Sprintf("%[1]s LIKE ? OR %[1]s LIKE ?", column))
+		*values = append(*values, query+"%", "% "+query+"%")
+	}
+
+	if _, ok := fieldsMap["description"]; ok {
+
+		column := dialect.Quote(alias) + "." + dialect.Quote("description")
+
+		*ors = append(*ors, fmt.Sprintf("%[1]s LIKE ? OR %[1]s LIKE ?", column))
+		*values = append(*values, query+"%", "% "+query+"%")
 	}
 
 	return nil
@@ -332,13 +677,13 @@ func (qf *PaymentFormQueryFilter) applyQueryWithFields(dialect gorm.Dialect, fie
 	return nil
 }
 
-// DeliverQueryFilter struct
-type DeliverQueryFilter struct {
+// PaymentStatusQueryFilter struct
+type PaymentStatusQueryFilter struct {
 	Query *string
 }
 
 // Apply ...
-func (qf *DeliverQueryFilter) Apply(ctx context.Context, dialect gorm.Dialect, selectionSet *ast.SelectionSet, wheres *[]string, values *[]interface{}, joins *[]string) error {
+func (qf *PaymentStatusQueryFilter) Apply(ctx context.Context, dialect gorm.Dialect, selectionSet *ast.SelectionSet, wheres *[]string, values *[]interface{}, joins *[]string) error {
 	if qf.Query == nil {
 		return nil
 	}
@@ -357,7 +702,7 @@ func (qf *DeliverQueryFilter) Apply(ctx context.Context, dialect gorm.Dialect, s
 	queryParts := strings.Split(*qf.Query, " ")
 	for _, part := range queryParts {
 		ors := []string{}
-		if err := qf.applyQueryWithFields(dialect, fields, part, TableName("delivers"), &ors, values, joins); err != nil {
+		if err := qf.applyQueryWithFields(dialect, fields, part, TableName("payment_statuses"), &ors, values, joins); err != nil {
 			return err
 		}
 		*wheres = append(*wheres, "("+strings.Join(ors, " OR ")+")")
@@ -365,7 +710,7 @@ func (qf *DeliverQueryFilter) Apply(ctx context.Context, dialect gorm.Dialect, s
 	return nil
 }
 
-func (qf *DeliverQueryFilter) applyQueryWithFields(dialect gorm.Dialect, fields []*ast.Field, query, alias string, ors *[]string, values *[]interface{}, joins *[]string) error {
+func (qf *PaymentStatusQueryFilter) applyQueryWithFields(dialect gorm.Dialect, fields []*ast.Field, query, alias string, ors *[]string, values *[]interface{}, joins *[]string) error {
 	if len(fields) == 0 {
 		return nil
 	}
@@ -375,90 +720,34 @@ func (qf *DeliverQueryFilter) applyQueryWithFields(dialect gorm.Dialect, fields 
 		fieldsMap[f.Name] = append(fieldsMap[f.Name], f)
 	}
 
-	if _, ok := fieldsMap["email"]; ok {
+	if _, ok := fieldsMap["credit"]; ok {
 
-		column := dialect.Quote(alias) + "." + dialect.Quote("email")
-
-		*ors = append(*ors, fmt.Sprintf("%[1]s LIKE ? OR %[1]s LIKE ?", column))
-		*values = append(*values, query+"%", "% "+query+"%")
-	}
-
-	if _, ok := fieldsMap["phone"]; ok {
-
-		column := dialect.Quote(alias) + "." + dialect.Quote("phone")
+		cast := "TEXT"
+		if dialect.GetName() == "mysql" {
+			cast = "CHAR"
+		}
+		column := fmt.Sprintf("CAST(%s"+dialect.Quote("credit")+" AS %s)", dialect.Quote(alias)+".", cast)
 
 		*ors = append(*ors, fmt.Sprintf("%[1]s LIKE ? OR %[1]s LIKE ?", column))
 		*values = append(*values, query+"%", "% "+query+"%")
 	}
 
-	if _, ok := fieldsMap["avatarURL"]; ok {
+	if _, ok := fieldsMap["balance"]; ok {
 
-		column := dialect.Quote(alias) + "." + dialect.Quote("avatarURL")
-
-		*ors = append(*ors, fmt.Sprintf("%[1]s LIKE ? OR %[1]s LIKE ?", column))
-		*values = append(*values, query+"%", "% "+query+"%")
-	}
-
-	if _, ok := fieldsMap["displayName"]; ok {
-
-		column := dialect.Quote(alias) + "." + dialect.Quote("displayName")
+		cast := "TEXT"
+		if dialect.GetName() == "mysql" {
+			cast = "CHAR"
+		}
+		column := fmt.Sprintf("CAST(%s"+dialect.Quote("balance")+" AS %s)", dialect.Quote(alias)+".", cast)
 
 		*ors = append(*ors, fmt.Sprintf("%[1]s LIKE ? OR %[1]s LIKE ?", column))
 		*values = append(*values, query+"%", "% "+query+"%")
 	}
 
-	if _, ok := fieldsMap["firstName"]; ok {
-
-		column := dialect.Quote(alias) + "." + dialect.Quote("firstName")
-
-		*ors = append(*ors, fmt.Sprintf("%[1]s LIKE ? OR %[1]s LIKE ?", column))
-		*values = append(*values, query+"%", "% "+query+"%")
-	}
-
-	if _, ok := fieldsMap["lastName"]; ok {
-
-		column := dialect.Quote(alias) + "." + dialect.Quote("lastName")
-
-		*ors = append(*ors, fmt.Sprintf("%[1]s LIKE ? OR %[1]s LIKE ?", column))
-		*values = append(*values, query+"%", "% "+query+"%")
-	}
-
-	if _, ok := fieldsMap["nickName"]; ok {
-
-		column := dialect.Quote(alias) + "." + dialect.Quote("nickName")
-
-		*ors = append(*ors, fmt.Sprintf("%[1]s LIKE ? OR %[1]s LIKE ?", column))
-		*values = append(*values, query+"%", "% "+query+"%")
-	}
-
-	if _, ok := fieldsMap["description"]; ok {
-
-		column := dialect.Quote(alias) + "." + dialect.Quote("description")
-
-		*ors = append(*ors, fmt.Sprintf("%[1]s LIKE ? OR %[1]s LIKE ?", column))
-		*values = append(*values, query+"%", "% "+query+"%")
-	}
-
-	if _, ok := fieldsMap["location"]; ok {
-
-		column := dialect.Quote(alias) + "." + dialect.Quote("location")
-
-		*ors = append(*ors, fmt.Sprintf("%[1]s LIKE ? OR %[1]s LIKE ?", column))
-		*values = append(*values, query+"%", "% "+query+"%")
-	}
-
-	if _, ok := fieldsMap["userId"]; ok {
-
-		column := dialect.Quote(alias) + "." + dialect.Quote("userId")
-
-		*ors = append(*ors, fmt.Sprintf("%[1]s LIKE ? OR %[1]s LIKE ?", column))
-		*values = append(*values, query+"%", "% "+query+"%")
-	}
-
-	if fs, ok := fieldsMap["deliveries"]; ok {
+	if fs, ok := fieldsMap["person"]; ok {
 		_fields := []*ast.Field{}
-		_alias := alias + "_deliveries"
-		*joins = append(*joins, "LEFT JOIN "+dialect.Quote(TableName("deliveries"))+" "+dialect.Quote(_alias)+" ON "+dialect.Quote(_alias)+"."+dialect.Quote("deliverId")+" = "+dialect.Quote(alias)+".id")
+		_alias := alias + "_person"
+		*joins = append(*joins, "LEFT JOIN "+dialect.Quote(TableName("people"))+" "+dialect.Quote(_alias)+" ON "+dialect.Quote(_alias)+".id = "+alias+"."+dialect.Quote("personId"))
 
 		for _, f := range fs {
 			for _, s := range f.SelectionSet {
@@ -467,7 +756,7 @@ func (qf *DeliverQueryFilter) applyQueryWithFields(dialect gorm.Dialect, fields 
 				}
 			}
 		}
-		q := DeliveryQueryFilter{qf.Query}
+		q := PersonQueryFilter{qf.Query}
 		err := q.applyQueryWithFields(dialect, _fields, query, _alias, ors, values, joins)
 		if err != nil {
 			return err
@@ -477,13 +766,13 @@ func (qf *DeliverQueryFilter) applyQueryWithFields(dialect gorm.Dialect, fields 
 	return nil
 }
 
-// PersonQueryFilter struct
-type PersonQueryFilter struct {
+// PaymentHistoryQueryFilter struct
+type PaymentHistoryQueryFilter struct {
 	Query *string
 }
 
 // Apply ...
-func (qf *PersonQueryFilter) Apply(ctx context.Context, dialect gorm.Dialect, selectionSet *ast.SelectionSet, wheres *[]string, values *[]interface{}, joins *[]string) error {
+func (qf *PaymentHistoryQueryFilter) Apply(ctx context.Context, dialect gorm.Dialect, selectionSet *ast.SelectionSet, wheres *[]string, values *[]interface{}, joins *[]string) error {
 	if qf.Query == nil {
 		return nil
 	}
@@ -502,7 +791,7 @@ func (qf *PersonQueryFilter) Apply(ctx context.Context, dialect gorm.Dialect, se
 	queryParts := strings.Split(*qf.Query, " ")
 	for _, part := range queryParts {
 		ors := []string{}
-		if err := qf.applyQueryWithFields(dialect, fields, part, TableName("people"), &ors, values, joins); err != nil {
+		if err := qf.applyQueryWithFields(dialect, fields, part, TableName("payment_histories"), &ors, values, joins); err != nil {
 			return err
 		}
 		*wheres = append(*wheres, "("+strings.Join(ors, " OR ")+")")
@@ -510,7 +799,7 @@ func (qf *PersonQueryFilter) Apply(ctx context.Context, dialect gorm.Dialect, se
 	return nil
 }
 
-func (qf *PersonQueryFilter) applyQueryWithFields(dialect gorm.Dialect, fields []*ast.Field, query, alias string, ors *[]string, values *[]interface{}, joins *[]string) error {
+func (qf *PaymentHistoryQueryFilter) applyQueryWithFields(dialect gorm.Dialect, fields []*ast.Field, query, alias string, ors *[]string, values *[]interface{}, joins *[]string) error {
 	if len(fields) == 0 {
 		return nil
 	}
@@ -520,50 +809,30 @@ func (qf *PersonQueryFilter) applyQueryWithFields(dialect gorm.Dialect, fields [
 		fieldsMap[f.Name] = append(fieldsMap[f.Name], f)
 	}
 
-	if _, ok := fieldsMap["name"]; ok {
+	if _, ok := fieldsMap["concept"]; ok {
 
-		column := dialect.Quote(alias) + "." + dialect.Quote("name")
-
-		*ors = append(*ors, fmt.Sprintf("%[1]s LIKE ? OR %[1]s LIKE ?", column))
-		*values = append(*values, query+"%", "% "+query+"%")
-	}
-
-	if _, ok := fieldsMap["phone"]; ok {
-
-		column := dialect.Quote(alias) + "." + dialect.Quote("phone")
+		column := dialect.Quote(alias) + "." + dialect.Quote("concept")
 
 		*ors = append(*ors, fmt.Sprintf("%[1]s LIKE ? OR %[1]s LIKE ?", column))
 		*values = append(*values, query+"%", "% "+query+"%")
 	}
 
-	if _, ok := fieldsMap["email"]; ok {
+	if _, ok := fieldsMap["amount"]; ok {
 
-		column := dialect.Quote(alias) + "." + dialect.Quote("email")
-
-		*ors = append(*ors, fmt.Sprintf("%[1]s LIKE ? OR %[1]s LIKE ?", column))
-		*values = append(*values, query+"%", "% "+query+"%")
-	}
-
-	if _, ok := fieldsMap["documentNo"]; ok {
-
-		column := dialect.Quote(alias) + "." + dialect.Quote("documentNo")
+		cast := "TEXT"
+		if dialect.GetName() == "mysql" {
+			cast = "CHAR"
+		}
+		column := fmt.Sprintf("CAST(%s"+dialect.Quote("amount")+" AS %s)", dialect.Quote(alias)+".", cast)
 
 		*ors = append(*ors, fmt.Sprintf("%[1]s LIKE ? OR %[1]s LIKE ?", column))
 		*values = append(*values, query+"%", "% "+query+"%")
 	}
 
-	if _, ok := fieldsMap["userId"]; ok {
-
-		column := dialect.Quote(alias) + "." + dialect.Quote("userId")
-
-		*ors = append(*ors, fmt.Sprintf("%[1]s LIKE ? OR %[1]s LIKE ?", column))
-		*values = append(*values, query+"%", "% "+query+"%")
-	}
-
-	if fs, ok := fieldsMap["deliveriesSent"]; ok {
+	if fs, ok := fieldsMap["person"]; ok {
 		_fields := []*ast.Field{}
-		_alias := alias + "_deliveriesSent"
-		*joins = append(*joins, "LEFT JOIN "+dialect.Quote(TableName("deliveries"))+" "+dialect.Quote(_alias)+" ON "+dialect.Quote(_alias)+".id = "+alias+"."+dialect.Quote("deliveriesSentId"))
+		_alias := alias + "_person"
+		*joins = append(*joins, "LEFT JOIN "+dialect.Quote(TableName("people"))+" "+dialect.Quote(_alias)+" ON "+dialect.Quote(_alias)+".id = "+alias+"."+dialect.Quote("personId"))
 
 		for _, f := range fs {
 			for _, s := range f.SelectionSet {
@@ -572,26 +841,7 @@ func (qf *PersonQueryFilter) applyQueryWithFields(dialect gorm.Dialect, fields [
 				}
 			}
 		}
-		q := DeliveryQueryFilter{qf.Query}
-		err := q.applyQueryWithFields(dialect, _fields, query, _alias, ors, values, joins)
-		if err != nil {
-			return err
-		}
-	}
-
-	if fs, ok := fieldsMap["deliveriesReceived"]; ok {
-		_fields := []*ast.Field{}
-		_alias := alias + "_deliveriesReceived"
-		*joins = append(*joins, "LEFT JOIN "+dialect.Quote(TableName("deliveries"))+" "+dialect.Quote(_alias)+" ON "+dialect.Quote(_alias)+".id = "+alias+"."+dialect.Quote("deliveriesReceivedId"))
-
-		for _, f := range fs {
-			for _, s := range f.SelectionSet {
-				if f, ok := s.(*ast.Field); ok {
-					_fields = append(_fields, f)
-				}
-			}
-		}
-		q := DeliveryQueryFilter{qf.Query}
+		q := PersonQueryFilter{qf.Query}
 		err := q.applyQueryWithFields(dialect, _fields, query, _alias, ors, values, joins)
 		if err != nil {
 			return err

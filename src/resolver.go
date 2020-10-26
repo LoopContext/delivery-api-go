@@ -24,9 +24,9 @@ func New(db *gen.DB, ec *gen.EventController) *Resolver {
 	// }
 	resolver.Handlers.OnEvent = func(ctx context.Context, r *gen.GeneratedResolver, e *events.Event) (err error) {
 		// After save
-		if e.Entity == "User" && (e.Type == events.EventTypeCreated || e.Type == events.EventTypeUpdated) {
-			// do something...
-		}
+		// if e.Entity == "User" && (e.Type == events.EventTypeCreated || e.Type == events.EventTypeUpdated) {
+		// do something...
+		// }
 		return nil
 	}
 

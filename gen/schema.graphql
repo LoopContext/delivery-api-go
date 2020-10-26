@@ -11,14 +11,20 @@ type Query {
   _service: _Service!
   delivery(id: ID, q: String, filter: DeliveryFilterType): Delivery
   deliveries(offset: Int, limit: Int = 30, q: String, sort: [DeliverySortType!], filter: DeliveryFilterType): DeliveryResultType!
+  person(id: ID, q: String, filter: PersonFilterType): Person
+  people(offset: Int, limit: Int = 30, q: String, sort: [PersonSortType!], filter: PersonFilterType): PersonResultType!
+  deliveryType(id: ID, q: String, filter: DeliveryTypeFilterType): DeliveryType
+  deliveryTypes(offset: Int, limit: Int = 30, q: String, sort: [DeliveryTypeSortType!], filter: DeliveryTypeFilterType): DeliveryTypeResultType!
+  deliveryChannel(id: ID, q: String, filter: DeliveryChannelFilterType): DeliveryChannel
+  deliveryChannels(offset: Int, limit: Int = 30, q: String, sort: [DeliveryChannelSortType!], filter: DeliveryChannelFilterType): DeliveryChannelResultType!
   vehicleType(id: ID, q: String, filter: VehicleTypeFilterType): VehicleType
   vehicleTypes(offset: Int, limit: Int = 30, q: String, sort: [VehicleTypeSortType!], filter: VehicleTypeFilterType): VehicleTypeResultType!
   paymentForm(id: ID, q: String, filter: PaymentFormFilterType): PaymentForm
   paymentForms(offset: Int, limit: Int = 30, q: String, sort: [PaymentFormSortType!], filter: PaymentFormFilterType): PaymentFormResultType!
-  deliver(id: ID, q: String, filter: DeliverFilterType): Deliver
-  delivers(offset: Int, limit: Int = 30, q: String, sort: [DeliverSortType!], filter: DeliverFilterType): DeliverResultType!
-  person(id: ID, q: String, filter: PersonFilterType): Person
-  people(offset: Int, limit: Int = 30, q: String, sort: [PersonSortType!], filter: PersonFilterType): PersonResultType!
+  paymentStatus(id: ID, q: String, filter: PaymentStatusFilterType): PaymentStatus
+  paymentStatuses(offset: Int, limit: Int = 30, q: String, sort: [PaymentStatusSortType!], filter: PaymentStatusFilterType): PaymentStatusResultType!
+  paymentHistory(id: ID, q: String, filter: PaymentHistoryFilterType): PaymentHistory
+  paymentHistories(offset: Int, limit: Int = 30, q: String, sort: [PaymentHistorySortType!], filter: PaymentHistoryFilterType): PaymentHistoryResultType!
 }
 
 type Mutation {
@@ -26,6 +32,18 @@ type Mutation {
   updateDelivery(id: ID!, input: DeliveryUpdateInput!): Delivery!
   deleteDelivery(id: ID!): Delivery!
   deleteAllDeliveries: Boolean!
+  createPerson(input: PersonCreateInput!): Person!
+  updatePerson(id: ID!, input: PersonUpdateInput!): Person!
+  deletePerson(id: ID!): Person!
+  deleteAllPeople: Boolean!
+  createDeliveryType(input: DeliveryTypeCreateInput!): DeliveryType!
+  updateDeliveryType(id: ID!, input: DeliveryTypeUpdateInput!): DeliveryType!
+  deleteDeliveryType(id: ID!): DeliveryType!
+  deleteAllDeliveryTypes: Boolean!
+  createDeliveryChannel(input: DeliveryChannelCreateInput!): DeliveryChannel!
+  updateDeliveryChannel(id: ID!, input: DeliveryChannelUpdateInput!): DeliveryChannel!
+  deleteDeliveryChannel(id: ID!): DeliveryChannel!
+  deleteAllDeliveryChannels: Boolean!
   createVehicleType(input: VehicleTypeCreateInput!): VehicleType!
   updateVehicleType(id: ID!, input: VehicleTypeUpdateInput!): VehicleType!
   deleteVehicleType(id: ID!): VehicleType!
@@ -34,14 +52,14 @@ type Mutation {
   updatePaymentForm(id: ID!, input: PaymentFormUpdateInput!): PaymentForm!
   deletePaymentForm(id: ID!): PaymentForm!
   deleteAllPaymentForms: Boolean!
-  createDeliver(input: DeliverCreateInput!): Deliver!
-  updateDeliver(id: ID!, input: DeliverUpdateInput!): Deliver!
-  deleteDeliver(id: ID!): Deliver!
-  deleteAllDelivers: Boolean!
-  createPerson(input: PersonCreateInput!): Person!
-  updatePerson(id: ID!, input: PersonUpdateInput!): Person!
-  deletePerson(id: ID!): Person!
-  deleteAllPeople: Boolean!
+  createPaymentStatus(input: PaymentStatusCreateInput!): PaymentStatus!
+  updatePaymentStatus(id: ID!, input: PaymentStatusUpdateInput!): PaymentStatus!
+  deletePaymentStatus(id: ID!): PaymentStatus!
+  deleteAllPaymentStatuses: Boolean!
+  createPaymentHistory(input: PaymentHistoryCreateInput!): PaymentHistory!
+  updatePaymentHistory(id: ID!, input: PaymentHistoryUpdateInput!): PaymentHistory!
+  deletePaymentHistory(id: ID!): PaymentHistory!
+  deleteAllPaymentHistories: Boolean!
 }
 
 enum ObjectSortType {
@@ -53,10 +71,11 @@ type Delivery {
   id: ID!
   sender: Person!
   receiver: Person!
-  deliver: Deliver!
+  deliver: Person!
   vehicleType: VehicleType
   paymentForm: PaymentForm
-  mode: String
+  deliveryType: DeliveryType
+  deliveryChannel: DeliveryChannel
   collectDateTime: Time
   collectAddress: String
   collectPoint: String
@@ -67,13 +86,66 @@ type Delivery {
   paymentOnDeliver: Boolean
   expectedDistance: String
   expectedCost: Float
-  status: String
   completed: Boolean
   smsToken: String
+  status: String
   instructions: String
   senderId: ID
   receiverId: ID
   deliverId: ID
+  updatedAt: Time
+  createdAt: Time!
+  updatedBy: ID
+  createdBy: ID
+}
+
+type Person {
+  id: ID!
+  deliver: Boolean
+  email: String!
+  phone: String
+  documentNo: String
+  avatarURL: String
+  displayName: String
+  firstName: String
+  lastName: String
+  nickName: String
+  description: String
+  location: String
+  deliveries: [Delivery!]!
+  deliveriesSent: [Delivery!]!
+  deliveriesReceived: [Delivery!]!
+  userId: String
+  paymentStatus: PaymentStatus!
+  paymentHistory: PaymentHistory!
+  paymentStatusId: ID
+  paymentHistoryId: ID
+  updatedAt: Time
+  createdAt: Time!
+  updatedBy: ID
+  createdBy: ID
+  deliveriesIds: [ID!]!
+  deliveriesConnection(offset: Int, limit: Int = 30, q: String, sort: [DeliverySortType!], filter: DeliveryFilterType): DeliveryResultType!
+  deliveriesSentIds: [ID!]!
+  deliveriesSentConnection(offset: Int, limit: Int = 30, q: String, sort: [DeliverySortType!], filter: DeliveryFilterType): DeliveryResultType!
+  deliveriesReceivedIds: [ID!]!
+  deliveriesReceivedConnection(offset: Int, limit: Int = 30, q: String, sort: [DeliverySortType!], filter: DeliveryFilterType): DeliveryResultType!
+}
+
+type DeliveryType {
+  id: ID!
+  name: String
+  description: String
+  updatedAt: Time
+  createdAt: Time!
+  updatedBy: ID
+  createdBy: ID
+}
+
+type DeliveryChannel {
+  id: ID!
+  name: String
+  description: String
   updatedAt: Time
   createdAt: Time!
   updatedBy: ID
@@ -100,38 +172,25 @@ type PaymentForm {
   createdBy: ID
 }
 
-type Deliver {
+type PaymentStatus {
   id: ID!
-  email: String!
-  phone: String
-  avatarURL: String
-  displayName: String
-  firstName: String
-  lastName: String
-  nickName: String
-  description: String
-  location: String
-  deliveries: [Delivery!]!
-  userId: String
+  person: Person!
+  credit: Float!
+  balance: Float!
+  personId: ID
   updatedAt: Time
   createdAt: Time!
   updatedBy: ID
   createdBy: ID
-  deliveriesIds: [ID!]!
-  deliveriesConnection(offset: Int, limit: Int = 30, q: String, sort: [DeliverySortType!], filter: DeliveryFilterType): DeliveryResultType!
 }
 
-type Person {
+type PaymentHistory {
   id: ID!
-  name: String
-  phone: String
-  email: String!
-  documentNo: String
-  deliveriesSent: Delivery
-  deliveriesReceived: Delivery
-  userId: String
-  deliveriesSentId: ID
-  deliveriesReceivedId: ID
+  person: Person!
+  paymentForm: PaymentForm
+  concept: String
+  amount: Float!
+  personId: ID
   updatedAt: Time
   createdAt: Time!
   updatedBy: ID
@@ -140,7 +199,6 @@ type Person {
 
 input DeliveryCreateInput {
   id: ID
-  mode: String
   collectDateTime: Time
   collectAddress: String
   collectPoint: String
@@ -151,9 +209,9 @@ input DeliveryCreateInput {
   paymentOnDeliver: Boolean
   expectedDistance: String
   expectedCost: Float
-  status: String
   completed: Boolean
   smsToken: String
+  status: String
   instructions: String
   senderId: ID
   receiverId: ID
@@ -161,7 +219,6 @@ input DeliveryCreateInput {
 }
 
 input DeliveryUpdateInput {
-  mode: String
   collectDateTime: Time
   collectAddress: String
   collectPoint: String
@@ -172,9 +229,9 @@ input DeliveryUpdateInput {
   paymentOnDeliver: Boolean
   expectedDistance: String
   expectedCost: Float
-  status: String
   completed: Boolean
   smsToken: String
+  status: String
   instructions: String
   senderId: ID
   receiverId: ID
@@ -185,9 +242,6 @@ input DeliverySortType {
   id: ObjectSortType
   idMin: ObjectSortType
   idMax: ObjectSortType
-  mode: ObjectSortType
-  modeMin: ObjectSortType
-  modeMax: ObjectSortType
   collectDateTime: ObjectSortType
   collectDateTimeMin: ObjectSortType
   collectDateTimeMax: ObjectSortType
@@ -220,15 +274,15 @@ input DeliverySortType {
   expectedCostMin: ObjectSortType
   expectedCostMax: ObjectSortType
   expectedCostAvg: ObjectSortType
-  status: ObjectSortType
-  statusMin: ObjectSortType
-  statusMax: ObjectSortType
   completed: ObjectSortType
   completedMin: ObjectSortType
   completedMax: ObjectSortType
   smsToken: ObjectSortType
   smsTokenMin: ObjectSortType
   smsTokenMax: ObjectSortType
+  status: ObjectSortType
+  statusMin: ObjectSortType
+  statusMax: ObjectSortType
   instructions: ObjectSortType
   instructionsMin: ObjectSortType
   instructionsMax: ObjectSortType
@@ -255,7 +309,7 @@ input DeliverySortType {
   createdByMax: ObjectSortType
   sender: PersonSortType
   receiver: PersonSortType
-  deliver: DeliverSortType
+  deliver: PersonSortType
 }
 
 input DeliveryFilterType {
@@ -283,37 +337,6 @@ input DeliveryFilterType {
   idMin_in: [ID!]
   idMax_in: [ID!]
   id_null: Boolean
-  mode: String
-  modeMin: String
-  modeMax: String
-  mode_ne: String
-  modeMin_ne: String
-  modeMax_ne: String
-  mode_gt: String
-  modeMin_gt: String
-  modeMax_gt: String
-  mode_lt: String
-  modeMin_lt: String
-  modeMax_lt: String
-  mode_gte: String
-  modeMin_gte: String
-  modeMax_gte: String
-  mode_lte: String
-  modeMin_lte: String
-  modeMax_lte: String
-  mode_in: [String!]
-  modeMin_in: [String!]
-  modeMax_in: [String!]
-  mode_like: String
-  modeMin_like: String
-  modeMax_like: String
-  mode_prefix: String
-  modeMin_prefix: String
-  modeMax_prefix: String
-  mode_suffix: String
-  modeMin_suffix: String
-  modeMax_suffix: String
-  mode_null: Boolean
   collectDateTime: Time
   collectDateTimeMin: Time
   collectDateTimeMax: Time
@@ -593,37 +616,6 @@ input DeliveryFilterType {
   expectedCostMax_in: [Float!]
   expectedCostAvg_in: [Float!]
   expectedCost_null: Boolean
-  status: String
-  statusMin: String
-  statusMax: String
-  status_ne: String
-  statusMin_ne: String
-  statusMax_ne: String
-  status_gt: String
-  statusMin_gt: String
-  statusMax_gt: String
-  status_lt: String
-  statusMin_lt: String
-  statusMax_lt: String
-  status_gte: String
-  statusMin_gte: String
-  statusMax_gte: String
-  status_lte: String
-  statusMin_lte: String
-  statusMax_lte: String
-  status_in: [String!]
-  statusMin_in: [String!]
-  statusMax_in: [String!]
-  status_like: String
-  statusMin_like: String
-  statusMax_like: String
-  status_prefix: String
-  statusMin_prefix: String
-  statusMax_prefix: String
-  status_suffix: String
-  statusMin_suffix: String
-  statusMax_suffix: String
-  status_null: Boolean
   completed: Boolean
   completedMin: Boolean
   completedMax: Boolean
@@ -677,6 +669,37 @@ input DeliveryFilterType {
   smsTokenMin_suffix: String
   smsTokenMax_suffix: String
   smsToken_null: Boolean
+  status: String
+  statusMin: String
+  statusMax: String
+  status_ne: String
+  statusMin_ne: String
+  statusMax_ne: String
+  status_gt: String
+  statusMin_gt: String
+  statusMax_gt: String
+  status_lt: String
+  statusMin_lt: String
+  statusMax_lt: String
+  status_gte: String
+  statusMin_gte: String
+  statusMax_gte: String
+  status_lte: String
+  statusMin_lte: String
+  statusMax_lte: String
+  status_in: [String!]
+  statusMin_in: [String!]
+  statusMax_in: [String!]
+  status_like: String
+  statusMin_like: String
+  statusMax_like: String
+  status_prefix: String
+  statusMin_prefix: String
+  statusMax_prefix: String
+  status_suffix: String
+  statusMin_suffix: String
+  statusMax_suffix: String
+  status_null: Boolean
   instructions: String
   instructionsMin: String
   instructionsMax: String
@@ -864,11 +887,1092 @@ input DeliveryFilterType {
   createdBy_null: Boolean
   sender: PersonFilterType
   receiver: PersonFilterType
-  deliver: DeliverFilterType
+  deliver: PersonFilterType
 }
 
 type DeliveryResultType {
   items: [Delivery!]!
+  count: Int!
+}
+
+input PersonCreateInput {
+  id: ID
+  deliver: Boolean
+  email: String!
+  phone: String
+  documentNo: String
+  avatarURL: String
+  displayName: String
+  firstName: String
+  lastName: String
+  nickName: String
+  description: String
+  location: String
+  userId: String
+  paymentStatusId: ID
+  paymentHistoryId: ID
+  deliveriesIds: [ID!]
+  deliveriesSentIds: [ID!]
+  deliveriesReceivedIds: [ID!]
+}
+
+input PersonUpdateInput {
+  deliver: Boolean
+  email: String
+  phone: String
+  documentNo: String
+  avatarURL: String
+  displayName: String
+  firstName: String
+  lastName: String
+  nickName: String
+  description: String
+  location: String
+  userId: String
+  paymentStatusId: ID
+  paymentHistoryId: ID
+  deliveriesIds: [ID!]
+  deliveriesSentIds: [ID!]
+  deliveriesReceivedIds: [ID!]
+}
+
+input PersonSortType {
+  id: ObjectSortType
+  idMin: ObjectSortType
+  idMax: ObjectSortType
+  deliver: ObjectSortType
+  deliverMin: ObjectSortType
+  deliverMax: ObjectSortType
+  email: ObjectSortType
+  emailMin: ObjectSortType
+  emailMax: ObjectSortType
+  phone: ObjectSortType
+  phoneMin: ObjectSortType
+  phoneMax: ObjectSortType
+  documentNo: ObjectSortType
+  documentNoMin: ObjectSortType
+  documentNoMax: ObjectSortType
+  avatarURL: ObjectSortType
+  avatarURLMin: ObjectSortType
+  avatarURLMax: ObjectSortType
+  displayName: ObjectSortType
+  displayNameMin: ObjectSortType
+  displayNameMax: ObjectSortType
+  firstName: ObjectSortType
+  firstNameMin: ObjectSortType
+  firstNameMax: ObjectSortType
+  lastName: ObjectSortType
+  lastNameMin: ObjectSortType
+  lastNameMax: ObjectSortType
+  nickName: ObjectSortType
+  nickNameMin: ObjectSortType
+  nickNameMax: ObjectSortType
+  description: ObjectSortType
+  descriptionMin: ObjectSortType
+  descriptionMax: ObjectSortType
+  location: ObjectSortType
+  locationMin: ObjectSortType
+  locationMax: ObjectSortType
+  userId: ObjectSortType
+  userIdMin: ObjectSortType
+  userIdMax: ObjectSortType
+  paymentStatusId: ObjectSortType
+  paymentStatusIdMin: ObjectSortType
+  paymentStatusIdMax: ObjectSortType
+  paymentHistoryId: ObjectSortType
+  paymentHistoryIdMin: ObjectSortType
+  paymentHistoryIdMax: ObjectSortType
+  updatedAt: ObjectSortType
+  updatedAtMin: ObjectSortType
+  updatedAtMax: ObjectSortType
+  createdAt: ObjectSortType
+  createdAtMin: ObjectSortType
+  createdAtMax: ObjectSortType
+  updatedBy: ObjectSortType
+  updatedByMin: ObjectSortType
+  updatedByMax: ObjectSortType
+  createdBy: ObjectSortType
+  createdByMin: ObjectSortType
+  createdByMax: ObjectSortType
+  deliveriesIds: ObjectSortType
+  deliveriesIdsMin: ObjectSortType
+  deliveriesIdsMax: ObjectSortType
+  deliveriesSentIds: ObjectSortType
+  deliveriesSentIdsMin: ObjectSortType
+  deliveriesSentIdsMax: ObjectSortType
+  deliveriesReceivedIds: ObjectSortType
+  deliveriesReceivedIdsMin: ObjectSortType
+  deliveriesReceivedIdsMax: ObjectSortType
+  deliveries: DeliverySortType
+  deliveriesSent: DeliverySortType
+  deliveriesReceived: DeliverySortType
+  paymentStatus: PaymentStatusSortType
+  paymentHistory: PaymentHistorySortType
+}
+
+input PersonFilterType {
+  AND: [PersonFilterType!]
+  OR: [PersonFilterType!]
+  id: ID
+  idMin: ID
+  idMax: ID
+  id_ne: ID
+  idMin_ne: ID
+  idMax_ne: ID
+  id_gt: ID
+  idMin_gt: ID
+  idMax_gt: ID
+  id_lt: ID
+  idMin_lt: ID
+  idMax_lt: ID
+  id_gte: ID
+  idMin_gte: ID
+  idMax_gte: ID
+  id_lte: ID
+  idMin_lte: ID
+  idMax_lte: ID
+  id_in: [ID!]
+  idMin_in: [ID!]
+  idMax_in: [ID!]
+  id_null: Boolean
+  deliver: Boolean
+  deliverMin: Boolean
+  deliverMax: Boolean
+  deliver_ne: Boolean
+  deliverMin_ne: Boolean
+  deliverMax_ne: Boolean
+  deliver_gt: Boolean
+  deliverMin_gt: Boolean
+  deliverMax_gt: Boolean
+  deliver_lt: Boolean
+  deliverMin_lt: Boolean
+  deliverMax_lt: Boolean
+  deliver_gte: Boolean
+  deliverMin_gte: Boolean
+  deliverMax_gte: Boolean
+  deliver_lte: Boolean
+  deliverMin_lte: Boolean
+  deliverMax_lte: Boolean
+  deliver_in: [Boolean!]
+  deliverMin_in: [Boolean!]
+  deliverMax_in: [Boolean!]
+  deliver_null: Boolean
+  email: String
+  emailMin: String
+  emailMax: String
+  email_ne: String
+  emailMin_ne: String
+  emailMax_ne: String
+  email_gt: String
+  emailMin_gt: String
+  emailMax_gt: String
+  email_lt: String
+  emailMin_lt: String
+  emailMax_lt: String
+  email_gte: String
+  emailMin_gte: String
+  emailMax_gte: String
+  email_lte: String
+  emailMin_lte: String
+  emailMax_lte: String
+  email_in: [String!]
+  emailMin_in: [String!]
+  emailMax_in: [String!]
+  email_like: String
+  emailMin_like: String
+  emailMax_like: String
+  email_prefix: String
+  emailMin_prefix: String
+  emailMax_prefix: String
+  email_suffix: String
+  emailMin_suffix: String
+  emailMax_suffix: String
+  email_null: Boolean
+  phone: String
+  phoneMin: String
+  phoneMax: String
+  phone_ne: String
+  phoneMin_ne: String
+  phoneMax_ne: String
+  phone_gt: String
+  phoneMin_gt: String
+  phoneMax_gt: String
+  phone_lt: String
+  phoneMin_lt: String
+  phoneMax_lt: String
+  phone_gte: String
+  phoneMin_gte: String
+  phoneMax_gte: String
+  phone_lte: String
+  phoneMin_lte: String
+  phoneMax_lte: String
+  phone_in: [String!]
+  phoneMin_in: [String!]
+  phoneMax_in: [String!]
+  phone_like: String
+  phoneMin_like: String
+  phoneMax_like: String
+  phone_prefix: String
+  phoneMin_prefix: String
+  phoneMax_prefix: String
+  phone_suffix: String
+  phoneMin_suffix: String
+  phoneMax_suffix: String
+  phone_null: Boolean
+  documentNo: String
+  documentNoMin: String
+  documentNoMax: String
+  documentNo_ne: String
+  documentNoMin_ne: String
+  documentNoMax_ne: String
+  documentNo_gt: String
+  documentNoMin_gt: String
+  documentNoMax_gt: String
+  documentNo_lt: String
+  documentNoMin_lt: String
+  documentNoMax_lt: String
+  documentNo_gte: String
+  documentNoMin_gte: String
+  documentNoMax_gte: String
+  documentNo_lte: String
+  documentNoMin_lte: String
+  documentNoMax_lte: String
+  documentNo_in: [String!]
+  documentNoMin_in: [String!]
+  documentNoMax_in: [String!]
+  documentNo_like: String
+  documentNoMin_like: String
+  documentNoMax_like: String
+  documentNo_prefix: String
+  documentNoMin_prefix: String
+  documentNoMax_prefix: String
+  documentNo_suffix: String
+  documentNoMin_suffix: String
+  documentNoMax_suffix: String
+  documentNo_null: Boolean
+  avatarURL: String
+  avatarURLMin: String
+  avatarURLMax: String
+  avatarURL_ne: String
+  avatarURLMin_ne: String
+  avatarURLMax_ne: String
+  avatarURL_gt: String
+  avatarURLMin_gt: String
+  avatarURLMax_gt: String
+  avatarURL_lt: String
+  avatarURLMin_lt: String
+  avatarURLMax_lt: String
+  avatarURL_gte: String
+  avatarURLMin_gte: String
+  avatarURLMax_gte: String
+  avatarURL_lte: String
+  avatarURLMin_lte: String
+  avatarURLMax_lte: String
+  avatarURL_in: [String!]
+  avatarURLMin_in: [String!]
+  avatarURLMax_in: [String!]
+  avatarURL_like: String
+  avatarURLMin_like: String
+  avatarURLMax_like: String
+  avatarURL_prefix: String
+  avatarURLMin_prefix: String
+  avatarURLMax_prefix: String
+  avatarURL_suffix: String
+  avatarURLMin_suffix: String
+  avatarURLMax_suffix: String
+  avatarURL_null: Boolean
+  displayName: String
+  displayNameMin: String
+  displayNameMax: String
+  displayName_ne: String
+  displayNameMin_ne: String
+  displayNameMax_ne: String
+  displayName_gt: String
+  displayNameMin_gt: String
+  displayNameMax_gt: String
+  displayName_lt: String
+  displayNameMin_lt: String
+  displayNameMax_lt: String
+  displayName_gte: String
+  displayNameMin_gte: String
+  displayNameMax_gte: String
+  displayName_lte: String
+  displayNameMin_lte: String
+  displayNameMax_lte: String
+  displayName_in: [String!]
+  displayNameMin_in: [String!]
+  displayNameMax_in: [String!]
+  displayName_like: String
+  displayNameMin_like: String
+  displayNameMax_like: String
+  displayName_prefix: String
+  displayNameMin_prefix: String
+  displayNameMax_prefix: String
+  displayName_suffix: String
+  displayNameMin_suffix: String
+  displayNameMax_suffix: String
+  displayName_null: Boolean
+  firstName: String
+  firstNameMin: String
+  firstNameMax: String
+  firstName_ne: String
+  firstNameMin_ne: String
+  firstNameMax_ne: String
+  firstName_gt: String
+  firstNameMin_gt: String
+  firstNameMax_gt: String
+  firstName_lt: String
+  firstNameMin_lt: String
+  firstNameMax_lt: String
+  firstName_gte: String
+  firstNameMin_gte: String
+  firstNameMax_gte: String
+  firstName_lte: String
+  firstNameMin_lte: String
+  firstNameMax_lte: String
+  firstName_in: [String!]
+  firstNameMin_in: [String!]
+  firstNameMax_in: [String!]
+  firstName_like: String
+  firstNameMin_like: String
+  firstNameMax_like: String
+  firstName_prefix: String
+  firstNameMin_prefix: String
+  firstNameMax_prefix: String
+  firstName_suffix: String
+  firstNameMin_suffix: String
+  firstNameMax_suffix: String
+  firstName_null: Boolean
+  lastName: String
+  lastNameMin: String
+  lastNameMax: String
+  lastName_ne: String
+  lastNameMin_ne: String
+  lastNameMax_ne: String
+  lastName_gt: String
+  lastNameMin_gt: String
+  lastNameMax_gt: String
+  lastName_lt: String
+  lastNameMin_lt: String
+  lastNameMax_lt: String
+  lastName_gte: String
+  lastNameMin_gte: String
+  lastNameMax_gte: String
+  lastName_lte: String
+  lastNameMin_lte: String
+  lastNameMax_lte: String
+  lastName_in: [String!]
+  lastNameMin_in: [String!]
+  lastNameMax_in: [String!]
+  lastName_like: String
+  lastNameMin_like: String
+  lastNameMax_like: String
+  lastName_prefix: String
+  lastNameMin_prefix: String
+  lastNameMax_prefix: String
+  lastName_suffix: String
+  lastNameMin_suffix: String
+  lastNameMax_suffix: String
+  lastName_null: Boolean
+  nickName: String
+  nickNameMin: String
+  nickNameMax: String
+  nickName_ne: String
+  nickNameMin_ne: String
+  nickNameMax_ne: String
+  nickName_gt: String
+  nickNameMin_gt: String
+  nickNameMax_gt: String
+  nickName_lt: String
+  nickNameMin_lt: String
+  nickNameMax_lt: String
+  nickName_gte: String
+  nickNameMin_gte: String
+  nickNameMax_gte: String
+  nickName_lte: String
+  nickNameMin_lte: String
+  nickNameMax_lte: String
+  nickName_in: [String!]
+  nickNameMin_in: [String!]
+  nickNameMax_in: [String!]
+  nickName_like: String
+  nickNameMin_like: String
+  nickNameMax_like: String
+  nickName_prefix: String
+  nickNameMin_prefix: String
+  nickNameMax_prefix: String
+  nickName_suffix: String
+  nickNameMin_suffix: String
+  nickNameMax_suffix: String
+  nickName_null: Boolean
+  description: String
+  descriptionMin: String
+  descriptionMax: String
+  description_ne: String
+  descriptionMin_ne: String
+  descriptionMax_ne: String
+  description_gt: String
+  descriptionMin_gt: String
+  descriptionMax_gt: String
+  description_lt: String
+  descriptionMin_lt: String
+  descriptionMax_lt: String
+  description_gte: String
+  descriptionMin_gte: String
+  descriptionMax_gte: String
+  description_lte: String
+  descriptionMin_lte: String
+  descriptionMax_lte: String
+  description_in: [String!]
+  descriptionMin_in: [String!]
+  descriptionMax_in: [String!]
+  description_like: String
+  descriptionMin_like: String
+  descriptionMax_like: String
+  description_prefix: String
+  descriptionMin_prefix: String
+  descriptionMax_prefix: String
+  description_suffix: String
+  descriptionMin_suffix: String
+  descriptionMax_suffix: String
+  description_null: Boolean
+  location: String
+  locationMin: String
+  locationMax: String
+  location_ne: String
+  locationMin_ne: String
+  locationMax_ne: String
+  location_gt: String
+  locationMin_gt: String
+  locationMax_gt: String
+  location_lt: String
+  locationMin_lt: String
+  locationMax_lt: String
+  location_gte: String
+  locationMin_gte: String
+  locationMax_gte: String
+  location_lte: String
+  locationMin_lte: String
+  locationMax_lte: String
+  location_in: [String!]
+  locationMin_in: [String!]
+  locationMax_in: [String!]
+  location_like: String
+  locationMin_like: String
+  locationMax_like: String
+  location_prefix: String
+  locationMin_prefix: String
+  locationMax_prefix: String
+  location_suffix: String
+  locationMin_suffix: String
+  locationMax_suffix: String
+  location_null: Boolean
+  userId: String
+  userIdMin: String
+  userIdMax: String
+  userId_ne: String
+  userIdMin_ne: String
+  userIdMax_ne: String
+  userId_gt: String
+  userIdMin_gt: String
+  userIdMax_gt: String
+  userId_lt: String
+  userIdMin_lt: String
+  userIdMax_lt: String
+  userId_gte: String
+  userIdMin_gte: String
+  userIdMax_gte: String
+  userId_lte: String
+  userIdMin_lte: String
+  userIdMax_lte: String
+  userId_in: [String!]
+  userIdMin_in: [String!]
+  userIdMax_in: [String!]
+  userId_like: String
+  userIdMin_like: String
+  userIdMax_like: String
+  userId_prefix: String
+  userIdMin_prefix: String
+  userIdMax_prefix: String
+  userId_suffix: String
+  userIdMin_suffix: String
+  userIdMax_suffix: String
+  userId_null: Boolean
+  paymentStatusId: ID
+  paymentStatusIdMin: ID
+  paymentStatusIdMax: ID
+  paymentStatusId_ne: ID
+  paymentStatusIdMin_ne: ID
+  paymentStatusIdMax_ne: ID
+  paymentStatusId_gt: ID
+  paymentStatusIdMin_gt: ID
+  paymentStatusIdMax_gt: ID
+  paymentStatusId_lt: ID
+  paymentStatusIdMin_lt: ID
+  paymentStatusIdMax_lt: ID
+  paymentStatusId_gte: ID
+  paymentStatusIdMin_gte: ID
+  paymentStatusIdMax_gte: ID
+  paymentStatusId_lte: ID
+  paymentStatusIdMin_lte: ID
+  paymentStatusIdMax_lte: ID
+  paymentStatusId_in: [ID!]
+  paymentStatusIdMin_in: [ID!]
+  paymentStatusIdMax_in: [ID!]
+  paymentStatusId_null: Boolean
+  paymentHistoryId: ID
+  paymentHistoryIdMin: ID
+  paymentHistoryIdMax: ID
+  paymentHistoryId_ne: ID
+  paymentHistoryIdMin_ne: ID
+  paymentHistoryIdMax_ne: ID
+  paymentHistoryId_gt: ID
+  paymentHistoryIdMin_gt: ID
+  paymentHistoryIdMax_gt: ID
+  paymentHistoryId_lt: ID
+  paymentHistoryIdMin_lt: ID
+  paymentHistoryIdMax_lt: ID
+  paymentHistoryId_gte: ID
+  paymentHistoryIdMin_gte: ID
+  paymentHistoryIdMax_gte: ID
+  paymentHistoryId_lte: ID
+  paymentHistoryIdMin_lte: ID
+  paymentHistoryIdMax_lte: ID
+  paymentHistoryId_in: [ID!]
+  paymentHistoryIdMin_in: [ID!]
+  paymentHistoryIdMax_in: [ID!]
+  paymentHistoryId_null: Boolean
+  updatedAt: Time
+  updatedAtMin: Time
+  updatedAtMax: Time
+  updatedAt_ne: Time
+  updatedAtMin_ne: Time
+  updatedAtMax_ne: Time
+  updatedAt_gt: Time
+  updatedAtMin_gt: Time
+  updatedAtMax_gt: Time
+  updatedAt_lt: Time
+  updatedAtMin_lt: Time
+  updatedAtMax_lt: Time
+  updatedAt_gte: Time
+  updatedAtMin_gte: Time
+  updatedAtMax_gte: Time
+  updatedAt_lte: Time
+  updatedAtMin_lte: Time
+  updatedAtMax_lte: Time
+  updatedAt_in: [Time!]
+  updatedAtMin_in: [Time!]
+  updatedAtMax_in: [Time!]
+  updatedAt_null: Boolean
+  createdAt: Time
+  createdAtMin: Time
+  createdAtMax: Time
+  createdAt_ne: Time
+  createdAtMin_ne: Time
+  createdAtMax_ne: Time
+  createdAt_gt: Time
+  createdAtMin_gt: Time
+  createdAtMax_gt: Time
+  createdAt_lt: Time
+  createdAtMin_lt: Time
+  createdAtMax_lt: Time
+  createdAt_gte: Time
+  createdAtMin_gte: Time
+  createdAtMax_gte: Time
+  createdAt_lte: Time
+  createdAtMin_lte: Time
+  createdAtMax_lte: Time
+  createdAt_in: [Time!]
+  createdAtMin_in: [Time!]
+  createdAtMax_in: [Time!]
+  createdAt_null: Boolean
+  updatedBy: ID
+  updatedByMin: ID
+  updatedByMax: ID
+  updatedBy_ne: ID
+  updatedByMin_ne: ID
+  updatedByMax_ne: ID
+  updatedBy_gt: ID
+  updatedByMin_gt: ID
+  updatedByMax_gt: ID
+  updatedBy_lt: ID
+  updatedByMin_lt: ID
+  updatedByMax_lt: ID
+  updatedBy_gte: ID
+  updatedByMin_gte: ID
+  updatedByMax_gte: ID
+  updatedBy_lte: ID
+  updatedByMin_lte: ID
+  updatedByMax_lte: ID
+  updatedBy_in: [ID!]
+  updatedByMin_in: [ID!]
+  updatedByMax_in: [ID!]
+  updatedBy_null: Boolean
+  createdBy: ID
+  createdByMin: ID
+  createdByMax: ID
+  createdBy_ne: ID
+  createdByMin_ne: ID
+  createdByMax_ne: ID
+  createdBy_gt: ID
+  createdByMin_gt: ID
+  createdByMax_gt: ID
+  createdBy_lt: ID
+  createdByMin_lt: ID
+  createdByMax_lt: ID
+  createdBy_gte: ID
+  createdByMin_gte: ID
+  createdByMax_gte: ID
+  createdBy_lte: ID
+  createdByMin_lte: ID
+  createdByMax_lte: ID
+  createdBy_in: [ID!]
+  createdByMin_in: [ID!]
+  createdByMax_in: [ID!]
+  createdBy_null: Boolean
+  deliveries: DeliveryFilterType
+  deliveriesSent: DeliveryFilterType
+  deliveriesReceived: DeliveryFilterType
+  paymentStatus: PaymentStatusFilterType
+  paymentHistory: PaymentHistoryFilterType
+}
+
+type PersonResultType {
+  items: [Person!]!
+  count: Int!
+}
+
+input DeliveryTypeCreateInput {
+  id: ID
+  name: String
+  description: String
+}
+
+input DeliveryTypeUpdateInput {
+  name: String
+  description: String
+}
+
+input DeliveryTypeSortType {
+  id: ObjectSortType
+  idMin: ObjectSortType
+  idMax: ObjectSortType
+  name: ObjectSortType
+  nameMin: ObjectSortType
+  nameMax: ObjectSortType
+  description: ObjectSortType
+  descriptionMin: ObjectSortType
+  descriptionMax: ObjectSortType
+  updatedAt: ObjectSortType
+  updatedAtMin: ObjectSortType
+  updatedAtMax: ObjectSortType
+  createdAt: ObjectSortType
+  createdAtMin: ObjectSortType
+  createdAtMax: ObjectSortType
+  updatedBy: ObjectSortType
+  updatedByMin: ObjectSortType
+  updatedByMax: ObjectSortType
+  createdBy: ObjectSortType
+  createdByMin: ObjectSortType
+  createdByMax: ObjectSortType
+}
+
+input DeliveryTypeFilterType {
+  AND: [DeliveryTypeFilterType!]
+  OR: [DeliveryTypeFilterType!]
+  id: ID
+  idMin: ID
+  idMax: ID
+  id_ne: ID
+  idMin_ne: ID
+  idMax_ne: ID
+  id_gt: ID
+  idMin_gt: ID
+  idMax_gt: ID
+  id_lt: ID
+  idMin_lt: ID
+  idMax_lt: ID
+  id_gte: ID
+  idMin_gte: ID
+  idMax_gte: ID
+  id_lte: ID
+  idMin_lte: ID
+  idMax_lte: ID
+  id_in: [ID!]
+  idMin_in: [ID!]
+  idMax_in: [ID!]
+  id_null: Boolean
+  name: String
+  nameMin: String
+  nameMax: String
+  name_ne: String
+  nameMin_ne: String
+  nameMax_ne: String
+  name_gt: String
+  nameMin_gt: String
+  nameMax_gt: String
+  name_lt: String
+  nameMin_lt: String
+  nameMax_lt: String
+  name_gte: String
+  nameMin_gte: String
+  nameMax_gte: String
+  name_lte: String
+  nameMin_lte: String
+  nameMax_lte: String
+  name_in: [String!]
+  nameMin_in: [String!]
+  nameMax_in: [String!]
+  name_like: String
+  nameMin_like: String
+  nameMax_like: String
+  name_prefix: String
+  nameMin_prefix: String
+  nameMax_prefix: String
+  name_suffix: String
+  nameMin_suffix: String
+  nameMax_suffix: String
+  name_null: Boolean
+  description: String
+  descriptionMin: String
+  descriptionMax: String
+  description_ne: String
+  descriptionMin_ne: String
+  descriptionMax_ne: String
+  description_gt: String
+  descriptionMin_gt: String
+  descriptionMax_gt: String
+  description_lt: String
+  descriptionMin_lt: String
+  descriptionMax_lt: String
+  description_gte: String
+  descriptionMin_gte: String
+  descriptionMax_gte: String
+  description_lte: String
+  descriptionMin_lte: String
+  descriptionMax_lte: String
+  description_in: [String!]
+  descriptionMin_in: [String!]
+  descriptionMax_in: [String!]
+  description_like: String
+  descriptionMin_like: String
+  descriptionMax_like: String
+  description_prefix: String
+  descriptionMin_prefix: String
+  descriptionMax_prefix: String
+  description_suffix: String
+  descriptionMin_suffix: String
+  descriptionMax_suffix: String
+  description_null: Boolean
+  updatedAt: Time
+  updatedAtMin: Time
+  updatedAtMax: Time
+  updatedAt_ne: Time
+  updatedAtMin_ne: Time
+  updatedAtMax_ne: Time
+  updatedAt_gt: Time
+  updatedAtMin_gt: Time
+  updatedAtMax_gt: Time
+  updatedAt_lt: Time
+  updatedAtMin_lt: Time
+  updatedAtMax_lt: Time
+  updatedAt_gte: Time
+  updatedAtMin_gte: Time
+  updatedAtMax_gte: Time
+  updatedAt_lte: Time
+  updatedAtMin_lte: Time
+  updatedAtMax_lte: Time
+  updatedAt_in: [Time!]
+  updatedAtMin_in: [Time!]
+  updatedAtMax_in: [Time!]
+  updatedAt_null: Boolean
+  createdAt: Time
+  createdAtMin: Time
+  createdAtMax: Time
+  createdAt_ne: Time
+  createdAtMin_ne: Time
+  createdAtMax_ne: Time
+  createdAt_gt: Time
+  createdAtMin_gt: Time
+  createdAtMax_gt: Time
+  createdAt_lt: Time
+  createdAtMin_lt: Time
+  createdAtMax_lt: Time
+  createdAt_gte: Time
+  createdAtMin_gte: Time
+  createdAtMax_gte: Time
+  createdAt_lte: Time
+  createdAtMin_lte: Time
+  createdAtMax_lte: Time
+  createdAt_in: [Time!]
+  createdAtMin_in: [Time!]
+  createdAtMax_in: [Time!]
+  createdAt_null: Boolean
+  updatedBy: ID
+  updatedByMin: ID
+  updatedByMax: ID
+  updatedBy_ne: ID
+  updatedByMin_ne: ID
+  updatedByMax_ne: ID
+  updatedBy_gt: ID
+  updatedByMin_gt: ID
+  updatedByMax_gt: ID
+  updatedBy_lt: ID
+  updatedByMin_lt: ID
+  updatedByMax_lt: ID
+  updatedBy_gte: ID
+  updatedByMin_gte: ID
+  updatedByMax_gte: ID
+  updatedBy_lte: ID
+  updatedByMin_lte: ID
+  updatedByMax_lte: ID
+  updatedBy_in: [ID!]
+  updatedByMin_in: [ID!]
+  updatedByMax_in: [ID!]
+  updatedBy_null: Boolean
+  createdBy: ID
+  createdByMin: ID
+  createdByMax: ID
+  createdBy_ne: ID
+  createdByMin_ne: ID
+  createdByMax_ne: ID
+  createdBy_gt: ID
+  createdByMin_gt: ID
+  createdByMax_gt: ID
+  createdBy_lt: ID
+  createdByMin_lt: ID
+  createdByMax_lt: ID
+  createdBy_gte: ID
+  createdByMin_gte: ID
+  createdByMax_gte: ID
+  createdBy_lte: ID
+  createdByMin_lte: ID
+  createdByMax_lte: ID
+  createdBy_in: [ID!]
+  createdByMin_in: [ID!]
+  createdByMax_in: [ID!]
+  createdBy_null: Boolean
+}
+
+type DeliveryTypeResultType {
+  items: [DeliveryType!]!
+  count: Int!
+}
+
+input DeliveryChannelCreateInput {
+  id: ID
+  name: String
+  description: String
+}
+
+input DeliveryChannelUpdateInput {
+  name: String
+  description: String
+}
+
+input DeliveryChannelSortType {
+  id: ObjectSortType
+  idMin: ObjectSortType
+  idMax: ObjectSortType
+  name: ObjectSortType
+  nameMin: ObjectSortType
+  nameMax: ObjectSortType
+  description: ObjectSortType
+  descriptionMin: ObjectSortType
+  descriptionMax: ObjectSortType
+  updatedAt: ObjectSortType
+  updatedAtMin: ObjectSortType
+  updatedAtMax: ObjectSortType
+  createdAt: ObjectSortType
+  createdAtMin: ObjectSortType
+  createdAtMax: ObjectSortType
+  updatedBy: ObjectSortType
+  updatedByMin: ObjectSortType
+  updatedByMax: ObjectSortType
+  createdBy: ObjectSortType
+  createdByMin: ObjectSortType
+  createdByMax: ObjectSortType
+}
+
+input DeliveryChannelFilterType {
+  AND: [DeliveryChannelFilterType!]
+  OR: [DeliveryChannelFilterType!]
+  id: ID
+  idMin: ID
+  idMax: ID
+  id_ne: ID
+  idMin_ne: ID
+  idMax_ne: ID
+  id_gt: ID
+  idMin_gt: ID
+  idMax_gt: ID
+  id_lt: ID
+  idMin_lt: ID
+  idMax_lt: ID
+  id_gte: ID
+  idMin_gte: ID
+  idMax_gte: ID
+  id_lte: ID
+  idMin_lte: ID
+  idMax_lte: ID
+  id_in: [ID!]
+  idMin_in: [ID!]
+  idMax_in: [ID!]
+  id_null: Boolean
+  name: String
+  nameMin: String
+  nameMax: String
+  name_ne: String
+  nameMin_ne: String
+  nameMax_ne: String
+  name_gt: String
+  nameMin_gt: String
+  nameMax_gt: String
+  name_lt: String
+  nameMin_lt: String
+  nameMax_lt: String
+  name_gte: String
+  nameMin_gte: String
+  nameMax_gte: String
+  name_lte: String
+  nameMin_lte: String
+  nameMax_lte: String
+  name_in: [String!]
+  nameMin_in: [String!]
+  nameMax_in: [String!]
+  name_like: String
+  nameMin_like: String
+  nameMax_like: String
+  name_prefix: String
+  nameMin_prefix: String
+  nameMax_prefix: String
+  name_suffix: String
+  nameMin_suffix: String
+  nameMax_suffix: String
+  name_null: Boolean
+  description: String
+  descriptionMin: String
+  descriptionMax: String
+  description_ne: String
+  descriptionMin_ne: String
+  descriptionMax_ne: String
+  description_gt: String
+  descriptionMin_gt: String
+  descriptionMax_gt: String
+  description_lt: String
+  descriptionMin_lt: String
+  descriptionMax_lt: String
+  description_gte: String
+  descriptionMin_gte: String
+  descriptionMax_gte: String
+  description_lte: String
+  descriptionMin_lte: String
+  descriptionMax_lte: String
+  description_in: [String!]
+  descriptionMin_in: [String!]
+  descriptionMax_in: [String!]
+  description_like: String
+  descriptionMin_like: String
+  descriptionMax_like: String
+  description_prefix: String
+  descriptionMin_prefix: String
+  descriptionMax_prefix: String
+  description_suffix: String
+  descriptionMin_suffix: String
+  descriptionMax_suffix: String
+  description_null: Boolean
+  updatedAt: Time
+  updatedAtMin: Time
+  updatedAtMax: Time
+  updatedAt_ne: Time
+  updatedAtMin_ne: Time
+  updatedAtMax_ne: Time
+  updatedAt_gt: Time
+  updatedAtMin_gt: Time
+  updatedAtMax_gt: Time
+  updatedAt_lt: Time
+  updatedAtMin_lt: Time
+  updatedAtMax_lt: Time
+  updatedAt_gte: Time
+  updatedAtMin_gte: Time
+  updatedAtMax_gte: Time
+  updatedAt_lte: Time
+  updatedAtMin_lte: Time
+  updatedAtMax_lte: Time
+  updatedAt_in: [Time!]
+  updatedAtMin_in: [Time!]
+  updatedAtMax_in: [Time!]
+  updatedAt_null: Boolean
+  createdAt: Time
+  createdAtMin: Time
+  createdAtMax: Time
+  createdAt_ne: Time
+  createdAtMin_ne: Time
+  createdAtMax_ne: Time
+  createdAt_gt: Time
+  createdAtMin_gt: Time
+  createdAtMax_gt: Time
+  createdAt_lt: Time
+  createdAtMin_lt: Time
+  createdAtMax_lt: Time
+  createdAt_gte: Time
+  createdAtMin_gte: Time
+  createdAtMax_gte: Time
+  createdAt_lte: Time
+  createdAtMin_lte: Time
+  createdAtMax_lte: Time
+  createdAt_in: [Time!]
+  createdAtMin_in: [Time!]
+  createdAtMax_in: [Time!]
+  createdAt_null: Boolean
+  updatedBy: ID
+  updatedByMin: ID
+  updatedByMax: ID
+  updatedBy_ne: ID
+  updatedByMin_ne: ID
+  updatedByMax_ne: ID
+  updatedBy_gt: ID
+  updatedByMin_gt: ID
+  updatedByMax_gt: ID
+  updatedBy_lt: ID
+  updatedByMin_lt: ID
+  updatedByMax_lt: ID
+  updatedBy_gte: ID
+  updatedByMin_gte: ID
+  updatedByMax_gte: ID
+  updatedBy_lte: ID
+  updatedByMin_lte: ID
+  updatedByMax_lte: ID
+  updatedBy_in: [ID!]
+  updatedByMin_in: [ID!]
+  updatedByMax_in: [ID!]
+  updatedBy_null: Boolean
+  createdBy: ID
+  createdByMin: ID
+  createdByMax: ID
+  createdBy_ne: ID
+  createdByMin_ne: ID
+  createdByMax_ne: ID
+  createdBy_gt: ID
+  createdByMin_gt: ID
+  createdByMax_gt: ID
+  createdBy_lt: ID
+  createdByMin_lt: ID
+  createdByMax_lt: ID
+  createdBy_gte: ID
+  createdByMin_gte: ID
+  createdByMax_gte: ID
+  createdBy_lte: ID
+  createdByMin_lte: ID
+  createdByMax_lte: ID
+  createdBy_in: [ID!]
+  createdByMin_in: [ID!]
+  createdByMax_in: [ID!]
+  createdBy_null: Boolean
+}
+
+type DeliveryChannelResultType {
+  items: [DeliveryChannel!]!
   count: Int!
 }
 
@@ -1306,69 +2410,34 @@ type PaymentFormResultType {
   count: Int!
 }
 
-input DeliverCreateInput {
+input PaymentStatusCreateInput {
   id: ID
-  email: String!
-  phone: String
-  avatarURL: String
-  displayName: String
-  firstName: String
-  lastName: String
-  nickName: String
-  description: String
-  location: String
-  userId: String
-  deliveriesIds: [ID!]
+  credit: Float!
+  balance: Float!
+  personId: ID
 }
 
-input DeliverUpdateInput {
-  email: String
-  phone: String
-  avatarURL: String
-  displayName: String
-  firstName: String
-  lastName: String
-  nickName: String
-  description: String
-  location: String
-  userId: String
-  deliveriesIds: [ID!]
+input PaymentStatusUpdateInput {
+  credit: Float
+  balance: Float
+  personId: ID
 }
 
-input DeliverSortType {
+input PaymentStatusSortType {
   id: ObjectSortType
   idMin: ObjectSortType
   idMax: ObjectSortType
-  email: ObjectSortType
-  emailMin: ObjectSortType
-  emailMax: ObjectSortType
-  phone: ObjectSortType
-  phoneMin: ObjectSortType
-  phoneMax: ObjectSortType
-  avatarURL: ObjectSortType
-  avatarURLMin: ObjectSortType
-  avatarURLMax: ObjectSortType
-  displayName: ObjectSortType
-  displayNameMin: ObjectSortType
-  displayNameMax: ObjectSortType
-  firstName: ObjectSortType
-  firstNameMin: ObjectSortType
-  firstNameMax: ObjectSortType
-  lastName: ObjectSortType
-  lastNameMin: ObjectSortType
-  lastNameMax: ObjectSortType
-  nickName: ObjectSortType
-  nickNameMin: ObjectSortType
-  nickNameMax: ObjectSortType
-  description: ObjectSortType
-  descriptionMin: ObjectSortType
-  descriptionMax: ObjectSortType
-  location: ObjectSortType
-  locationMin: ObjectSortType
-  locationMax: ObjectSortType
-  userId: ObjectSortType
-  userIdMin: ObjectSortType
-  userIdMax: ObjectSortType
+  credit: ObjectSortType
+  creditMin: ObjectSortType
+  creditMax: ObjectSortType
+  creditAvg: ObjectSortType
+  balance: ObjectSortType
+  balanceMin: ObjectSortType
+  balanceMax: ObjectSortType
+  balanceAvg: ObjectSortType
+  personId: ObjectSortType
+  personIdMin: ObjectSortType
+  personIdMax: ObjectSortType
   updatedAt: ObjectSortType
   updatedAtMin: ObjectSortType
   updatedAtMax: ObjectSortType
@@ -1381,15 +2450,12 @@ input DeliverSortType {
   createdBy: ObjectSortType
   createdByMin: ObjectSortType
   createdByMax: ObjectSortType
-  deliveriesIds: ObjectSortType
-  deliveriesIdsMin: ObjectSortType
-  deliveriesIdsMax: ObjectSortType
-  deliveries: DeliverySortType
+  person: PersonSortType
 }
 
-input DeliverFilterType {
-  AND: [DeliverFilterType!]
-  OR: [DeliverFilterType!]
+input PaymentStatusFilterType {
+  AND: [PaymentStatusFilterType!]
+  OR: [PaymentStatusFilterType!]
   id: ID
   idMin: ID
   idMax: ID
@@ -1412,316 +2478,86 @@ input DeliverFilterType {
   idMin_in: [ID!]
   idMax_in: [ID!]
   id_null: Boolean
-  email: String
-  emailMin: String
-  emailMax: String
-  email_ne: String
-  emailMin_ne: String
-  emailMax_ne: String
-  email_gt: String
-  emailMin_gt: String
-  emailMax_gt: String
-  email_lt: String
-  emailMin_lt: String
-  emailMax_lt: String
-  email_gte: String
-  emailMin_gte: String
-  emailMax_gte: String
-  email_lte: String
-  emailMin_lte: String
-  emailMax_lte: String
-  email_in: [String!]
-  emailMin_in: [String!]
-  emailMax_in: [String!]
-  email_like: String
-  emailMin_like: String
-  emailMax_like: String
-  email_prefix: String
-  emailMin_prefix: String
-  emailMax_prefix: String
-  email_suffix: String
-  emailMin_suffix: String
-  emailMax_suffix: String
-  email_null: Boolean
-  phone: String
-  phoneMin: String
-  phoneMax: String
-  phone_ne: String
-  phoneMin_ne: String
-  phoneMax_ne: String
-  phone_gt: String
-  phoneMin_gt: String
-  phoneMax_gt: String
-  phone_lt: String
-  phoneMin_lt: String
-  phoneMax_lt: String
-  phone_gte: String
-  phoneMin_gte: String
-  phoneMax_gte: String
-  phone_lte: String
-  phoneMin_lte: String
-  phoneMax_lte: String
-  phone_in: [String!]
-  phoneMin_in: [String!]
-  phoneMax_in: [String!]
-  phone_like: String
-  phoneMin_like: String
-  phoneMax_like: String
-  phone_prefix: String
-  phoneMin_prefix: String
-  phoneMax_prefix: String
-  phone_suffix: String
-  phoneMin_suffix: String
-  phoneMax_suffix: String
-  phone_null: Boolean
-  avatarURL: String
-  avatarURLMin: String
-  avatarURLMax: String
-  avatarURL_ne: String
-  avatarURLMin_ne: String
-  avatarURLMax_ne: String
-  avatarURL_gt: String
-  avatarURLMin_gt: String
-  avatarURLMax_gt: String
-  avatarURL_lt: String
-  avatarURLMin_lt: String
-  avatarURLMax_lt: String
-  avatarURL_gte: String
-  avatarURLMin_gte: String
-  avatarURLMax_gte: String
-  avatarURL_lte: String
-  avatarURLMin_lte: String
-  avatarURLMax_lte: String
-  avatarURL_in: [String!]
-  avatarURLMin_in: [String!]
-  avatarURLMax_in: [String!]
-  avatarURL_like: String
-  avatarURLMin_like: String
-  avatarURLMax_like: String
-  avatarURL_prefix: String
-  avatarURLMin_prefix: String
-  avatarURLMax_prefix: String
-  avatarURL_suffix: String
-  avatarURLMin_suffix: String
-  avatarURLMax_suffix: String
-  avatarURL_null: Boolean
-  displayName: String
-  displayNameMin: String
-  displayNameMax: String
-  displayName_ne: String
-  displayNameMin_ne: String
-  displayNameMax_ne: String
-  displayName_gt: String
-  displayNameMin_gt: String
-  displayNameMax_gt: String
-  displayName_lt: String
-  displayNameMin_lt: String
-  displayNameMax_lt: String
-  displayName_gte: String
-  displayNameMin_gte: String
-  displayNameMax_gte: String
-  displayName_lte: String
-  displayNameMin_lte: String
-  displayNameMax_lte: String
-  displayName_in: [String!]
-  displayNameMin_in: [String!]
-  displayNameMax_in: [String!]
-  displayName_like: String
-  displayNameMin_like: String
-  displayNameMax_like: String
-  displayName_prefix: String
-  displayNameMin_prefix: String
-  displayNameMax_prefix: String
-  displayName_suffix: String
-  displayNameMin_suffix: String
-  displayNameMax_suffix: String
-  displayName_null: Boolean
-  firstName: String
-  firstNameMin: String
-  firstNameMax: String
-  firstName_ne: String
-  firstNameMin_ne: String
-  firstNameMax_ne: String
-  firstName_gt: String
-  firstNameMin_gt: String
-  firstNameMax_gt: String
-  firstName_lt: String
-  firstNameMin_lt: String
-  firstNameMax_lt: String
-  firstName_gte: String
-  firstNameMin_gte: String
-  firstNameMax_gte: String
-  firstName_lte: String
-  firstNameMin_lte: String
-  firstNameMax_lte: String
-  firstName_in: [String!]
-  firstNameMin_in: [String!]
-  firstNameMax_in: [String!]
-  firstName_like: String
-  firstNameMin_like: String
-  firstNameMax_like: String
-  firstName_prefix: String
-  firstNameMin_prefix: String
-  firstNameMax_prefix: String
-  firstName_suffix: String
-  firstNameMin_suffix: String
-  firstNameMax_suffix: String
-  firstName_null: Boolean
-  lastName: String
-  lastNameMin: String
-  lastNameMax: String
-  lastName_ne: String
-  lastNameMin_ne: String
-  lastNameMax_ne: String
-  lastName_gt: String
-  lastNameMin_gt: String
-  lastNameMax_gt: String
-  lastName_lt: String
-  lastNameMin_lt: String
-  lastNameMax_lt: String
-  lastName_gte: String
-  lastNameMin_gte: String
-  lastNameMax_gte: String
-  lastName_lte: String
-  lastNameMin_lte: String
-  lastNameMax_lte: String
-  lastName_in: [String!]
-  lastNameMin_in: [String!]
-  lastNameMax_in: [String!]
-  lastName_like: String
-  lastNameMin_like: String
-  lastNameMax_like: String
-  lastName_prefix: String
-  lastNameMin_prefix: String
-  lastNameMax_prefix: String
-  lastName_suffix: String
-  lastNameMin_suffix: String
-  lastNameMax_suffix: String
-  lastName_null: Boolean
-  nickName: String
-  nickNameMin: String
-  nickNameMax: String
-  nickName_ne: String
-  nickNameMin_ne: String
-  nickNameMax_ne: String
-  nickName_gt: String
-  nickNameMin_gt: String
-  nickNameMax_gt: String
-  nickName_lt: String
-  nickNameMin_lt: String
-  nickNameMax_lt: String
-  nickName_gte: String
-  nickNameMin_gte: String
-  nickNameMax_gte: String
-  nickName_lte: String
-  nickNameMin_lte: String
-  nickNameMax_lte: String
-  nickName_in: [String!]
-  nickNameMin_in: [String!]
-  nickNameMax_in: [String!]
-  nickName_like: String
-  nickNameMin_like: String
-  nickNameMax_like: String
-  nickName_prefix: String
-  nickNameMin_prefix: String
-  nickNameMax_prefix: String
-  nickName_suffix: String
-  nickNameMin_suffix: String
-  nickNameMax_suffix: String
-  nickName_null: Boolean
-  description: String
-  descriptionMin: String
-  descriptionMax: String
-  description_ne: String
-  descriptionMin_ne: String
-  descriptionMax_ne: String
-  description_gt: String
-  descriptionMin_gt: String
-  descriptionMax_gt: String
-  description_lt: String
-  descriptionMin_lt: String
-  descriptionMax_lt: String
-  description_gte: String
-  descriptionMin_gte: String
-  descriptionMax_gte: String
-  description_lte: String
-  descriptionMin_lte: String
-  descriptionMax_lte: String
-  description_in: [String!]
-  descriptionMin_in: [String!]
-  descriptionMax_in: [String!]
-  description_like: String
-  descriptionMin_like: String
-  descriptionMax_like: String
-  description_prefix: String
-  descriptionMin_prefix: String
-  descriptionMax_prefix: String
-  description_suffix: String
-  descriptionMin_suffix: String
-  descriptionMax_suffix: String
-  description_null: Boolean
-  location: String
-  locationMin: String
-  locationMax: String
-  location_ne: String
-  locationMin_ne: String
-  locationMax_ne: String
-  location_gt: String
-  locationMin_gt: String
-  locationMax_gt: String
-  location_lt: String
-  locationMin_lt: String
-  locationMax_lt: String
-  location_gte: String
-  locationMin_gte: String
-  locationMax_gte: String
-  location_lte: String
-  locationMin_lte: String
-  locationMax_lte: String
-  location_in: [String!]
-  locationMin_in: [String!]
-  locationMax_in: [String!]
-  location_like: String
-  locationMin_like: String
-  locationMax_like: String
-  location_prefix: String
-  locationMin_prefix: String
-  locationMax_prefix: String
-  location_suffix: String
-  locationMin_suffix: String
-  locationMax_suffix: String
-  location_null: Boolean
-  userId: String
-  userIdMin: String
-  userIdMax: String
-  userId_ne: String
-  userIdMin_ne: String
-  userIdMax_ne: String
-  userId_gt: String
-  userIdMin_gt: String
-  userIdMax_gt: String
-  userId_lt: String
-  userIdMin_lt: String
-  userIdMax_lt: String
-  userId_gte: String
-  userIdMin_gte: String
-  userIdMax_gte: String
-  userId_lte: String
-  userIdMin_lte: String
-  userIdMax_lte: String
-  userId_in: [String!]
-  userIdMin_in: [String!]
-  userIdMax_in: [String!]
-  userId_like: String
-  userIdMin_like: String
-  userIdMax_like: String
-  userId_prefix: String
-  userIdMin_prefix: String
-  userIdMax_prefix: String
-  userId_suffix: String
-  userIdMin_suffix: String
-  userIdMax_suffix: String
-  userId_null: Boolean
+  credit: Float
+  creditMin: Float
+  creditMax: Float
+  creditAvg: Float
+  credit_ne: Float
+  creditMin_ne: Float
+  creditMax_ne: Float
+  creditAvg_ne: Float
+  credit_gt: Float
+  creditMin_gt: Float
+  creditMax_gt: Float
+  creditAvg_gt: Float
+  credit_lt: Float
+  creditMin_lt: Float
+  creditMax_lt: Float
+  creditAvg_lt: Float
+  credit_gte: Float
+  creditMin_gte: Float
+  creditMax_gte: Float
+  creditAvg_gte: Float
+  credit_lte: Float
+  creditMin_lte: Float
+  creditMax_lte: Float
+  creditAvg_lte: Float
+  credit_in: [Float!]
+  creditMin_in: [Float!]
+  creditMax_in: [Float!]
+  creditAvg_in: [Float!]
+  credit_null: Boolean
+  balance: Float
+  balanceMin: Float
+  balanceMax: Float
+  balanceAvg: Float
+  balance_ne: Float
+  balanceMin_ne: Float
+  balanceMax_ne: Float
+  balanceAvg_ne: Float
+  balance_gt: Float
+  balanceMin_gt: Float
+  balanceMax_gt: Float
+  balanceAvg_gt: Float
+  balance_lt: Float
+  balanceMin_lt: Float
+  balanceMax_lt: Float
+  balanceAvg_lt: Float
+  balance_gte: Float
+  balanceMin_gte: Float
+  balanceMax_gte: Float
+  balanceAvg_gte: Float
+  balance_lte: Float
+  balanceMin_lte: Float
+  balanceMax_lte: Float
+  balanceAvg_lte: Float
+  balance_in: [Float!]
+  balanceMin_in: [Float!]
+  balanceMax_in: [Float!]
+  balanceAvg_in: [Float!]
+  balance_null: Boolean
+  personId: ID
+  personIdMin: ID
+  personIdMax: ID
+  personId_ne: ID
+  personIdMin_ne: ID
+  personIdMax_ne: ID
+  personId_gt: ID
+  personIdMin_gt: ID
+  personIdMax_gt: ID
+  personId_lt: ID
+  personIdMin_lt: ID
+  personIdMax_lt: ID
+  personId_gte: ID
+  personIdMin_gte: ID
+  personIdMax_gte: ID
+  personId_lte: ID
+  personIdMin_lte: ID
+  personIdMax_lte: ID
+  personId_in: [ID!]
+  personIdMin_in: [ID!]
+  personIdMax_in: [ID!]
+  personId_null: Boolean
   updatedAt: Time
   updatedAtMin: Time
   updatedAtMax: Time
@@ -1810,60 +2646,41 @@ input DeliverFilterType {
   createdByMin_in: [ID!]
   createdByMax_in: [ID!]
   createdBy_null: Boolean
-  deliveries: DeliveryFilterType
+  person: PersonFilterType
 }
 
-type DeliverResultType {
-  items: [Deliver!]!
+type PaymentStatusResultType {
+  items: [PaymentStatus!]!
   count: Int!
 }
 
-input PersonCreateInput {
+input PaymentHistoryCreateInput {
   id: ID
-  name: String
-  phone: String
-  email: String!
-  documentNo: String
-  userId: String
-  deliveriesSentId: ID
-  deliveriesReceivedId: ID
+  concept: String
+  amount: Float!
+  personId: ID
 }
 
-input PersonUpdateInput {
-  name: String
-  phone: String
-  email: String
-  documentNo: String
-  userId: String
-  deliveriesSentId: ID
-  deliveriesReceivedId: ID
+input PaymentHistoryUpdateInput {
+  concept: String
+  amount: Float
+  personId: ID
 }
 
-input PersonSortType {
+input PaymentHistorySortType {
   id: ObjectSortType
   idMin: ObjectSortType
   idMax: ObjectSortType
-  name: ObjectSortType
-  nameMin: ObjectSortType
-  nameMax: ObjectSortType
-  phone: ObjectSortType
-  phoneMin: ObjectSortType
-  phoneMax: ObjectSortType
-  email: ObjectSortType
-  emailMin: ObjectSortType
-  emailMax: ObjectSortType
-  documentNo: ObjectSortType
-  documentNoMin: ObjectSortType
-  documentNoMax: ObjectSortType
-  userId: ObjectSortType
-  userIdMin: ObjectSortType
-  userIdMax: ObjectSortType
-  deliveriesSentId: ObjectSortType
-  deliveriesSentIdMin: ObjectSortType
-  deliveriesSentIdMax: ObjectSortType
-  deliveriesReceivedId: ObjectSortType
-  deliveriesReceivedIdMin: ObjectSortType
-  deliveriesReceivedIdMax: ObjectSortType
+  concept: ObjectSortType
+  conceptMin: ObjectSortType
+  conceptMax: ObjectSortType
+  amount: ObjectSortType
+  amountMin: ObjectSortType
+  amountMax: ObjectSortType
+  amountAvg: ObjectSortType
+  personId: ObjectSortType
+  personIdMin: ObjectSortType
+  personIdMax: ObjectSortType
   updatedAt: ObjectSortType
   updatedAtMin: ObjectSortType
   updatedAtMax: ObjectSortType
@@ -1876,13 +2693,12 @@ input PersonSortType {
   createdBy: ObjectSortType
   createdByMin: ObjectSortType
   createdByMax: ObjectSortType
-  deliveriesSent: DeliverySortType
-  deliveriesReceived: DeliverySortType
+  person: PersonSortType
 }
 
-input PersonFilterType {
-  AND: [PersonFilterType!]
-  OR: [PersonFilterType!]
+input PaymentHistoryFilterType {
+  AND: [PaymentHistoryFilterType!]
+  OR: [PaymentHistoryFilterType!]
   id: ID
   idMin: ID
   idMax: ID
@@ -1905,205 +2721,88 @@ input PersonFilterType {
   idMin_in: [ID!]
   idMax_in: [ID!]
   id_null: Boolean
-  name: String
-  nameMin: String
-  nameMax: String
-  name_ne: String
-  nameMin_ne: String
-  nameMax_ne: String
-  name_gt: String
-  nameMin_gt: String
-  nameMax_gt: String
-  name_lt: String
-  nameMin_lt: String
-  nameMax_lt: String
-  name_gte: String
-  nameMin_gte: String
-  nameMax_gte: String
-  name_lte: String
-  nameMin_lte: String
-  nameMax_lte: String
-  name_in: [String!]
-  nameMin_in: [String!]
-  nameMax_in: [String!]
-  name_like: String
-  nameMin_like: String
-  nameMax_like: String
-  name_prefix: String
-  nameMin_prefix: String
-  nameMax_prefix: String
-  name_suffix: String
-  nameMin_suffix: String
-  nameMax_suffix: String
-  name_null: Boolean
-  phone: String
-  phoneMin: String
-  phoneMax: String
-  phone_ne: String
-  phoneMin_ne: String
-  phoneMax_ne: String
-  phone_gt: String
-  phoneMin_gt: String
-  phoneMax_gt: String
-  phone_lt: String
-  phoneMin_lt: String
-  phoneMax_lt: String
-  phone_gte: String
-  phoneMin_gte: String
-  phoneMax_gte: String
-  phone_lte: String
-  phoneMin_lte: String
-  phoneMax_lte: String
-  phone_in: [String!]
-  phoneMin_in: [String!]
-  phoneMax_in: [String!]
-  phone_like: String
-  phoneMin_like: String
-  phoneMax_like: String
-  phone_prefix: String
-  phoneMin_prefix: String
-  phoneMax_prefix: String
-  phone_suffix: String
-  phoneMin_suffix: String
-  phoneMax_suffix: String
-  phone_null: Boolean
-  email: String
-  emailMin: String
-  emailMax: String
-  email_ne: String
-  emailMin_ne: String
-  emailMax_ne: String
-  email_gt: String
-  emailMin_gt: String
-  emailMax_gt: String
-  email_lt: String
-  emailMin_lt: String
-  emailMax_lt: String
-  email_gte: String
-  emailMin_gte: String
-  emailMax_gte: String
-  email_lte: String
-  emailMin_lte: String
-  emailMax_lte: String
-  email_in: [String!]
-  emailMin_in: [String!]
-  emailMax_in: [String!]
-  email_like: String
-  emailMin_like: String
-  emailMax_like: String
-  email_prefix: String
-  emailMin_prefix: String
-  emailMax_prefix: String
-  email_suffix: String
-  emailMin_suffix: String
-  emailMax_suffix: String
-  email_null: Boolean
-  documentNo: String
-  documentNoMin: String
-  documentNoMax: String
-  documentNo_ne: String
-  documentNoMin_ne: String
-  documentNoMax_ne: String
-  documentNo_gt: String
-  documentNoMin_gt: String
-  documentNoMax_gt: String
-  documentNo_lt: String
-  documentNoMin_lt: String
-  documentNoMax_lt: String
-  documentNo_gte: String
-  documentNoMin_gte: String
-  documentNoMax_gte: String
-  documentNo_lte: String
-  documentNoMin_lte: String
-  documentNoMax_lte: String
-  documentNo_in: [String!]
-  documentNoMin_in: [String!]
-  documentNoMax_in: [String!]
-  documentNo_like: String
-  documentNoMin_like: String
-  documentNoMax_like: String
-  documentNo_prefix: String
-  documentNoMin_prefix: String
-  documentNoMax_prefix: String
-  documentNo_suffix: String
-  documentNoMin_suffix: String
-  documentNoMax_suffix: String
-  documentNo_null: Boolean
-  userId: String
-  userIdMin: String
-  userIdMax: String
-  userId_ne: String
-  userIdMin_ne: String
-  userIdMax_ne: String
-  userId_gt: String
-  userIdMin_gt: String
-  userIdMax_gt: String
-  userId_lt: String
-  userIdMin_lt: String
-  userIdMax_lt: String
-  userId_gte: String
-  userIdMin_gte: String
-  userIdMax_gte: String
-  userId_lte: String
-  userIdMin_lte: String
-  userIdMax_lte: String
-  userId_in: [String!]
-  userIdMin_in: [String!]
-  userIdMax_in: [String!]
-  userId_like: String
-  userIdMin_like: String
-  userIdMax_like: String
-  userId_prefix: String
-  userIdMin_prefix: String
-  userIdMax_prefix: String
-  userId_suffix: String
-  userIdMin_suffix: String
-  userIdMax_suffix: String
-  userId_null: Boolean
-  deliveriesSentId: ID
-  deliveriesSentIdMin: ID
-  deliveriesSentIdMax: ID
-  deliveriesSentId_ne: ID
-  deliveriesSentIdMin_ne: ID
-  deliveriesSentIdMax_ne: ID
-  deliveriesSentId_gt: ID
-  deliveriesSentIdMin_gt: ID
-  deliveriesSentIdMax_gt: ID
-  deliveriesSentId_lt: ID
-  deliveriesSentIdMin_lt: ID
-  deliveriesSentIdMax_lt: ID
-  deliveriesSentId_gte: ID
-  deliveriesSentIdMin_gte: ID
-  deliveriesSentIdMax_gte: ID
-  deliveriesSentId_lte: ID
-  deliveriesSentIdMin_lte: ID
-  deliveriesSentIdMax_lte: ID
-  deliveriesSentId_in: [ID!]
-  deliveriesSentIdMin_in: [ID!]
-  deliveriesSentIdMax_in: [ID!]
-  deliveriesSentId_null: Boolean
-  deliveriesReceivedId: ID
-  deliveriesReceivedIdMin: ID
-  deliveriesReceivedIdMax: ID
-  deliveriesReceivedId_ne: ID
-  deliveriesReceivedIdMin_ne: ID
-  deliveriesReceivedIdMax_ne: ID
-  deliveriesReceivedId_gt: ID
-  deliveriesReceivedIdMin_gt: ID
-  deliveriesReceivedIdMax_gt: ID
-  deliveriesReceivedId_lt: ID
-  deliveriesReceivedIdMin_lt: ID
-  deliveriesReceivedIdMax_lt: ID
-  deliveriesReceivedId_gte: ID
-  deliveriesReceivedIdMin_gte: ID
-  deliveriesReceivedIdMax_gte: ID
-  deliveriesReceivedId_lte: ID
-  deliveriesReceivedIdMin_lte: ID
-  deliveriesReceivedIdMax_lte: ID
-  deliveriesReceivedId_in: [ID!]
-  deliveriesReceivedIdMin_in: [ID!]
-  deliveriesReceivedIdMax_in: [ID!]
-  deliveriesReceivedId_null: Boolean
+  concept: String
+  conceptMin: String
+  conceptMax: String
+  concept_ne: String
+  conceptMin_ne: String
+  conceptMax_ne: String
+  concept_gt: String
+  conceptMin_gt: String
+  conceptMax_gt: String
+  concept_lt: String
+  conceptMin_lt: String
+  conceptMax_lt: String
+  concept_gte: String
+  conceptMin_gte: String
+  conceptMax_gte: String
+  concept_lte: String
+  conceptMin_lte: String
+  conceptMax_lte: String
+  concept_in: [String!]
+  conceptMin_in: [String!]
+  conceptMax_in: [String!]
+  concept_like: String
+  conceptMin_like: String
+  conceptMax_like: String
+  concept_prefix: String
+  conceptMin_prefix: String
+  conceptMax_prefix: String
+  concept_suffix: String
+  conceptMin_suffix: String
+  conceptMax_suffix: String
+  concept_null: Boolean
+  amount: Float
+  amountMin: Float
+  amountMax: Float
+  amountAvg: Float
+  amount_ne: Float
+  amountMin_ne: Float
+  amountMax_ne: Float
+  amountAvg_ne: Float
+  amount_gt: Float
+  amountMin_gt: Float
+  amountMax_gt: Float
+  amountAvg_gt: Float
+  amount_lt: Float
+  amountMin_lt: Float
+  amountMax_lt: Float
+  amountAvg_lt: Float
+  amount_gte: Float
+  amountMin_gte: Float
+  amountMax_gte: Float
+  amountAvg_gte: Float
+  amount_lte: Float
+  amountMin_lte: Float
+  amountMax_lte: Float
+  amountAvg_lte: Float
+  amount_in: [Float!]
+  amountMin_in: [Float!]
+  amountMax_in: [Float!]
+  amountAvg_in: [Float!]
+  amount_null: Boolean
+  personId: ID
+  personIdMin: ID
+  personIdMax: ID
+  personId_ne: ID
+  personIdMin_ne: ID
+  personIdMax_ne: ID
+  personId_gt: ID
+  personIdMin_gt: ID
+  personIdMax_gt: ID
+  personId_lt: ID
+  personIdMin_lt: ID
+  personIdMax_lt: ID
+  personId_gte: ID
+  personIdMin_gte: ID
+  personIdMax_gte: ID
+  personId_lte: ID
+  personIdMin_lte: ID
+  personIdMax_lte: ID
+  personId_in: [ID!]
+  personIdMin_in: [ID!]
+  personIdMax_in: [ID!]
+  personId_null: Boolean
   updatedAt: Time
   updatedAtMin: Time
   updatedAtMax: Time
@@ -2192,12 +2891,11 @@ input PersonFilterType {
   createdByMin_in: [ID!]
   createdByMax_in: [ID!]
   createdBy_null: Boolean
-  deliveriesSent: DeliveryFilterType
-  deliveriesReceived: DeliveryFilterType
+  person: PersonFilterType
 }
 
-type PersonResultType {
-  items: [Person!]!
+type PaymentHistoryResultType {
+  items: [PaymentHistory!]!
   count: Int!
 }
 

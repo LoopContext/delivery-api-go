@@ -17,7 +17,6 @@ type DeliveryResultType struct {
 // Delivery struct
 type Delivery struct {
 	ID               string     `json:"id" gorm:"column:id;primary_key"`
-	Mode             *string    `json:"mode" gorm:"column:mode"`
 	CollectDateTime  *time.Time `json:"collectDateTime" gorm:"column:collectDateTime"`
 	CollectAddress   *string    `json:"collectAddress" gorm:"column:collectAddress"`
 	CollectPoint     *string    `json:"collectPoint" gorm:"column:collectPoint"`
@@ -28,9 +27,9 @@ type Delivery struct {
 	PaymentOnDeliver *bool      `json:"paymentOnDeliver" gorm:"column:paymentOnDeliver"`
 	ExpectedDistance *string    `json:"expectedDistance" gorm:"column:expectedDistance"`
 	ExpectedCost     *float64   `json:"expectedCost" gorm:"column:expectedCost"`
-	Status           *string    `json:"status" gorm:"column:status"`
 	Completed        *bool      `json:"completed" gorm:"column:completed"`
 	SmsToken         *string    `json:"smsToken" gorm:"column:smsToken"`
+	Status           *string    `json:"status" gorm:"column:status;index:statusidx"`
 	Instructions     *string    `json:"instructions" gorm:"column:instructions;type:text"`
 	SenderID         *string    `json:"senderId" gorm:"column:senderId"`
 	ReceiverID       *string    `json:"receiverId" gorm:"column:receiverId"`
@@ -40,11 +39,14 @@ type Delivery struct {
 	UpdatedBy        *string    `json:"updatedBy" gorm:"column:updatedBy"`
 	CreatedBy        *string    `json:"createdBy" gorm:"column:createdBy"`
 
-	Sender *Person `json:"sender"`
+	Sender          *Person `json:"sender"`
+	SenderPreloaded bool    `gorm:"-"`
 
-	Receiver *Person `json:"receiver"`
+	Receiver          *Person `json:"receiver"`
+	ReceiverPreloaded bool    `gorm:"-"`
 
-	Deliver *Deliver `json:"deliver"`
+	Deliver          *Person `json:"deliver"`
+	DeliverPreloaded bool    `gorm:"-"`
 }
 
 // IsEntity ...
@@ -53,7 +55,6 @@ func (m *Delivery) IsEntity() {}
 // DeliveryChanges struct
 type DeliveryChanges struct {
 	ID               string
-	Mode             *string
 	CollectDateTime  *time.Time
 	CollectAddress   *string
 	CollectPoint     *string
@@ -64,9 +65,9 @@ type DeliveryChanges struct {
 	PaymentOnDeliver *bool
 	ExpectedDistance *string
 	ExpectedCost     *float64
-	Status           *string
 	Completed        *bool
 	SmsToken         *string
+	Status           *string
 	Instructions     *string
 	SenderID         *string
 	ReceiverID       *string
@@ -75,6 +76,134 @@ type DeliveryChanges struct {
 	CreatedAt        time.Time
 	UpdatedBy        *string
 	CreatedBy        *string
+}
+
+// PersonResultType struct
+type PersonResultType struct {
+	EntityResultType
+}
+
+// Person struct
+type Person struct {
+	ID               string     `json:"id" gorm:"column:id;primary_key"`
+	Deliver          *bool      `json:"deliver" gorm:"column:deliver;default:false"`
+	Email            string     `json:"email" gorm:"column:email;unique"`
+	Phone            *string    `json:"phone" gorm:"column:phone"`
+	DocumentNo       *string    `json:"documentNo" gorm:"column:documentNo"`
+	AvatarURL        *string    `json:"avatarURL" gorm:"column:avatarURL;type:text"`
+	DisplayName      *string    `json:"displayName" gorm:"column:displayName"`
+	FirstName        *string    `json:"firstName" gorm:"column:firstName"`
+	LastName         *string    `json:"lastName" gorm:"column:lastName"`
+	NickName         *string    `json:"nickName" gorm:"column:nickName"`
+	Description      *string    `json:"description" gorm:"column:description;type:text"`
+	Location         *string    `json:"location" gorm:"column:location"`
+	UserID           *string    `json:"userId" gorm:"column:userId"`
+	PaymentStatusID  *string    `json:"paymentStatusId" gorm:"column:paymentStatusId"`
+	PaymentHistoryID *string    `json:"paymentHistoryId" gorm:"column:paymentHistoryId"`
+	UpdatedAt        *time.Time `json:"updatedAt" gorm:"column:updatedAt"`
+	CreatedAt        time.Time  `json:"createdAt" gorm:"column:createdAt"`
+	UpdatedBy        *string    `json:"updatedBy" gorm:"column:updatedBy"`
+	CreatedBy        *string    `json:"createdBy" gorm:"column:createdBy"`
+
+	Deliveries []*Delivery `json:"deliveries" gorm:"foreignkey:DeliverID"`
+
+	DeliveriesSent []*Delivery `json:"deliveriesSent" gorm:"foreignkey:SenderID"`
+
+	DeliveriesReceived []*Delivery `json:"deliveriesReceived" gorm:"foreignkey:ReceiverID"`
+
+	PaymentStatus *PaymentStatus `json:"paymentStatus"`
+
+	PaymentHistory *PaymentHistory `json:"paymentHistory"`
+}
+
+// IsEntity ...
+func (m *Person) IsEntity() {}
+
+// PersonChanges struct
+type PersonChanges struct {
+	ID               string
+	Deliver          *bool
+	Email            string
+	Phone            *string
+	DocumentNo       *string
+	AvatarURL        *string
+	DisplayName      *string
+	FirstName        *string
+	LastName         *string
+	NickName         *string
+	Description      *string
+	Location         *string
+	UserID           *string
+	PaymentStatusID  *string
+	PaymentHistoryID *string
+	UpdatedAt        *time.Time
+	CreatedAt        time.Time
+	UpdatedBy        *string
+	CreatedBy        *string
+
+	DeliveriesIDs         []*string
+	DeliveriesSentIDs     []*string
+	DeliveriesReceivedIDs []*string
+}
+
+// DeliveryTypeResultType struct
+type DeliveryTypeResultType struct {
+	EntityResultType
+}
+
+// DeliveryType struct
+type DeliveryType struct {
+	ID          string     `json:"id" gorm:"column:id;primary_key"`
+	Name        *string    `json:"name" gorm:"column:name"`
+	Description *string    `json:"description" gorm:"column:description;type:text"`
+	UpdatedAt   *time.Time `json:"updatedAt" gorm:"column:updatedAt"`
+	CreatedAt   time.Time  `json:"createdAt" gorm:"column:createdAt"`
+	UpdatedBy   *string    `json:"updatedBy" gorm:"column:updatedBy"`
+	CreatedBy   *string    `json:"createdBy" gorm:"column:createdBy"`
+}
+
+// IsEntity ...
+func (m *DeliveryType) IsEntity() {}
+
+// DeliveryTypeChanges struct
+type DeliveryTypeChanges struct {
+	ID          string
+	Name        *string
+	Description *string
+	UpdatedAt   *time.Time
+	CreatedAt   time.Time
+	UpdatedBy   *string
+	CreatedBy   *string
+}
+
+// DeliveryChannelResultType struct
+type DeliveryChannelResultType struct {
+	EntityResultType
+}
+
+// DeliveryChannel struct
+type DeliveryChannel struct {
+	ID          string     `json:"id" gorm:"column:id;primary_key"`
+	Name        *string    `json:"name" gorm:"column:name"`
+	Description *string    `json:"description" gorm:"column:description;type:text"`
+	UpdatedAt   *time.Time `json:"updatedAt" gorm:"column:updatedAt"`
+	CreatedAt   time.Time  `json:"createdAt" gorm:"column:createdAt"`
+	UpdatedBy   *string    `json:"updatedBy" gorm:"column:updatedBy"`
+	CreatedBy   *string    `json:"createdBy" gorm:"column:createdBy"`
+}
+
+// IsEntity ...
+func (m *DeliveryChannel) IsEntity() {}
+
+// DeliveryChannelChanges struct
+type DeliveryChannelChanges struct {
+	ID          string
+	Name        *string
+	Description *string
+	UpdatedAt   *time.Time
+	CreatedAt   time.Time
+	UpdatedBy   *string
+	CreatedBy   *string
 }
 
 // VehicleTypeResultType struct
@@ -137,98 +266,72 @@ type PaymentFormChanges struct {
 	CreatedBy   *string
 }
 
-// DeliverResultType struct
-type DeliverResultType struct {
+// PaymentStatusResultType struct
+type PaymentStatusResultType struct {
 	EntityResultType
 }
 
-// Deliver struct
-type Deliver struct {
-	ID          string     `json:"id" gorm:"column:id;primary_key"`
-	Email       string     `json:"email" gorm:"column:email;unique"`
-	Phone       *string    `json:"phone" gorm:"column:phone"`
-	AvatarURL   *string    `json:"avatarURL" gorm:"column:avatarURL;type:text"`
-	DisplayName *string    `json:"displayName" gorm:"column:displayName"`
-	FirstName   *string    `json:"firstName" gorm:"column:firstName"`
-	LastName    *string    `json:"lastName" gorm:"column:lastName"`
-	NickName    *string    `json:"nickName" gorm:"column:nickName"`
-	Description *string    `json:"description" gorm:"column:description;type:text"`
-	Location    *string    `json:"location" gorm:"column:location"`
-	UserID      *string    `json:"userId" gorm:"column:userId"`
-	UpdatedAt   *time.Time `json:"updatedAt" gorm:"column:updatedAt"`
-	CreatedAt   time.Time  `json:"createdAt" gorm:"column:createdAt"`
-	UpdatedBy   *string    `json:"updatedBy" gorm:"column:updatedBy"`
-	CreatedBy   *string    `json:"createdBy" gorm:"column:createdBy"`
+// PaymentStatus struct
+type PaymentStatus struct {
+	ID        string     `json:"id" gorm:"column:id;primary_key"`
+	Credit    float64    `json:"credit" gorm:"column:credit;default:0.0"`
+	Balance   float64    `json:"balance" gorm:"column:balance;default:0.0"`
+	PersonID  *string    `json:"personId" gorm:"column:personId"`
+	UpdatedAt *time.Time `json:"updatedAt" gorm:"column:updatedAt"`
+	CreatedAt time.Time  `json:"createdAt" gorm:"column:createdAt"`
+	UpdatedBy *string    `json:"updatedBy" gorm:"column:updatedBy"`
+	CreatedBy *string    `json:"createdBy" gorm:"column:createdBy"`
 
-	Deliveries []*Delivery `json:"deliveries" gorm:"foreignkey:DeliverID"`
+	Person *Person `json:"person"`
 }
 
 // IsEntity ...
-func (m *Deliver) IsEntity() {}
+func (m *PaymentStatus) IsEntity() {}
 
-// DeliverChanges struct
-type DeliverChanges struct {
-	ID          string
-	Email       string
-	Phone       *string
-	AvatarURL   *string
-	DisplayName *string
-	FirstName   *string
-	LastName    *string
-	NickName    *string
-	Description *string
-	Location    *string
-	UserID      *string
-	UpdatedAt   *time.Time
-	CreatedAt   time.Time
-	UpdatedBy   *string
-	CreatedBy   *string
-
-	DeliveriesIDs []*string
+// PaymentStatusChanges struct
+type PaymentStatusChanges struct {
+	ID        string
+	Credit    float64
+	Balance   float64
+	PersonID  *string
+	UpdatedAt *time.Time
+	CreatedAt time.Time
+	UpdatedBy *string
+	CreatedBy *string
 }
 
-// PersonResultType struct
-type PersonResultType struct {
+// PaymentHistoryResultType struct
+type PaymentHistoryResultType struct {
 	EntityResultType
 }
 
-// Person struct
-type Person struct {
-	ID                   string     `json:"id" gorm:"column:id;primary_key"`
-	Name                 *string    `json:"name" gorm:"column:name"`
-	Phone                *string    `json:"phone" gorm:"column:phone"`
-	Email                string     `json:"email" gorm:"column:email;unique"`
-	DocumentNo           *string    `json:"documentNo" gorm:"column:documentNo"`
-	UserID               *string    `json:"userId" gorm:"column:userId"`
-	DeliveriesSentID     *string    `json:"deliveriesSentId" gorm:"column:deliveriesSentId"`
-	DeliveriesReceivedID *string    `json:"deliveriesReceivedId" gorm:"column:deliveriesReceivedId"`
-	UpdatedAt            *time.Time `json:"updatedAt" gorm:"column:updatedAt"`
-	CreatedAt            time.Time  `json:"createdAt" gorm:"column:createdAt"`
-	UpdatedBy            *string    `json:"updatedBy" gorm:"column:updatedBy"`
-	CreatedBy            *string    `json:"createdBy" gorm:"column:createdBy"`
+// PaymentHistory struct
+type PaymentHistory struct {
+	ID        string     `json:"id" gorm:"column:id;primary_key"`
+	Concept   *string    `json:"concept" gorm:"column:concept;type:text"`
+	Amount    float64    `json:"amount" gorm:"column:amount;default:0.0"`
+	PersonID  *string    `json:"personId" gorm:"column:personId"`
+	UpdatedAt *time.Time `json:"updatedAt" gorm:"column:updatedAt"`
+	CreatedAt time.Time  `json:"createdAt" gorm:"column:createdAt"`
+	UpdatedBy *string    `json:"updatedBy" gorm:"column:updatedBy"`
+	CreatedBy *string    `json:"createdBy" gorm:"column:createdBy"`
 
-	DeliveriesSent *Delivery `json:"deliveriesSent"`
-
-	DeliveriesReceived *Delivery `json:"deliveriesReceived"`
+	Person *Person `json:"person"`
 }
 
 // IsEntity ...
-func (m *Person) IsEntity() {}
+func (m *PaymentHistory) IsEntity() {}
 
-// PersonChanges struct
-type PersonChanges struct {
-	ID                   string
-	Name                 *string
-	Phone                *string
-	Email                string
-	DocumentNo           *string
-	UserID               *string
-	DeliveriesSentID     *string
-	DeliveriesReceivedID *string
-	UpdatedAt            *time.Time
-	CreatedAt            time.Time
-	UpdatedBy            *string
-	CreatedBy            *string
+// PaymentHistoryChanges struct
+type PaymentHistoryChanges struct {
+	ID        string
+	Concept   *string
+	Amount    float64
+	PersonID  *string
+	UpdatedAt *time.Time
+	CreatedAt time.Time
+	UpdatedBy *string
+	CreatedBy *string
 }
 
 // ApplyChanges used to convert map[string]interface{} to EntityChanges struct

@@ -1,10 +1,11 @@
 type Delivery @entity {
-  sender: Person! @relationship(inverse: "deliveriesSent")
-  receiver: Person! @relationship(inverse: "deliveriesReceived")
-  deliver: Deliver! @relationship(inverse: "deliveries")
+  sender: Person! @relationship(inverse: "deliveriesSent", preload: true)
+  receiver: Person! @relationship(inverse: "deliveriesReceived", preload: true)
+  deliver: Person! @relationship(inverse: "deliveries", preload: true)
   vehicleType: VehicleType
   paymentForm: PaymentForm
-  mode: String @column
+  deliveryType: DeliveryType
+  deliveryChannel: DeliveryChannel
   collectDateTime: Time @column
   collectAddress: String @column
   collectPoint: String @column
@@ -15,10 +16,40 @@ type Delivery @entity {
   paymentOnDeliver: Boolean @column
   expectedDistance: String @column
   expectedCost: Float @column
-  status: String @column
   completed: Boolean @column
   smsToken: String @column
+  status: String @column(index: "statusidx")
   instructions: String @column(type: "text")
+}
+
+type Person @entity {
+  deliver: Boolean @column(default: false)
+  email: String! @column(unique: true)
+  phone: String @column
+  documentNo: String @column
+  avatarURL: String @column(type: "text")
+  displayName: String @column
+  firstName: String @column
+  lastName: String @column
+  nickName: String @column
+  description: String @column(type: "text")
+  location: String @column
+  deliveries: [Delivery!]! @relationship(inverse: "deliver")
+  deliveriesSent: [Delivery!]! @relationship(inverse: "sender")
+  deliveriesReceived: [Delivery!]! @relationship(inverse: "receiver")
+  userId: String @column #Comes from auth-api
+  paymentStatus: PaymentStatus! @relationship(inverse: "person")
+  paymentHistory: PaymentHistory! @relationship(inverse: "person")
+}
+
+type DeliveryType @entity {
+  name: String @column
+  description: String @column(type: "text")
+}
+
+type DeliveryChannel @entity {
+  name: String @column
+  description: String @column(type: "text")
 }
 
 type VehicleType @entity {
@@ -31,26 +62,15 @@ type PaymentForm @entity {
   description: String @column(type: "text")
 }
 
-type Deliver @entity {
-  email: String! @column(unique: true)
-  phone: String @column
-  avatarURL: String @column(type: "text")
-  displayName: String @column
-  firstName: String @column
-  lastName: String @column
-  nickName: String @column
-  description: String @column(type: "text")
-  location: String @column
-  deliveries: [Delivery!]! @relationship(inverse: "deliver")
-  userId: String @column #Comes from auth-api
+type PaymentStatus @entity {
+  person: Person! @relationship(inverse: "paymentStatus", unique: true)
+  credit: Float! @column(default: 0.0) # Credit for usage on service
+  balance: Float! @column(default: 0.0) # Money earned in the platform
 }
 
-type Person @entity {
-  name: String @column
-  phone: String @column
-  email: String! @column(unique: true)
-  documentNo: String @column
-  deliveriesSent: Delivery @relationship(inverse: "sender")
-  deliveriesReceived: Delivery @relationship(inverse: "receiver")
-  userId: String @column #Comes from auth-api
+type PaymentHistory @entity {
+  person: Person! @relationship(inverse: "paymentHistory")
+  paymentForm: PaymentForm
+  concept: String @column(type: "text")
+  amount: Float! @column(default: 0.0)
 }

@@ -39,6 +39,61 @@ models:
   DeliveryUpdateInput:
     model: "map[string]interface{}"
   
+  Person:
+    model: github.com/loopcontext/deliver-api-go/gen.Person
+    fields:
+      deliveries:
+        resolver: true
+      deliveriesSent:
+        resolver: true
+      deliveriesReceived:
+        resolver: true
+      paymentStatus:
+        resolver: true
+      paymentHistory:
+        resolver: true
+  PersonResultType:
+    model: github.com/loopcontext/deliver-api-go/gen.PersonResultType
+    fields:
+      count:
+        resolver: true
+      items:
+        resolver: true
+  PersonCreateInput:
+    model: "map[string]interface{}"
+  PersonUpdateInput:
+    model: "map[string]interface{}"
+  
+  DeliveryType:
+    model: github.com/loopcontext/deliver-api-go/gen.DeliveryType
+    fields:
+  DeliveryTypeResultType:
+    model: github.com/loopcontext/deliver-api-go/gen.DeliveryTypeResultType
+    fields:
+      count:
+        resolver: true
+      items:
+        resolver: true
+  DeliveryTypeCreateInput:
+    model: "map[string]interface{}"
+  DeliveryTypeUpdateInput:
+    model: "map[string]interface{}"
+  
+  DeliveryChannel:
+    model: github.com/loopcontext/deliver-api-go/gen.DeliveryChannel
+    fields:
+  DeliveryChannelResultType:
+    model: github.com/loopcontext/deliver-api-go/gen.DeliveryChannelResultType
+    fields:
+      count:
+        resolver: true
+      items:
+        resolver: true
+  DeliveryChannelCreateInput:
+    model: "map[string]interface{}"
+  DeliveryChannelUpdateInput:
+    model: "map[string]interface{}"
+  
   VehicleType:
     model: github.com/loopcontext/deliver-api-go/gen.VehicleType
     fields:
@@ -69,40 +124,38 @@ models:
   PaymentFormUpdateInput:
     model: "map[string]interface{}"
   
-  Deliver:
-    model: github.com/loopcontext/deliver-api-go/gen.Deliver
+  PaymentStatus:
+    model: github.com/loopcontext/deliver-api-go/gen.PaymentStatus
     fields:
-      deliveries:
+      person:
         resolver: true
-  DeliverResultType:
-    model: github.com/loopcontext/deliver-api-go/gen.DeliverResultType
+  PaymentStatusResultType:
+    model: github.com/loopcontext/deliver-api-go/gen.PaymentStatusResultType
     fields:
       count:
         resolver: true
       items:
         resolver: true
-  DeliverCreateInput:
+  PaymentStatusCreateInput:
     model: "map[string]interface{}"
-  DeliverUpdateInput:
+  PaymentStatusUpdateInput:
     model: "map[string]interface{}"
   
-  Person:
-    model: github.com/loopcontext/deliver-api-go/gen.Person
+  PaymentHistory:
+    model: github.com/loopcontext/deliver-api-go/gen.PaymentHistory
     fields:
-      deliveriesSent:
+      person:
         resolver: true
-      deliveriesReceived:
-        resolver: true
-  PersonResultType:
-    model: github.com/loopcontext/deliver-api-go/gen.PersonResultType
+  PaymentHistoryResultType:
+    model: github.com/loopcontext/deliver-api-go/gen.PaymentHistoryResultType
     fields:
       count:
         resolver: true
       items:
         resolver: true
-  PersonCreateInput:
+  PaymentHistoryCreateInput:
     model: "map[string]interface{}"
-  PersonUpdateInput:
+  PaymentHistoryUpdateInput:
     model: "map[string]interface{}"
   
 

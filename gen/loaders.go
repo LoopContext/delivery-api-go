@@ -53,6 +53,135 @@ func GetLoaders(db *DB) map[string]*dataloader.Loader {
 
 	loaders["Delivery"] = dataloader.NewBatchedLoader(deliveriesBatchFn, dataloader.WithClearCacheOnBatch())
 
+	// peopleBatchFn batch func
+	peopleBatchFn := func(ctx context.Context, keys dataloader.Keys) []*dataloader.Result {
+		var results []*dataloader.Result
+
+		ids := make([]string, len(keys))
+		for i, key := range keys {
+			ids[i] = key.String()
+		}
+
+		items := &[]Person{}
+		res := db.Query().Find(items, "id IN (?)", ids)
+		if res.Error != nil && !res.RecordNotFound() {
+			return []*dataloader.Result{
+				&dataloader.Result{Error: res.Error},
+			}
+		}
+
+		itemMap := make(map[string]Person, len(keys))
+		for _, item := range *items {
+			itemMap[item.ID] = item
+		}
+
+		for _, key := range keys {
+			id := key.String()
+			item, ok := itemMap[id]
+			if !ok {
+				results = append(results, &dataloader.Result{
+					Data:  nil,
+					Error: nil,
+					// Error: fmt.Errorf("Person with id '%s' not found", id),
+				})
+			} else {
+				results = append(results, &dataloader.Result{
+					Data:  &item,
+					Error: nil,
+				})
+			}
+		}
+		return results
+	}
+
+	loaders["Person"] = dataloader.NewBatchedLoader(peopleBatchFn, dataloader.WithClearCacheOnBatch())
+
+	// deliveryTypesBatchFn batch func
+	deliveryTypesBatchFn := func(ctx context.Context, keys dataloader.Keys) []*dataloader.Result {
+		var results []*dataloader.Result
+
+		ids := make([]string, len(keys))
+		for i, key := range keys {
+			ids[i] = key.String()
+		}
+
+		items := &[]DeliveryType{}
+		res := db.Query().Find(items, "id IN (?)", ids)
+		if res.Error != nil && !res.RecordNotFound() {
+			return []*dataloader.Result{
+				&dataloader.Result{Error: res.Error},
+			}
+		}
+
+		itemMap := make(map[string]DeliveryType, len(keys))
+		for _, item := range *items {
+			itemMap[item.ID] = item
+		}
+
+		for _, key := range keys {
+			id := key.String()
+			item, ok := itemMap[id]
+			if !ok {
+				results = append(results, &dataloader.Result{
+					Data:  nil,
+					Error: nil,
+					// Error: fmt.Errorf("DeliveryType with id '%s' not found", id),
+				})
+			} else {
+				results = append(results, &dataloader.Result{
+					Data:  &item,
+					Error: nil,
+				})
+			}
+		}
+		return results
+	}
+
+	loaders["DeliveryType"] = dataloader.NewBatchedLoader(deliveryTypesBatchFn, dataloader.WithClearCacheOnBatch())
+
+	// deliveryChannelsBatchFn batch func
+	deliveryChannelsBatchFn := func(ctx context.Context, keys dataloader.Keys) []*dataloader.Result {
+		var results []*dataloader.Result
+
+		ids := make([]string, len(keys))
+		for i, key := range keys {
+			ids[i] = key.String()
+		}
+
+		items := &[]DeliveryChannel{}
+		res := db.Query().Find(items, "id IN (?)", ids)
+		if res.Error != nil && !res.RecordNotFound() {
+			return []*dataloader.Result{
+				&dataloader.Result{Error: res.Error},
+			}
+		}
+
+		itemMap := make(map[string]DeliveryChannel, len(keys))
+		for _, item := range *items {
+			itemMap[item.ID] = item
+		}
+
+		for _, key := range keys {
+			id := key.String()
+			item, ok := itemMap[id]
+			if !ok {
+				results = append(results, &dataloader.Result{
+					Data:  nil,
+					Error: nil,
+					// Error: fmt.Errorf("DeliveryChannel with id '%s' not found", id),
+				})
+			} else {
+				results = append(results, &dataloader.Result{
+					Data:  &item,
+					Error: nil,
+				})
+			}
+		}
+		return results
+	}
+
+	loaders["DeliveryChannel"] = dataloader.NewBatchedLoader(deliveryChannelsBatchFn, dataloader.WithClearCacheOnBatch())
+
 	// vehicleTypesBatchFn batch func
 	vehicleTypesBatchFn := func(ctx context.Context, keys dataloader.Keys) []*dataloader.Result {
 		var results []*dataloader.Result
@@ -139,8 +268,8 @@ func GetLoaders(db *DB) map[string]*dataloader.Loader {
 
 	loaders["PaymentForm"] = dataloader.NewBatchedLoader(paymentFormsBatchFn, dataloader.WithClearCacheOnBatch())
 
-	// deliversBatchFn batch func
-	deliversBatchFn := func(ctx context.Context, keys dataloader.Keys) []*dataloader.Result {
+	// paymentStatusesBatchFn batch func
+	paymentStatusesBatchFn := func(ctx context.Context, keys dataloader.Keys) []*dataloader.Result {
 		var results []*dataloader.Result
 
 		ids := make([]string, len(keys))
@@ -148,7 +277,7 @@ func GetLoaders(db *DB) map[string]*dataloader.Loader {
 			ids[i] = key.String()
 		}
 
-		items := &[]Deliver{}
+		items := &[]PaymentStatus{}
 		res := db.Query().Find(items, "id IN (?)", ids)
 		if res.Error != nil && !res.RecordNotFound() {
 			return []*dataloader.Result{
@@ -156,7 +285,7 @@ func GetLoaders(db *DB) map[string]*dataloader.Loader {
 			}
 		}
 
-		itemMap := make(map[string]Deliver, len(keys))
+		itemMap := make(map[string]PaymentStatus, len(keys))
 		for _, item := range *items {
 			itemMap[item.ID] = item
 		}
@@ -168,7 +297,7 @@ func GetLoaders(db *DB) map[string]*dataloader.Loader {
 				results = append(results, &dataloader.Result{
 					Data:  nil,
 					Error: nil,
-					// Error: fmt.Errorf("Deliver with id '%s' not found", id),
+					// Error: fmt.Errorf("PaymentStatus with id '%s' not found", id),
 				})
 			} else {
 				results = append(results, &dataloader.Result{
@@ -180,10 +309,10 @@ func GetLoaders(db *DB) map[string]*dataloader.Loader {
 		return results
 	}
 
-	loaders["Deliver"] = dataloader.NewBatchedLoader(deliversBatchFn, dataloader.WithClearCacheOnBatch())
+	loaders["PaymentStatus"] = dataloader.NewBatchedLoader(paymentStatusesBatchFn, dataloader.WithClearCacheOnBatch())
 
-	// peopleBatchFn batch func
-	peopleBatchFn := func(ctx context.Context, keys dataloader.Keys) []*dataloader.Result {
+	// paymentHistoriesBatchFn batch func
+	paymentHistoriesBatchFn := func(ctx context.Context, keys dataloader.Keys) []*dataloader.Result {
 		var results []*dataloader.Result
 
 		ids := make([]string, len(keys))
@@ -191,7 +320,7 @@ func GetLoaders(db *DB) map[string]*dataloader.Loader {
 			ids[i] = key.String()
 		}
 
-		items := &[]Person{}
+		items := &[]PaymentHistory{}
 		res := db.Query().Find(items, "id IN (?)", ids)
 		if res.Error != nil && !res.RecordNotFound() {
 			return []*dataloader.Result{
@@ -199,7 +328,7 @@ func GetLoaders(db *DB) map[string]*dataloader.Loader {
 			}
 		}
 
-		itemMap := make(map[string]Person, len(keys))
+		itemMap := make(map[string]PaymentHistory, len(keys))
 		for _, item := range *items {
 			itemMap[item.ID] = item
 		}
@@ -211,7 +340,7 @@ func GetLoaders(db *DB) map[string]*dataloader.Loader {
 				results = append(results, &dataloader.Result{
 					Data:  nil,
 					Error: nil,
-					// Error: fmt.Errorf("Person with id '%s' not found", id),
+					// Error: fmt.Errorf("PaymentHistory with id '%s' not found", id),
 				})
 			} else {
 				results = append(results, &dataloader.Result{
@@ -223,7 +352,7 @@ func GetLoaders(db *DB) map[string]*dataloader.Loader {
 		return results
 	}
 
-	loaders["Person"] = dataloader.NewBatchedLoader(peopleBatchFn, dataloader.WithClearCacheOnBatch())
+	loaders["PaymentHistory"] = dataloader.NewBatchedLoader(paymentHistoriesBatchFn, dataloader.WithClearCacheOnBatch())
 
 	return loaders
 }

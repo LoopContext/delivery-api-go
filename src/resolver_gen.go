@@ -85,6 +85,62 @@ func (r *Resolver) Delivery() gen.DeliveryResolver {
 	}
 }
 
+// PersonResultTypeResolver struct
+type PersonResultTypeResolver struct {
+	*gen.GeneratedPersonResultTypeResolver
+}
+
+// PersonResultType ...
+func (r *Resolver) PersonResultType() gen.PersonResultTypeResolver {
+	return &PersonResultTypeResolver{
+		GeneratedPersonResultTypeResolver: &gen.GeneratedPersonResultTypeResolver{
+			GeneratedResolver: r.GeneratedResolver,
+		},
+	}
+}
+
+// PersonResolver struct
+type PersonResolver struct {
+	*gen.GeneratedPersonResolver
+}
+
+// Person ...
+func (r *Resolver) Person() gen.PersonResolver {
+	return &PersonResolver{
+		GeneratedPersonResolver: &gen.GeneratedPersonResolver{
+			GeneratedResolver: r.GeneratedResolver,
+		},
+	}
+}
+
+// DeliveryTypeResultTypeResolver struct
+type DeliveryTypeResultTypeResolver struct {
+	*gen.GeneratedDeliveryTypeResultTypeResolver
+}
+
+// DeliveryTypeResultType ...
+func (r *Resolver) DeliveryTypeResultType() gen.DeliveryTypeResultTypeResolver {
+	return &DeliveryTypeResultTypeResolver{
+		GeneratedDeliveryTypeResultTypeResolver: &gen.GeneratedDeliveryTypeResultTypeResolver{
+			GeneratedResolver: r.GeneratedResolver,
+		},
+	}
+}
+
+// DeliveryChannelResultTypeResolver struct
+type DeliveryChannelResultTypeResolver struct {
+	*gen.GeneratedDeliveryChannelResultTypeResolver
+}
+
+// DeliveryChannelResultType ...
+func (r *Resolver) DeliveryChannelResultType() gen.DeliveryChannelResultTypeResolver {
+	return &DeliveryChannelResultTypeResolver{
+		GeneratedDeliveryChannelResultTypeResolver: &gen.GeneratedDeliveryChannelResultTypeResolver{
+			GeneratedResolver: r.GeneratedResolver,
+		},
+	}
+}
+
 // VehicleTypeResultTypeResolver struct
 type VehicleTypeResultTypeResolver struct {
 	*gen.GeneratedVehicleTypeResultTypeResolver
@@ -113,57 +169,57 @@ func (r *Resolver) PaymentFormResultType() gen.PaymentFormResultTypeResolver {
 	}
 }
 
-// DeliverResultTypeResolver struct
-type DeliverResultTypeResolver struct {
-	*gen.GeneratedDeliverResultTypeResolver
+// PaymentStatusResultTypeResolver struct
+type PaymentStatusResultTypeResolver struct {
+	*gen.GeneratedPaymentStatusResultTypeResolver
 }
 
-// DeliverResultType ...
-func (r *Resolver) DeliverResultType() gen.DeliverResultTypeResolver {
-	return &DeliverResultTypeResolver{
-		GeneratedDeliverResultTypeResolver: &gen.GeneratedDeliverResultTypeResolver{
+// PaymentStatusResultType ...
+func (r *Resolver) PaymentStatusResultType() gen.PaymentStatusResultTypeResolver {
+	return &PaymentStatusResultTypeResolver{
+		GeneratedPaymentStatusResultTypeResolver: &gen.GeneratedPaymentStatusResultTypeResolver{
 			GeneratedResolver: r.GeneratedResolver,
 		},
 	}
 }
 
-// DeliverResolver struct
-type DeliverResolver struct {
-	*gen.GeneratedDeliverResolver
+// PaymentStatusResolver struct
+type PaymentStatusResolver struct {
+	*gen.GeneratedPaymentStatusResolver
 }
 
-// Deliver ...
-func (r *Resolver) Deliver() gen.DeliverResolver {
-	return &DeliverResolver{
-		GeneratedDeliverResolver: &gen.GeneratedDeliverResolver{
+// PaymentStatus ...
+func (r *Resolver) PaymentStatus() gen.PaymentStatusResolver {
+	return &PaymentStatusResolver{
+		GeneratedPaymentStatusResolver: &gen.GeneratedPaymentStatusResolver{
 			GeneratedResolver: r.GeneratedResolver,
 		},
 	}
 }
 
-// PersonResultTypeResolver struct
-type PersonResultTypeResolver struct {
-	*gen.GeneratedPersonResultTypeResolver
+// PaymentHistoryResultTypeResolver struct
+type PaymentHistoryResultTypeResolver struct {
+	*gen.GeneratedPaymentHistoryResultTypeResolver
 }
 
-// PersonResultType ...
-func (r *Resolver) PersonResultType() gen.PersonResultTypeResolver {
-	return &PersonResultTypeResolver{
-		GeneratedPersonResultTypeResolver: &gen.GeneratedPersonResultTypeResolver{
+// PaymentHistoryResultType ...
+func (r *Resolver) PaymentHistoryResultType() gen.PaymentHistoryResultTypeResolver {
+	return &PaymentHistoryResultTypeResolver{
+		GeneratedPaymentHistoryResultTypeResolver: &gen.GeneratedPaymentHistoryResultTypeResolver{
 			GeneratedResolver: r.GeneratedResolver,
 		},
 	}
 }
 
-// PersonResolver struct
-type PersonResolver struct {
-	*gen.GeneratedPersonResolver
+// PaymentHistoryResolver struct
+type PaymentHistoryResolver struct {
+	*gen.GeneratedPaymentHistoryResolver
 }
 
-// Person ...
-func (r *Resolver) Person() gen.PersonResolver {
-	return &PersonResolver{
-		GeneratedPersonResolver: &gen.GeneratedPersonResolver{
+// PaymentHistory ...
+func (r *Resolver) PaymentHistory() gen.PaymentHistoryResolver {
+	return &PaymentHistoryResolver{
+		GeneratedPaymentHistoryResolver: &gen.GeneratedPaymentHistoryResolver{
 			GeneratedResolver: r.GeneratedResolver,
 		},
 	}

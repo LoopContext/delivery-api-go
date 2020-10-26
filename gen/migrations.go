@@ -21,10 +21,13 @@ func Migrate(db *gorm.DB, options *gormigrate.Options, migrations []*gormigrate.
 func AutoMigrate(db *gorm.DB) (err error) {
 	_db := db.AutoMigrate(
 		Delivery{},
+		Person{},
+		DeliveryType{},
+		DeliveryChannel{},
 		VehicleType{},
 		PaymentForm{},
-		Deliver{},
-		Person{},
+		PaymentStatus{},
+		PaymentHistory{},
 	)
 	if _db.Error != nil {
 		log.Err(_db.Error).Send()
@@ -50,29 +53,47 @@ func AutoMigrate(db *gorm.DB) (err error) {
 			log.Err(err).Send()
 		}
 
-		err = _db.Model(Delivery{}).RemoveForeignKey("deliverId", TableName("delivers")+"(id)").Error
+		err = _db.Model(Delivery{}).RemoveForeignKey("deliverId", TableName("people")+"(id)").Error
 		if err != nil {
 			log.Err(err).Send()
 		}
-		err = _db.Model(Delivery{}).AddForeignKey("deliverId", TableName("delivers")+"(id)", "SET NULL", "SET NULL").Error
-		if err != nil {
-			log.Err(err).Send()
-		}
-
-		err = _db.Model(Person{}).RemoveForeignKey("deliveriesSentId", TableName("deliveries")+"(id)").Error
-		if err != nil {
-			log.Err(err).Send()
-		}
-		err = _db.Model(Person{}).AddForeignKey("deliveriesSentId", TableName("deliveries")+"(id)", "SET NULL", "SET NULL").Error
+		err = _db.Model(Delivery{}).AddForeignKey("deliverId", TableName("people")+"(id)", "SET NULL", "SET NULL").Error
 		if err != nil {
 			log.Err(err).Send()
 		}
 
-		err = _db.Model(Person{}).RemoveForeignKey("deliveriesReceivedId", TableName("deliveries")+"(id)").Error
+		err = _db.Model(Person{}).RemoveForeignKey("paymentStatusId", TableName("payment_statuses")+"(id)").Error
 		if err != nil {
 			log.Err(err).Send()
 		}
-		err = _db.Model(Person{}).AddForeignKey("deliveriesReceivedId", TableName("deliveries")+"(id)", "SET NULL", "SET NULL").Error
+		err = _db.Model(Person{}).AddForeignKey("paymentStatusId", TableName("payment_statuses")+"(id)", "SET NULL", "SET NULL").Error
+		if err != nil {
+			log.Err(err).Send()
+		}
+
+		err = _db.Model(Person{}).RemoveForeignKey("paymentHistoryId", TableName("payment_histories")+"(id)").Error
+		if err != nil {
+			log.Err(err).Send()
+		}
+		err = _db.Model(Person{}).AddForeignKey("paymentHistoryId", TableName("payment_histories")+"(id)", "SET NULL", "SET NULL").Error
+		if err != nil {
+			log.Err(err).Send()
+		}
+
+		err = _db.Model(PaymentStatus{}).RemoveForeignKey("personId", TableName("people")+"(id)").Error
+		if err != nil {
+			log.Err(err).Send()
+		}
+		err = _db.Model(PaymentStatus{}).AddForeignKey("personId", TableName("people")+"(id)", "SET NULL", "SET NULL").Error
+		if err != nil {
+			log.Err(err).Send()
+		}
+
+		err = _db.Model(PaymentHistory{}).RemoveForeignKey("personId", TableName("people")+"(id)").Error
+		if err != nil {
+			log.Err(err).Send()
+		}
+		err = _db.Model(PaymentHistory{}).AddForeignKey("personId", TableName("people")+"(id)", "SET NULL", "SET NULL").Error
 		if err != nil {
 			log.Err(err).Send()
 		}
