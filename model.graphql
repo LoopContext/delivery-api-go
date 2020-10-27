@@ -3,7 +3,7 @@ type Delivery @entity {
   receiver: Person! @relationship(inverse: "deliveriesReceived", preload: true)
   deliver: Person! @relationship(inverse: "deliveries", preload: true)
   vehicleType: VehicleType
-  paymentForm: PaymentForm
+  paymentChannel: PaymentChannel
   deliveryType: DeliveryType
   deliveryChannel: DeliveryChannel
   collectDateTime: Time @column
@@ -57,20 +57,27 @@ type VehicleType @entity {
   description: String @column(type: "text")
 }
 
-type PaymentForm @entity {
+enum PaymentType {
+  Credit
+  Balance
+  Loan
+}
+
+type PaymentChannel @entity {
   name: String @column
   description: String @column(type: "text")
 }
 
 type PaymentStatus @entity {
   person: Person! @relationship(inverse: "paymentStatus", unique: true)
-  credit: Float! @column(default: 0.0) # Credit for usage on service
-  balance: Float! @column(default: 0.0) # Money earned in the platform
+  type: PaymentType! @column # Credit, Balance or Loan
+  amount: Float! @column(default: 0.0)
 }
 
 type PaymentHistory @entity {
   person: Person! @relationship(inverse: "paymentHistory")
-  paymentForm: PaymentForm
-  concept: String @column(type: "text")
+  paymentChannel: PaymentChannel
+  type: PaymentType! @column # Credit, Balance or Loan
   amount: Float! @column(default: 0.0)
+  concept: String @column(type: "text")
 }

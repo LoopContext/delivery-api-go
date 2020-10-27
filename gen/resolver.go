@@ -20,7 +20,7 @@ type ResolutionHandlers struct {
 
 	DeliveryVehicleType func(ctx context.Context, r *GeneratedResolver, obj *Delivery) (res *VehicleType, err error)
 
-	DeliveryPaymentForm func(ctx context.Context, r *GeneratedResolver, obj *Delivery) (res *PaymentForm, err error)
+	DeliveryPaymentChannel func(ctx context.Context, r *GeneratedResolver, obj *Delivery) (res *PaymentChannel, err error)
 
 	DeliveryDeliveryType func(ctx context.Context, r *GeneratedResolver, obj *Delivery) (res *DeliveryType, err error)
 
@@ -70,12 +70,12 @@ type ResolutionHandlers struct {
 	QueryVehicleType      func(ctx context.Context, r *GeneratedResolver, opts QueryVehicleTypeHandlerOptions) (*VehicleType, error)
 	QueryVehicleTypes     func(ctx context.Context, r *GeneratedResolver, opts QueryVehicleTypesHandlerOptions) (*VehicleTypeResultType, error)
 
-	CreatePaymentForm     func(ctx context.Context, r *GeneratedResolver, input map[string]interface{}) (item *PaymentForm, err error)
-	UpdatePaymentForm     func(ctx context.Context, r *GeneratedResolver, id string, input map[string]interface{}) (item *PaymentForm, err error)
-	DeletePaymentForm     func(ctx context.Context, r *GeneratedResolver, id string) (item *PaymentForm, err error)
-	DeleteAllPaymentForms func(ctx context.Context, r *GeneratedResolver) (bool, error)
-	QueryPaymentForm      func(ctx context.Context, r *GeneratedResolver, opts QueryPaymentFormHandlerOptions) (*PaymentForm, error)
-	QueryPaymentForms     func(ctx context.Context, r *GeneratedResolver, opts QueryPaymentFormsHandlerOptions) (*PaymentFormResultType, error)
+	CreatePaymentChannel     func(ctx context.Context, r *GeneratedResolver, input map[string]interface{}) (item *PaymentChannel, err error)
+	UpdatePaymentChannel     func(ctx context.Context, r *GeneratedResolver, id string, input map[string]interface{}) (item *PaymentChannel, err error)
+	DeletePaymentChannel     func(ctx context.Context, r *GeneratedResolver, id string) (item *PaymentChannel, err error)
+	DeleteAllPaymentChannels func(ctx context.Context, r *GeneratedResolver) (bool, error)
+	QueryPaymentChannel      func(ctx context.Context, r *GeneratedResolver, opts QueryPaymentChannelHandlerOptions) (*PaymentChannel, error)
+	QueryPaymentChannels     func(ctx context.Context, r *GeneratedResolver, opts QueryPaymentChannelsHandlerOptions) (*PaymentChannelResultType, error)
 
 	CreatePaymentStatus      func(ctx context.Context, r *GeneratedResolver, input map[string]interface{}) (item *PaymentStatus, err error)
 	UpdatePaymentStatus      func(ctx context.Context, r *GeneratedResolver, id string, input map[string]interface{}) (item *PaymentStatus, err error)
@@ -93,7 +93,7 @@ type ResolutionHandlers struct {
 	QueryPaymentHistory       func(ctx context.Context, r *GeneratedResolver, opts QueryPaymentHistoryHandlerOptions) (*PaymentHistory, error)
 	QueryPaymentHistories     func(ctx context.Context, r *GeneratedResolver, opts QueryPaymentHistoriesHandlerOptions) (*PaymentHistoryResultType, error)
 
-	PaymentHistoryPaymentForm func(ctx context.Context, r *GeneratedResolver, obj *PaymentHistory) (res *PaymentForm, err error)
+	PaymentHistoryPaymentChannel func(ctx context.Context, r *GeneratedResolver, obj *PaymentHistory) (res *PaymentChannel, err error)
 
 	PaymentHistoryPerson func(ctx context.Context, r *GeneratedResolver, obj *PaymentHistory) (res *Person, err error)
 }
@@ -112,7 +112,7 @@ func DefaultResolutionHandlers() ResolutionHandlers {
 
 		DeliveryVehicleType: DeliveryVehicleTypeHandler,
 
-		DeliveryPaymentForm: DeliveryPaymentFormHandler,
+		DeliveryPaymentChannel: DeliveryPaymentChannelHandler,
 
 		DeliveryDeliveryType: DeliveryDeliveryTypeHandler,
 
@@ -162,12 +162,12 @@ func DefaultResolutionHandlers() ResolutionHandlers {
 		QueryVehicleType:      QueryVehicleTypeHandler,
 		QueryVehicleTypes:     QueryVehicleTypesHandler,
 
-		CreatePaymentForm:     CreatePaymentFormHandler,
-		UpdatePaymentForm:     UpdatePaymentFormHandler,
-		DeletePaymentForm:     DeletePaymentFormHandler,
-		DeleteAllPaymentForms: DeleteAllPaymentFormsHandler,
-		QueryPaymentForm:      QueryPaymentFormHandler,
-		QueryPaymentForms:     QueryPaymentFormsHandler,
+		CreatePaymentChannel:     CreatePaymentChannelHandler,
+		UpdatePaymentChannel:     UpdatePaymentChannelHandler,
+		DeletePaymentChannel:     DeletePaymentChannelHandler,
+		DeleteAllPaymentChannels: DeleteAllPaymentChannelsHandler,
+		QueryPaymentChannel:      QueryPaymentChannelHandler,
+		QueryPaymentChannels:     QueryPaymentChannelsHandler,
 
 		CreatePaymentStatus:      CreatePaymentStatusHandler,
 		UpdatePaymentStatus:      UpdatePaymentStatusHandler,
@@ -185,7 +185,7 @@ func DefaultResolutionHandlers() ResolutionHandlers {
 		QueryPaymentHistory:       QueryPaymentHistoryHandler,
 		QueryPaymentHistories:     QueryPaymentHistoriesHandler,
 
-		PaymentHistoryPaymentForm: PaymentHistoryPaymentFormHandler,
+		PaymentHistoryPaymentChannel: PaymentHistoryPaymentChannelHandler,
 
 		PaymentHistoryPerson: PaymentHistoryPersonHandler,
 	}

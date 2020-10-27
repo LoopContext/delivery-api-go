@@ -155,15 +155,15 @@ func (r *Resolver) VehicleTypeResultType() gen.VehicleTypeResultTypeResolver {
 	}
 }
 
-// PaymentFormResultTypeResolver struct
-type PaymentFormResultTypeResolver struct {
-	*gen.GeneratedPaymentFormResultTypeResolver
+// PaymentChannelResultTypeResolver struct
+type PaymentChannelResultTypeResolver struct {
+	*gen.GeneratedPaymentChannelResultTypeResolver
 }
 
-// PaymentFormResultType ...
-func (r *Resolver) PaymentFormResultType() gen.PaymentFormResultTypeResolver {
-	return &PaymentFormResultTypeResolver{
-		GeneratedPaymentFormResultTypeResolver: &gen.GeneratedPaymentFormResultTypeResolver{
+// PaymentChannelResultType ...
+func (r *Resolver) PaymentChannelResultType() gen.PaymentChannelResultTypeResolver {
+	return &PaymentChannelResultTypeResolver{
+		GeneratedPaymentChannelResultTypeResolver: &gen.GeneratedPaymentChannelResultTypeResolver{
 			GeneratedResolver: r.GeneratedResolver,
 		},
 	}

@@ -1457,10 +1457,10 @@ func DeleteAllVehicleTypesHandler(ctx context.Context, r *GeneratedResolver) (bo
 	return true, err
 }
 
-// CreatePaymentForm method
-func (r *GeneratedMutationResolver) CreatePaymentForm(ctx context.Context, input map[string]interface{}) (item *PaymentForm, err error) {
+// CreatePaymentChannel method
+func (r *GeneratedMutationResolver) CreatePaymentChannel(ctx context.Context, input map[string]interface{}) (item *PaymentChannel, err error) {
 	ctx = EnrichContextWithMutations(ctx, r.GeneratedResolver)
-	item, err = r.Handlers.CreatePaymentForm(ctx, r.GeneratedResolver, input)
+	item, err = r.Handlers.CreatePaymentChannel(ctx, r.GeneratedResolver, input)
 	if err != nil {
 		return
 	}
@@ -1468,22 +1468,22 @@ func (r *GeneratedMutationResolver) CreatePaymentForm(ctx context.Context, input
 	return
 }
 
-// CreatePaymentFormHandler handler
-func CreatePaymentFormHandler(ctx context.Context, r *GeneratedResolver, input map[string]interface{}) (item *PaymentForm, err error) {
+// CreatePaymentChannelHandler handler
+func CreatePaymentChannelHandler(ctx context.Context, r *GeneratedResolver, input map[string]interface{}) (item *PaymentChannel, err error) {
 	principalID := GetPrincipalIDFromContext(ctx)
 	now := time.Now()
-	item = &PaymentForm{ID: uuid.Must(uuid.NewV4()).String(), CreatedAt: now, CreatedBy: principalID}
+	item = &PaymentChannel{ID: uuid.Must(uuid.NewV4()).String(), CreatedAt: now, CreatedBy: principalID}
 	tx := r.GetDB(ctx)
 
 	event := events.NewEvent(events.EventMetadata{
 		Type:        events.EventTypeCreated,
-		Entity:      "PaymentForm",
+		Entity:      "PaymentChannel",
 		EntityID:    item.ID,
 		Date:        now,
 		PrincipalID: principalID,
 	})
 
-	var changes PaymentFormChanges
+	var changes PaymentChannelChanges
 	err = ApplyChanges(input, &changes)
 	if err != nil {
 		tx.Rollback()
@@ -1519,10 +1519,10 @@ func CreatePaymentFormHandler(ctx context.Context, r *GeneratedResolver, input m
 	return
 }
 
-// UpdatePaymentForm method
-func (r *GeneratedMutationResolver) UpdatePaymentForm(ctx context.Context, id string, input map[string]interface{}) (item *PaymentForm, err error) {
+// UpdatePaymentChannel method
+func (r *GeneratedMutationResolver) UpdatePaymentChannel(ctx context.Context, id string, input map[string]interface{}) (item *PaymentChannel, err error) {
 	ctx = EnrichContextWithMutations(ctx, r.GeneratedResolver)
-	item, err = r.Handlers.UpdatePaymentForm(ctx, r.GeneratedResolver, id, input)
+	item, err = r.Handlers.UpdatePaymentChannel(ctx, r.GeneratedResolver, id, input)
 	if err != nil {
 		errRMC := RollbackMutationContext(ctx, r.GeneratedResolver)
 		if errRMC != nil {
@@ -1534,22 +1534,22 @@ func (r *GeneratedMutationResolver) UpdatePaymentForm(ctx context.Context, id st
 	return
 }
 
-// UpdatePaymentFormHandler handler
-func UpdatePaymentFormHandler(ctx context.Context, r *GeneratedResolver, id string, input map[string]interface{}) (item *PaymentForm, err error) {
+// UpdatePaymentChannelHandler handler
+func UpdatePaymentChannelHandler(ctx context.Context, r *GeneratedResolver, id string, input map[string]interface{}) (item *PaymentChannel, err error) {
 	principalID := GetPrincipalIDFromContext(ctx)
-	item = &PaymentForm{}
+	item = &PaymentChannel{}
 	now := time.Now()
 	tx := r.GetDB(ctx)
 
 	event := events.NewEvent(events.EventMetadata{
 		Type:        events.EventTypeUpdated,
-		Entity:      "PaymentForm",
+		Entity:      "PaymentChannel",
 		EntityID:    id,
 		Date:        now,
 		PrincipalID: principalID,
 	})
 
-	var changes PaymentFormChanges
+	var changes PaymentChannelChanges
 	err = ApplyChanges(input, &changes)
 	if err != nil {
 		tx.Rollback()
@@ -1589,10 +1589,10 @@ func UpdatePaymentFormHandler(ctx context.Context, r *GeneratedResolver, id stri
 	return
 }
 
-// DeletePaymentForm method
-func (r *GeneratedMutationResolver) DeletePaymentForm(ctx context.Context, id string) (item *PaymentForm, err error) {
+// DeletePaymentChannel method
+func (r *GeneratedMutationResolver) DeletePaymentChannel(ctx context.Context, id string) (item *PaymentChannel, err error) {
 	ctx = EnrichContextWithMutations(ctx, r.GeneratedResolver)
-	item, err = r.Handlers.DeletePaymentForm(ctx, r.GeneratedResolver, id)
+	item, err = r.Handlers.DeletePaymentChannel(ctx, r.GeneratedResolver, id)
 	if err != nil {
 		errRMC := RollbackMutationContext(ctx, r.GeneratedResolver)
 		if errRMC != nil {
@@ -1604,10 +1604,10 @@ func (r *GeneratedMutationResolver) DeletePaymentForm(ctx context.Context, id st
 	return
 }
 
-// DeletePaymentFormHandler handler
-func DeletePaymentFormHandler(ctx context.Context, r *GeneratedResolver, id string) (item *PaymentForm, err error) {
+// DeletePaymentChannelHandler handler
+func DeletePaymentChannelHandler(ctx context.Context, r *GeneratedResolver, id string) (item *PaymentChannel, err error) {
 	principalID := GetPrincipalIDFromContext(ctx)
-	item = &PaymentForm{}
+	item = &PaymentChannel{}
 	now := time.Now()
 	tx := r.GetDB(ctx)
 
@@ -1619,13 +1619,13 @@ func DeletePaymentFormHandler(ctx context.Context, r *GeneratedResolver, id stri
 
 	event := events.NewEvent(events.EventMetadata{
 		Type:        events.EventTypeDeleted,
-		Entity:      "PaymentForm",
+		Entity:      "PaymentChannel",
 		EntityID:    id,
 		Date:        now,
 		PrincipalID: principalID,
 	})
 
-	err = tx.Delete(item, TableName("payment_forms")+".id = ?", id).Error
+	err = tx.Delete(item, TableName("payment_channels")+".id = ?", id).Error
 	if err != nil {
 		tx.Rollback()
 		return
@@ -1636,10 +1636,10 @@ func DeletePaymentFormHandler(ctx context.Context, r *GeneratedResolver, id stri
 	return
 }
 
-// DeleteAllPaymentForms method
-func (r *GeneratedMutationResolver) DeleteAllPaymentForms(ctx context.Context) (bool, error) {
+// DeleteAllPaymentChannels method
+func (r *GeneratedMutationResolver) DeleteAllPaymentChannels(ctx context.Context) (bool, error) {
 	ctx = EnrichContextWithMutations(ctx, r.GeneratedResolver)
-	done, err := r.Handlers.DeleteAllPaymentForms(ctx, r.GeneratedResolver)
+	done, err := r.Handlers.DeleteAllPaymentChannels(ctx, r.GeneratedResolver)
 	if err != nil {
 		errRMC := RollbackMutationContext(ctx, r.GeneratedResolver)
 		if errRMC != nil {
@@ -1651,10 +1651,10 @@ func (r *GeneratedMutationResolver) DeleteAllPaymentForms(ctx context.Context) (
 	return done, err
 }
 
-// DeleteAllPaymentFormsHandler handler
-func DeleteAllPaymentFormsHandler(ctx context.Context, r *GeneratedResolver) (bool, error) {
+// DeleteAllPaymentChannelsHandler handler
+func DeleteAllPaymentChannelsHandler(ctx context.Context, r *GeneratedResolver) (bool, error) {
 	tx := r.GetDB(ctx)
-	err := tx.Delete(&PaymentForm{}).Error
+	err := tx.Delete(&PaymentChannel{}).Error
 	if err != nil {
 		tx.Rollback()
 		return false, err
@@ -1701,16 +1701,16 @@ func CreatePaymentStatusHandler(ctx context.Context, r *GeneratedResolver, input
 		event.AddNewValue("id", changes.ID)
 	}
 
-	if _, ok := input["credit"]; ok && (item.Credit != changes.Credit) {
-		item.Credit = changes.Credit
+	if _, ok := input["type"]; ok && (item.Type != changes.Type) {
+		item.Type = changes.Type
 
-		event.AddNewValue("credit", changes.Credit)
+		event.AddNewValue("type", changes.Type)
 	}
 
-	if _, ok := input["balance"]; ok && (item.Balance != changes.Balance) {
-		item.Balance = changes.Balance
+	if _, ok := input["amount"]; ok && (item.Amount != changes.Amount) {
+		item.Amount = changes.Amount
 
-		event.AddNewValue("balance", changes.Balance)
+		event.AddNewValue("amount", changes.Amount)
 	}
 
 	if _, ok := input["personId"]; ok && (item.PersonID != changes.PersonID) && (item.PersonID == nil || changes.PersonID == nil || *item.PersonID != *changes.PersonID) {
@@ -1775,16 +1775,16 @@ func UpdatePaymentStatusHandler(ctx context.Context, r *GeneratedResolver, id st
 
 	item.UpdatedBy = principalID
 
-	if _, ok := input["credit"]; ok && (item.Credit != changes.Credit) {
-		event.AddOldValue("credit", item.Credit)
-		event.AddNewValue("credit", changes.Credit)
-		item.Credit = changes.Credit
+	if _, ok := input["type"]; ok && (item.Type != changes.Type) {
+		event.AddOldValue("type", item.Type)
+		event.AddNewValue("type", changes.Type)
+		item.Type = changes.Type
 	}
 
-	if _, ok := input["balance"]; ok && (item.Balance != changes.Balance) {
-		event.AddOldValue("balance", item.Balance)
-		event.AddNewValue("balance", changes.Balance)
-		item.Balance = changes.Balance
+	if _, ok := input["amount"]; ok && (item.Amount != changes.Amount) {
+		event.AddOldValue("amount", item.Amount)
+		event.AddNewValue("amount", changes.Amount)
+		item.Amount = changes.Amount
 	}
 
 	if _, ok := input["personId"]; ok && (item.PersonID != changes.PersonID) && (item.PersonID == nil || changes.PersonID == nil || *item.PersonID != *changes.PersonID) {
@@ -1918,16 +1918,22 @@ func CreatePaymentHistoryHandler(ctx context.Context, r *GeneratedResolver, inpu
 		event.AddNewValue("id", changes.ID)
 	}
 
-	if _, ok := input["concept"]; ok && (item.Concept != changes.Concept) && (item.Concept == nil || changes.Concept == nil || *item.Concept != *changes.Concept) {
-		item.Concept = changes.Concept
+	if _, ok := input["type"]; ok && (item.Type != changes.Type) {
+		item.Type = changes.Type
 
-		event.AddNewValue("concept", changes.Concept)
+		event.AddNewValue("type", changes.Type)
 	}
 
 	if _, ok := input["amount"]; ok && (item.Amount != changes.Amount) {
 		item.Amount = changes.Amount
 
 		event.AddNewValue("amount", changes.Amount)
+	}
+
+	if _, ok := input["concept"]; ok && (item.Concept != changes.Concept) && (item.Concept == nil || changes.Concept == nil || *item.Concept != *changes.Concept) {
+		item.Concept = changes.Concept
+
+		event.AddNewValue("concept", changes.Concept)
 	}
 
 	if _, ok := input["personId"]; ok && (item.PersonID != changes.PersonID) && (item.PersonID == nil || changes.PersonID == nil || *item.PersonID != *changes.PersonID) {
@@ -1992,16 +1998,22 @@ func UpdatePaymentHistoryHandler(ctx context.Context, r *GeneratedResolver, id s
 
 	item.UpdatedBy = principalID
 
-	if _, ok := input["concept"]; ok && (item.Concept != changes.Concept) && (item.Concept == nil || changes.Concept == nil || *item.Concept != *changes.Concept) {
-		event.AddOldValue("concept", item.Concept)
-		event.AddNewValue("concept", changes.Concept)
-		item.Concept = changes.Concept
+	if _, ok := input["type"]; ok && (item.Type != changes.Type) {
+		event.AddOldValue("type", item.Type)
+		event.AddNewValue("type", changes.Type)
+		item.Type = changes.Type
 	}
 
 	if _, ok := input["amount"]; ok && (item.Amount != changes.Amount) {
 		event.AddOldValue("amount", item.Amount)
 		event.AddNewValue("amount", changes.Amount)
 		item.Amount = changes.Amount
+	}
+
+	if _, ok := input["concept"]; ok && (item.Concept != changes.Concept) && (item.Concept == nil || changes.Concept == nil || *item.Concept != *changes.Concept) {
+		event.AddOldValue("concept", item.Concept)
+		event.AddNewValue("concept", changes.Concept)
+		item.Concept = changes.Concept
 	}
 
 	if _, ok := input["personId"]; ok && (item.PersonID != changes.PersonID) && (item.PersonID == nil || changes.PersonID == nil || *item.PersonID != *changes.PersonID) {

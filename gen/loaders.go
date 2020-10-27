@@ -225,8 +225,8 @@ func GetLoaders(db *DB) map[string]*dataloader.Loader {
 
 	loaders["VehicleType"] = dataloader.NewBatchedLoader(vehicleTypesBatchFn, dataloader.WithClearCacheOnBatch())
 
-	// paymentFormsBatchFn batch func
-	paymentFormsBatchFn := func(ctx context.Context, keys dataloader.Keys) []*dataloader.Result {
+	// paymentChannelsBatchFn batch func
+	paymentChannelsBatchFn := func(ctx context.Context, keys dataloader.Keys) []*dataloader.Result {
 		var results []*dataloader.Result
 
 		ids := make([]string, len(keys))
@@ -234,7 +234,7 @@ func GetLoaders(db *DB) map[string]*dataloader.Loader {
 			ids[i] = key.String()
 		}
 
-		items := &[]PaymentForm{}
+		items := &[]PaymentChannel{}
 		res := db.Query().Find(items, "id IN (?)", ids)
 		if res.Error != nil && !res.RecordNotFound() {
 			return []*dataloader.Result{
@@ -242,7 +242,7 @@ func GetLoaders(db *DB) map[string]*dataloader.Loader {
 			}
 		}
 
-		itemMap := make(map[string]PaymentForm, len(keys))
+		itemMap := make(map[string]PaymentChannel, len(keys))
 		for _, item := range *items {
 			itemMap[item.ID] = item
 		}
@@ -254,7 +254,7 @@ func GetLoaders(db *DB) map[string]*dataloader.Loader {
 				results = append(results, &dataloader.Result{
 					Data:  nil,
 					Error: nil,
-					// Error: fmt.Errorf("PaymentForm with id '%s' not found", id),
+					// Error: fmt.Errorf("PaymentChannel with id '%s' not found", id),
 				})
 			} else {
 				results = append(results, &dataloader.Result{
@@ -266,7 +266,7 @@ func GetLoaders(db *DB) map[string]*dataloader.Loader {
 		return results
 	}
 
-	loaders["PaymentForm"] = dataloader.NewBatchedLoader(paymentFormsBatchFn, dataloader.WithClearCacheOnBatch())
+	loaders["PaymentChannel"] = dataloader.NewBatchedLoader(paymentChannelsBatchFn, dataloader.WithClearCacheOnBatch())
 
 	// paymentStatusesBatchFn batch func
 	paymentStatusesBatchFn := func(ctx context.Context, keys dataloader.Keys) []*dataloader.Result {

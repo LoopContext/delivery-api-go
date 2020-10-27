@@ -188,15 +188,15 @@ func DeliveryVehicleTypeHandler(ctx context.Context, r *GeneratedResolver, obj *
 	return
 }
 
-// PaymentForm ...
-func (r *GeneratedDeliveryResolver) PaymentForm(ctx context.Context, obj *Delivery) (res *PaymentForm, err error) {
-	return r.Handlers.DeliveryPaymentForm(ctx, r.GeneratedResolver, obj)
+// PaymentChannel ...
+func (r *GeneratedDeliveryResolver) PaymentChannel(ctx context.Context, obj *Delivery) (res *PaymentChannel, err error) {
+	return r.Handlers.DeliveryPaymentChannel(ctx, r.GeneratedResolver, obj)
 }
 
-// DeliveryPaymentFormHandler handler
-func DeliveryPaymentFormHandler(ctx context.Context, r *GeneratedResolver, obj *Delivery) (res *PaymentForm, err error) {
+// DeliveryPaymentChannelHandler handler
+func DeliveryPaymentChannelHandler(ctx context.Context, r *GeneratedResolver, obj *Delivery) (res *PaymentChannel, err error) {
 
-	err = fmt.Errorf("Resolver handler for DeliveryPaymentForm not implemented")
+	err = fmt.Errorf("Resolver handler for DeliveryPaymentChannel not implemented")
 
 	return
 }
@@ -1114,35 +1114,35 @@ func (r *GeneratedVehicleTypeResultTypeResolver) Count(ctx context.Context, obj 
 	return obj.GetCount(ctx, r.DB.db, opts, &VehicleType{})
 }
 
-// QueryPaymentFormHandlerOptions struct
-type QueryPaymentFormHandlerOptions struct {
+// QueryPaymentChannelHandlerOptions struct
+type QueryPaymentChannelHandlerOptions struct {
 	ID     *string
 	Q      *string
-	Filter *PaymentFormFilterType
+	Filter *PaymentChannelFilterType
 }
 
-// PaymentForm ...
-func (r *GeneratedQueryResolver) PaymentForm(ctx context.Context, id *string, q *string, filter *PaymentFormFilterType) (*PaymentForm, error) {
-	opts := QueryPaymentFormHandlerOptions{
+// PaymentChannel ...
+func (r *GeneratedQueryResolver) PaymentChannel(ctx context.Context, id *string, q *string, filter *PaymentChannelFilterType) (*PaymentChannel, error) {
+	opts := QueryPaymentChannelHandlerOptions{
 		ID:     id,
 		Q:      q,
 		Filter: filter,
 	}
-	return r.Handlers.QueryPaymentForm(ctx, r.GeneratedResolver, opts)
+	return r.Handlers.QueryPaymentChannel(ctx, r.GeneratedResolver, opts)
 }
 
-// QueryPaymentFormHandler handler
-func QueryPaymentFormHandler(ctx context.Context, r *GeneratedResolver, opts QueryPaymentFormHandlerOptions) (*PaymentForm, error) {
+// QueryPaymentChannelHandler handler
+func QueryPaymentChannelHandler(ctx context.Context, r *GeneratedResolver, opts QueryPaymentChannelHandlerOptions) (*PaymentChannel, error) {
 	selection := []ast.Selection{}
 	for _, f := range graphql.CollectFieldsCtx(ctx, nil) {
 		selection = append(selection, f.Field)
 	}
 	selectionSet := ast.SelectionSet(selection)
 
-	query := PaymentFormQueryFilter{opts.Q}
+	query := PaymentChannelQueryFilter{opts.Q}
 	offset := 0
 	limit := 1
-	rt := &PaymentFormResultType{
+	rt := &PaymentChannelResultType{
 		EntityResultType: EntityResultType{
 			Offset:       &offset,
 			Limit:        &limit,
@@ -1156,12 +1156,12 @@ func QueryPaymentFormHandler(ctx context.Context, r *GeneratedResolver, opts Que
 		qb = r.DB.Query()
 	}
 	if opts.ID != nil {
-		qb = qb.Where(TableName("payment_forms")+".id = ?", *opts.ID)
+		qb = qb.Where(TableName("payment_channels")+".id = ?", *opts.ID)
 	}
 
-	var items []*PaymentForm
+	var items []*PaymentChannel
 	giOpts := GetItemsOptions{
-		Alias:      TableName("payment_forms"),
+		Alias:      TableName("payment_channels"),
 		Preloaders: []string{},
 	}
 	err := rt.GetItems(ctx, qb, giOpts, &items)
@@ -1174,30 +1174,30 @@ func QueryPaymentFormHandler(ctx context.Context, r *GeneratedResolver, opts Que
 	return items[0], err
 }
 
-// QueryPaymentFormsHandlerOptions struct
-type QueryPaymentFormsHandlerOptions struct {
+// QueryPaymentChannelsHandlerOptions struct
+type QueryPaymentChannelsHandlerOptions struct {
 	Offset *int
 	Limit  *int
 	Q      *string
-	Sort   []*PaymentFormSortType
-	Filter *PaymentFormFilterType
+	Sort   []*PaymentChannelSortType
+	Filter *PaymentChannelFilterType
 }
 
-// PaymentForms ...
-func (r *GeneratedQueryResolver) PaymentForms(ctx context.Context, offset *int, limit *int, q *string, sort []*PaymentFormSortType, filter *PaymentFormFilterType) (*PaymentFormResultType, error) {
-	opts := QueryPaymentFormsHandlerOptions{
+// PaymentChannels ...
+func (r *GeneratedQueryResolver) PaymentChannels(ctx context.Context, offset *int, limit *int, q *string, sort []*PaymentChannelSortType, filter *PaymentChannelFilterType) (*PaymentChannelResultType, error) {
+	opts := QueryPaymentChannelsHandlerOptions{
 		Offset: offset,
 		Limit:  limit,
 		Q:      q,
 		Sort:   sort,
 		Filter: filter,
 	}
-	return r.Handlers.QueryPaymentForms(ctx, r.GeneratedResolver, opts)
+	return r.Handlers.QueryPaymentChannels(ctx, r.GeneratedResolver, opts)
 }
 
-// QueryPaymentFormsHandler handler
-func QueryPaymentFormsHandler(ctx context.Context, r *GeneratedResolver, opts QueryPaymentFormsHandlerOptions) (*PaymentFormResultType, error) {
-	query := PaymentFormQueryFilter{opts.Q}
+// QueryPaymentChannelsHandler handler
+func QueryPaymentChannelsHandler(ctx context.Context, r *GeneratedResolver, opts QueryPaymentChannelsHandlerOptions) (*PaymentChannelResultType, error) {
+	query := PaymentChannelQueryFilter{opts.Q}
 
 	var selectionSet *ast.SelectionSet
 	for _, f := range graphql.CollectFieldsCtx(ctx, nil) {
@@ -1211,7 +1211,7 @@ func QueryPaymentFormsHandler(ctx context.Context, r *GeneratedResolver, opts Qu
 		_sort = append(_sort, sort)
 	}
 
-	return &PaymentFormResultType{
+	return &PaymentChannelResultType{
 		EntityResultType: EntityResultType{
 			Offset:       opts.Offset,
 			Limit:        opts.Limit,
@@ -1223,18 +1223,18 @@ func QueryPaymentFormsHandler(ctx context.Context, r *GeneratedResolver, opts Qu
 	}, nil
 }
 
-// GeneratedPaymentFormResultTypeResolver struct
-type GeneratedPaymentFormResultTypeResolver struct{ *GeneratedResolver }
+// GeneratedPaymentChannelResultTypeResolver struct
+type GeneratedPaymentChannelResultTypeResolver struct{ *GeneratedResolver }
 
 // Items ...
-func (r *GeneratedPaymentFormResultTypeResolver) Items(ctx context.Context, obj *PaymentFormResultType) (items []*PaymentForm, err error) {
+func (r *GeneratedPaymentChannelResultTypeResolver) Items(ctx context.Context, obj *PaymentChannelResultType) (items []*PaymentChannel, err error) {
 	otps := GetItemsOptions{
-		Alias:      TableName("payment_forms"),
+		Alias:      TableName("payment_channels"),
 		Preloaders: []string{},
 	}
 	err = obj.GetItems(ctx, r.DB.db, otps, &items)
 
-	uniqueItems := []*PaymentForm{}
+	uniqueItems := []*PaymentChannel{}
 	idMap := map[string]bool{}
 	for _, item := range items {
 		if _, ok := idMap[item.ID]; !ok {
@@ -1247,12 +1247,12 @@ func (r *GeneratedPaymentFormResultTypeResolver) Items(ctx context.Context, obj 
 }
 
 // Count ...
-func (r *GeneratedPaymentFormResultTypeResolver) Count(ctx context.Context, obj *PaymentFormResultType) (count int, err error) {
+func (r *GeneratedPaymentChannelResultTypeResolver) Count(ctx context.Context, obj *PaymentChannelResultType) (count int, err error) {
 	opts := GetItemsOptions{
-		Alias:      TableName("payment_forms"),
+		Alias:      TableName("payment_channels"),
 		Preloaders: []string{},
 	}
-	return obj.GetCount(ctx, r.DB.db, opts, &PaymentForm{})
+	return obj.GetCount(ctx, r.DB.db, opts, &PaymentChannel{})
 }
 
 // QueryPaymentStatusHandlerOptions struct
@@ -1565,15 +1565,15 @@ func (r *GeneratedPaymentHistoryResultTypeResolver) Count(ctx context.Context, o
 // GeneratedPaymentHistoryResolver struct
 type GeneratedPaymentHistoryResolver struct{ *GeneratedResolver }
 
-// PaymentForm ...
-func (r *GeneratedPaymentHistoryResolver) PaymentForm(ctx context.Context, obj *PaymentHistory) (res *PaymentForm, err error) {
-	return r.Handlers.PaymentHistoryPaymentForm(ctx, r.GeneratedResolver, obj)
+// PaymentChannel ...
+func (r *GeneratedPaymentHistoryResolver) PaymentChannel(ctx context.Context, obj *PaymentHistory) (res *PaymentChannel, err error) {
+	return r.Handlers.PaymentHistoryPaymentChannel(ctx, r.GeneratedResolver, obj)
 }
 
-// PaymentHistoryPaymentFormHandler handler
-func PaymentHistoryPaymentFormHandler(ctx context.Context, r *GeneratedResolver, obj *PaymentHistory) (res *PaymentForm, err error) {
+// PaymentHistoryPaymentChannelHandler handler
+func PaymentHistoryPaymentChannelHandler(ctx context.Context, r *GeneratedResolver, obj *PaymentHistory) (res *PaymentChannel, err error) {
 
-	err = fmt.Errorf("Resolver handler for PaymentHistoryPaymentForm not implemented")
+	err = fmt.Errorf("Resolver handler for PaymentHistoryPaymentChannel not implemented")
 
 	return
 }

@@ -109,19 +109,19 @@ models:
   VehicleTypeUpdateInput:
     model: "map[string]interface{}"
   
-  PaymentForm:
-    model: github.com/loopcontext/deliver-api-go/gen.PaymentForm
+  PaymentChannel:
+    model: github.com/loopcontext/deliver-api-go/gen.PaymentChannel
     fields:
-  PaymentFormResultType:
-    model: github.com/loopcontext/deliver-api-go/gen.PaymentFormResultType
+  PaymentChannelResultType:
+    model: github.com/loopcontext/deliver-api-go/gen.PaymentChannelResultType
     fields:
       count:
         resolver: true
       items:
         resolver: true
-  PaymentFormCreateInput:
+  PaymentChannelCreateInput:
     model: "map[string]interface{}"
-  PaymentFormUpdateInput:
+  PaymentChannelUpdateInput:
     model: "map[string]interface{}"
   
   PaymentStatus:

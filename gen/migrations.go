@@ -25,7 +25,7 @@ func AutoMigrate(db *gorm.DB) (err error) {
 		DeliveryType{},
 		DeliveryChannel{},
 		VehicleType{},
-		PaymentForm{},
+		PaymentChannel{},
 		PaymentStatus{},
 		PaymentHistory{},
 	)

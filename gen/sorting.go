@@ -1079,12 +1079,12 @@ func (s VehicleTypeSortType) ApplyWithAlias(ctx context.Context, dialect gorm.Di
 }
 
 // Apply method
-func (s PaymentFormSortType) Apply(ctx context.Context, dialect gorm.Dialect, sorts *[]SortInfo, joins *[]string) error {
-	return s.ApplyWithAlias(ctx, dialect, TableName("payment_forms"), sorts, joins)
+func (s PaymentChannelSortType) Apply(ctx context.Context, dialect gorm.Dialect, sorts *[]SortInfo, joins *[]string) error {
+	return s.ApplyWithAlias(ctx, dialect, TableName("payment_channels"), sorts, joins)
 }
 
 // ApplyWithAlias method
-func (s PaymentFormSortType) ApplyWithAlias(ctx context.Context, dialect gorm.Dialect, alias string, sorts *[]SortInfo, joins *[]string) error {
+func (s PaymentChannelSortType) ApplyWithAlias(ctx context.Context, dialect gorm.Dialect, alias string, sorts *[]SortInfo, joins *[]string) error {
 	aliasPrefix := dialect.Quote(alias) + "."
 
 	if s.ID != nil {
@@ -1219,43 +1219,23 @@ func (s PaymentStatusSortType) ApplyWithAlias(ctx context.Context, dialect gorm.
 		*sorts = append(*sorts, sort)
 	}
 
-	if s.Credit != nil {
-		sort := SortInfo{Field: aliasPrefix + dialect.Quote("credit"), Direction: s.Credit.String()}
+	if s.Amount != nil {
+		sort := SortInfo{Field: aliasPrefix + dialect.Quote("amount"), Direction: s.Amount.String()}
 		*sorts = append(*sorts, sort)
 	}
 
-	if s.CreditMin != nil {
-		sort := SortInfo{Field: "Min(" + aliasPrefix + dialect.Quote("credit") + ")", Direction: s.CreditMin.String(), IsAggregation: true}
+	if s.AmountMin != nil {
+		sort := SortInfo{Field: "Min(" + aliasPrefix + dialect.Quote("amount") + ")", Direction: s.AmountMin.String(), IsAggregation: true}
 		*sorts = append(*sorts, sort)
 	}
 
-	if s.CreditMax != nil {
-		sort := SortInfo{Field: "Max(" + aliasPrefix + dialect.Quote("credit") + ")", Direction: s.CreditMax.String(), IsAggregation: true}
+	if s.AmountMax != nil {
+		sort := SortInfo{Field: "Max(" + aliasPrefix + dialect.Quote("amount") + ")", Direction: s.AmountMax.String(), IsAggregation: true}
 		*sorts = append(*sorts, sort)
 	}
 
-	if s.CreditAvg != nil {
-		sort := SortInfo{Field: "Avg(" + aliasPrefix + dialect.Quote("credit") + ")", Direction: s.CreditAvg.String(), IsAggregation: true}
-		*sorts = append(*sorts, sort)
-	}
-
-	if s.Balance != nil {
-		sort := SortInfo{Field: aliasPrefix + dialect.Quote("balance"), Direction: s.Balance.String()}
-		*sorts = append(*sorts, sort)
-	}
-
-	if s.BalanceMin != nil {
-		sort := SortInfo{Field: "Min(" + aliasPrefix + dialect.Quote("balance") + ")", Direction: s.BalanceMin.String(), IsAggregation: true}
-		*sorts = append(*sorts, sort)
-	}
-
-	if s.BalanceMax != nil {
-		sort := SortInfo{Field: "Max(" + aliasPrefix + dialect.Quote("balance") + ")", Direction: s.BalanceMax.String(), IsAggregation: true}
-		*sorts = append(*sorts, sort)
-	}
-
-	if s.BalanceAvg != nil {
-		sort := SortInfo{Field: "Avg(" + aliasPrefix + dialect.Quote("balance") + ")", Direction: s.BalanceAvg.String(), IsAggregation: true}
+	if s.AmountAvg != nil {
+		sort := SortInfo{Field: "Avg(" + aliasPrefix + dialect.Quote("amount") + ")", Direction: s.AmountAvg.String(), IsAggregation: true}
 		*sorts = append(*sorts, sort)
 	}
 
@@ -1370,21 +1350,6 @@ func (s PaymentHistorySortType) ApplyWithAlias(ctx context.Context, dialect gorm
 		*sorts = append(*sorts, sort)
 	}
 
-	if s.Concept != nil {
-		sort := SortInfo{Field: aliasPrefix + dialect.Quote("concept"), Direction: s.Concept.String()}
-		*sorts = append(*sorts, sort)
-	}
-
-	if s.ConceptMin != nil {
-		sort := SortInfo{Field: "Min(" + aliasPrefix + dialect.Quote("concept") + ")", Direction: s.ConceptMin.String(), IsAggregation: true}
-		*sorts = append(*sorts, sort)
-	}
-
-	if s.ConceptMax != nil {
-		sort := SortInfo{Field: "Max(" + aliasPrefix + dialect.Quote("concept") + ")", Direction: s.ConceptMax.String(), IsAggregation: true}
-		*sorts = append(*sorts, sort)
-	}
-
 	if s.Amount != nil {
 		sort := SortInfo{Field: aliasPrefix + dialect.Quote("amount"), Direction: s.Amount.String()}
 		*sorts = append(*sorts, sort)
@@ -1402,6 +1367,21 @@ func (s PaymentHistorySortType) ApplyWithAlias(ctx context.Context, dialect gorm
 
 	if s.AmountAvg != nil {
 		sort := SortInfo{Field: "Avg(" + aliasPrefix + dialect.Quote("amount") + ")", Direction: s.AmountAvg.String(), IsAggregation: true}
+		*sorts = append(*sorts, sort)
+	}
+
+	if s.Concept != nil {
+		sort := SortInfo{Field: aliasPrefix + dialect.Quote("concept"), Direction: s.Concept.String()}
+		*sorts = append(*sorts, sort)
+	}
+
+	if s.ConceptMin != nil {
+		sort := SortInfo{Field: "Min(" + aliasPrefix + dialect.Quote("concept") + ")", Direction: s.ConceptMin.String(), IsAggregation: true}
+		*sorts = append(*sorts, sort)
+	}
+
+	if s.ConceptMax != nil {
+		sort := SortInfo{Field: "Max(" + aliasPrefix + dialect.Quote("concept") + ")", Direction: s.ConceptMax.String(), IsAggregation: true}
 		*sorts = append(*sorts, sort)
 	}
 

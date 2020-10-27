@@ -316,65 +316,65 @@ func (r *MutationResolver) DeleteAllVehicleTypes(ctx context.Context) (ok bool, 
 	return r.GeneratedMutationResolver.DeleteAllVehicleTypes(ctx)
 }
 
-// PaymentForms method
-func (r *QueryResolver) PaymentForms(ctx context.Context, offset *int, limit *int, q *string, sort []*gen.PaymentFormSortType, filter *gen.PaymentFormFilterType) (*gen.PaymentFormResultType, error) {
+// PaymentChannels method
+func (r *QueryResolver) PaymentChannels(ctx context.Context, offset *int, limit *int, q *string, sort []*gen.PaymentChannelSortType, filter *gen.PaymentChannelFilterType) (*gen.PaymentChannelResultType, error) {
 	jwtClaims := gen.GetJWTClaimsFromContext(ctx)
-	if !gen.HasPermission(jwtClaims, "payment_forms", gen.JWTPermissionConstList[:1]) {
-		return nil, fmt.Errorf(jwtTokenPermissionErrMsg, gen.JWTPermissionConstList, "payment_forms")
+	if !gen.HasPermission(jwtClaims, "payment_channels", gen.JWTPermissionConstList[:1]) {
+		return nil, fmt.Errorf(jwtTokenPermissionErrMsg, gen.JWTPermissionConstList, "payment_channels")
 	}
-	// TODO: Insert here any code ETL on your query/mutation for example: scope PaymentForms to current jwtClaims.Subject (User.ID)
-	return r.GeneratedQueryResolver.PaymentForms(ctx, offset, limit, q, sort, filter)
+	// TODO: Insert here any code ETL on your query/mutation for example: scope PaymentChannels to current jwtClaims.Subject (User.ID)
+	return r.GeneratedQueryResolver.PaymentChannels(ctx, offset, limit, q, sort, filter)
 }
 
-// CreatePaymentForm method
-func (r *MutationResolver) CreatePaymentForm(ctx context.Context, input map[string]interface{}) (item *gen.PaymentForm, err error) {
+// CreatePaymentChannel method
+func (r *MutationResolver) CreatePaymentChannel(ctx context.Context, input map[string]interface{}) (item *gen.PaymentChannel, err error) {
 	jwtClaims := gen.GetJWTClaimsFromContext(ctx)
-	if !gen.HasPermission(jwtClaims, "payment_forms", gen.JWTPermissionConstCreate[:1]) {
-		return nil, fmt.Errorf(jwtTokenPermissionErrMsg, gen.JWTPermissionConstCreate, "payment_forms")
+	if !gen.HasPermission(jwtClaims, "payment_channels", gen.JWTPermissionConstCreate[:1]) {
+		return nil, fmt.Errorf(jwtTokenPermissionErrMsg, gen.JWTPermissionConstCreate, "payment_channels")
 	}
-	// TODO: Insert here any code ETL on your query/mutation for example: scope PaymentForms to current jwtClaims.Subject (User.ID)
-	return r.GeneratedMutationResolver.CreatePaymentForm(ctx, input)
+	// TODO: Insert here any code ETL on your query/mutation for example: scope PaymentChannels to current jwtClaims.Subject (User.ID)
+	return r.GeneratedMutationResolver.CreatePaymentChannel(ctx, input)
 }
 
-// ReadPaymentForm method
-func (r *QueryResolver) PaymentForm(ctx context.Context, id *string, q *string, filter *gen.PaymentFormFilterType) (*gen.PaymentForm, error) {
+// ReadPaymentChannel method
+func (r *QueryResolver) PaymentChannel(ctx context.Context, id *string, q *string, filter *gen.PaymentChannelFilterType) (*gen.PaymentChannel, error) {
 	jwtClaims := gen.GetJWTClaimsFromContext(ctx)
-	if !gen.HasPermission(jwtClaims, "payment_forms", gen.JWTPermissionConstRead[:1]) {
-		return nil, fmt.Errorf(jwtTokenPermissionErrMsg, gen.JWTPermissionConstRead, "payment_forms")
+	if !gen.HasPermission(jwtClaims, "payment_channels", gen.JWTPermissionConstRead[:1]) {
+		return nil, fmt.Errorf(jwtTokenPermissionErrMsg, gen.JWTPermissionConstRead, "payment_channels")
 	}
-	// TODO: Insert here any code ETL on your query/mutation for example: scope PaymentForms to current jwtClaims.Subject (User.ID)
-	return r.GeneratedQueryResolver.PaymentForm(ctx, id, q, filter)
+	// TODO: Insert here any code ETL on your query/mutation for example: scope PaymentChannels to current jwtClaims.Subject (User.ID)
+	return r.GeneratedQueryResolver.PaymentChannel(ctx, id, q, filter)
 }
 
-// UpdatePaymentForm method
-func (r *MutationResolver) UpdatePaymentForm(ctx context.Context, id string, input map[string]interface{}) (item *gen.PaymentForm, err error) {
+// UpdatePaymentChannel method
+func (r *MutationResolver) UpdatePaymentChannel(ctx context.Context, id string, input map[string]interface{}) (item *gen.PaymentChannel, err error) {
 	jwtClaims := gen.GetJWTClaimsFromContext(ctx)
-	if !gen.HasPermission(jwtClaims, "payment_forms", gen.JWTPermissionConstUpdate[:1]) {
-		return nil, fmt.Errorf(jwtTokenPermissionErrMsg, gen.JWTPermissionConstUpdate, "payment_forms")
+	if !gen.HasPermission(jwtClaims, "payment_channels", gen.JWTPermissionConstUpdate[:1]) {
+		return nil, fmt.Errorf(jwtTokenPermissionErrMsg, gen.JWTPermissionConstUpdate, "payment_channels")
 	}
-	// TODO: Insert here any code ETL on your query/mutation for example: scope PaymentForms to current jwtClaims.Subject (User.ID)
-	return r.GeneratedMutationResolver.UpdatePaymentForm(ctx, id, input)
+	// TODO: Insert here any code ETL on your query/mutation for example: scope PaymentChannels to current jwtClaims.Subject (User.ID)
+	return r.GeneratedMutationResolver.UpdatePaymentChannel(ctx, id, input)
 }
 
-// DeletePaymentForm method
-func (r *MutationResolver) DeletePaymentForm(ctx context.Context, id string) (item *gen.PaymentForm, err error) {
+// DeletePaymentChannel method
+func (r *MutationResolver) DeletePaymentChannel(ctx context.Context, id string) (item *gen.PaymentChannel, err error) {
 	jwtClaims := gen.GetJWTClaimsFromContext(ctx)
-	if !gen.HasPermission(jwtClaims, "payment_forms", gen.JWTPermissionConstDelete[:1]) {
-		return nil, fmt.Errorf(jwtTokenPermissionErrMsg, gen.JWTPermissionConstDelete, "payment_forms")
+	if !gen.HasPermission(jwtClaims, "payment_channels", gen.JWTPermissionConstDelete[:1]) {
+		return nil, fmt.Errorf(jwtTokenPermissionErrMsg, gen.JWTPermissionConstDelete, "payment_channels")
 	}
-	// TODO: Insert here any code ETL on your query/mutation for example: scope PaymentForms to current jwtClaims.Subject (User.ID)
-	return r.GeneratedMutationResolver.DeletePaymentForm(ctx, id)
+	// TODO: Insert here any code ETL on your query/mutation for example: scope PaymentChannels to current jwtClaims.Subject (User.ID)
+	return r.GeneratedMutationResolver.DeletePaymentChannel(ctx, id)
 }
 
-// DeleteAllPaymentForms method
-func (r *MutationResolver) DeleteAllPaymentForms(ctx context.Context) (ok bool, err error) {
+// DeleteAllPaymentChannels method
+func (r *MutationResolver) DeleteAllPaymentChannels(ctx context.Context) (ok bool, err error) {
 	jwtClaims := gen.GetJWTClaimsFromContext(ctx)
 	if !gen.HasRole(jwtClaims, "admin") &&
-		!gen.HasPermission(jwtClaims, "payment_forms", gen.JWTPermissionConstDelete[:1]) {
-		return false, fmt.Errorf(jwtTokenPermissionErrMsg, gen.JWTPermissionConstDelete, "payment_forms")
+		!gen.HasPermission(jwtClaims, "payment_channels", gen.JWTPermissionConstDelete[:1]) {
+		return false, fmt.Errorf(jwtTokenPermissionErrMsg, gen.JWTPermissionConstDelete, "payment_channels")
 	}
-	// TODO: Insert here any code ETL on your query/mutation for example: scope PaymentForms to current jwtClaims.Subject (User.ID)
-	return r.GeneratedMutationResolver.DeleteAllPaymentForms(ctx)
+	// TODO: Insert here any code ETL on your query/mutation for example: scope PaymentChannels to current jwtClaims.Subject (User.ID)
+	return r.GeneratedMutationResolver.DeleteAllPaymentChannels(ctx)
 }
 
 // PaymentStatuses method

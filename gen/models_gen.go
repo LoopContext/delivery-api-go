@@ -1063,184 +1063,184 @@ type DeliveryTypeSortType struct {
 	CreatedByMax   *ObjectSortType `json:"createdByMax"`
 }
 
-type PaymentFormFilterType struct {
-	And                  []*PaymentFormFilterType `json:"AND"`
-	Or                   []*PaymentFormFilterType `json:"OR"`
-	ID                   *string                  `json:"id"`
-	IDMin                *string                  `json:"idMin"`
-	IDMax                *string                  `json:"idMax"`
-	IDNe                 *string                  `json:"id_ne"`
-	IDMinNe              *string                  `json:"idMin_ne"`
-	IDMaxNe              *string                  `json:"idMax_ne"`
-	IDGt                 *string                  `json:"id_gt"`
-	IDMinGt              *string                  `json:"idMin_gt"`
-	IDMaxGt              *string                  `json:"idMax_gt"`
-	IDLt                 *string                  `json:"id_lt"`
-	IDMinLt              *string                  `json:"idMin_lt"`
-	IDMaxLt              *string                  `json:"idMax_lt"`
-	IDGte                *string                  `json:"id_gte"`
-	IDMinGte             *string                  `json:"idMin_gte"`
-	IDMaxGte             *string                  `json:"idMax_gte"`
-	IDLte                *string                  `json:"id_lte"`
-	IDMinLte             *string                  `json:"idMin_lte"`
-	IDMaxLte             *string                  `json:"idMax_lte"`
-	IDIn                 []string                 `json:"id_in"`
-	IDMinIn              []string                 `json:"idMin_in"`
-	IDMaxIn              []string                 `json:"idMax_in"`
-	IDNull               *bool                    `json:"id_null"`
-	Name                 *string                  `json:"name"`
-	NameMin              *string                  `json:"nameMin"`
-	NameMax              *string                  `json:"nameMax"`
-	NameNe               *string                  `json:"name_ne"`
-	NameMinNe            *string                  `json:"nameMin_ne"`
-	NameMaxNe            *string                  `json:"nameMax_ne"`
-	NameGt               *string                  `json:"name_gt"`
-	NameMinGt            *string                  `json:"nameMin_gt"`
-	NameMaxGt            *string                  `json:"nameMax_gt"`
-	NameLt               *string                  `json:"name_lt"`
-	NameMinLt            *string                  `json:"nameMin_lt"`
-	NameMaxLt            *string                  `json:"nameMax_lt"`
-	NameGte              *string                  `json:"name_gte"`
-	NameMinGte           *string                  `json:"nameMin_gte"`
-	NameMaxGte           *string                  `json:"nameMax_gte"`
-	NameLte              *string                  `json:"name_lte"`
-	NameMinLte           *string                  `json:"nameMin_lte"`
-	NameMaxLte           *string                  `json:"nameMax_lte"`
-	NameIn               []string                 `json:"name_in"`
-	NameMinIn            []string                 `json:"nameMin_in"`
-	NameMaxIn            []string                 `json:"nameMax_in"`
-	NameLike             *string                  `json:"name_like"`
-	NameMinLike          *string                  `json:"nameMin_like"`
-	NameMaxLike          *string                  `json:"nameMax_like"`
-	NamePrefix           *string                  `json:"name_prefix"`
-	NameMinPrefix        *string                  `json:"nameMin_prefix"`
-	NameMaxPrefix        *string                  `json:"nameMax_prefix"`
-	NameSuffix           *string                  `json:"name_suffix"`
-	NameMinSuffix        *string                  `json:"nameMin_suffix"`
-	NameMaxSuffix        *string                  `json:"nameMax_suffix"`
-	NameNull             *bool                    `json:"name_null"`
-	Description          *string                  `json:"description"`
-	DescriptionMin       *string                  `json:"descriptionMin"`
-	DescriptionMax       *string                  `json:"descriptionMax"`
-	DescriptionNe        *string                  `json:"description_ne"`
-	DescriptionMinNe     *string                  `json:"descriptionMin_ne"`
-	DescriptionMaxNe     *string                  `json:"descriptionMax_ne"`
-	DescriptionGt        *string                  `json:"description_gt"`
-	DescriptionMinGt     *string                  `json:"descriptionMin_gt"`
-	DescriptionMaxGt     *string                  `json:"descriptionMax_gt"`
-	DescriptionLt        *string                  `json:"description_lt"`
-	DescriptionMinLt     *string                  `json:"descriptionMin_lt"`
-	DescriptionMaxLt     *string                  `json:"descriptionMax_lt"`
-	DescriptionGte       *string                  `json:"description_gte"`
-	DescriptionMinGte    *string                  `json:"descriptionMin_gte"`
-	DescriptionMaxGte    *string                  `json:"descriptionMax_gte"`
-	DescriptionLte       *string                  `json:"description_lte"`
-	DescriptionMinLte    *string                  `json:"descriptionMin_lte"`
-	DescriptionMaxLte    *string                  `json:"descriptionMax_lte"`
-	DescriptionIn        []string                 `json:"description_in"`
-	DescriptionMinIn     []string                 `json:"descriptionMin_in"`
-	DescriptionMaxIn     []string                 `json:"descriptionMax_in"`
-	DescriptionLike      *string                  `json:"description_like"`
-	DescriptionMinLike   *string                  `json:"descriptionMin_like"`
-	DescriptionMaxLike   *string                  `json:"descriptionMax_like"`
-	DescriptionPrefix    *string                  `json:"description_prefix"`
-	DescriptionMinPrefix *string                  `json:"descriptionMin_prefix"`
-	DescriptionMaxPrefix *string                  `json:"descriptionMax_prefix"`
-	DescriptionSuffix    *string                  `json:"description_suffix"`
-	DescriptionMinSuffix *string                  `json:"descriptionMin_suffix"`
-	DescriptionMaxSuffix *string                  `json:"descriptionMax_suffix"`
-	DescriptionNull      *bool                    `json:"description_null"`
-	UpdatedAt            *time.Time               `json:"updatedAt"`
-	UpdatedAtMin         *time.Time               `json:"updatedAtMin"`
-	UpdatedAtMax         *time.Time               `json:"updatedAtMax"`
-	UpdatedAtNe          *time.Time               `json:"updatedAt_ne"`
-	UpdatedAtMinNe       *time.Time               `json:"updatedAtMin_ne"`
-	UpdatedAtMaxNe       *time.Time               `json:"updatedAtMax_ne"`
-	UpdatedAtGt          *time.Time               `json:"updatedAt_gt"`
-	UpdatedAtMinGt       *time.Time               `json:"updatedAtMin_gt"`
-	UpdatedAtMaxGt       *time.Time               `json:"updatedAtMax_gt"`
-	UpdatedAtLt          *time.Time               `json:"updatedAt_lt"`
-	UpdatedAtMinLt       *time.Time               `json:"updatedAtMin_lt"`
-	UpdatedAtMaxLt       *time.Time               `json:"updatedAtMax_lt"`
-	UpdatedAtGte         *time.Time               `json:"updatedAt_gte"`
-	UpdatedAtMinGte      *time.Time               `json:"updatedAtMin_gte"`
-	UpdatedAtMaxGte      *time.Time               `json:"updatedAtMax_gte"`
-	UpdatedAtLte         *time.Time               `json:"updatedAt_lte"`
-	UpdatedAtMinLte      *time.Time               `json:"updatedAtMin_lte"`
-	UpdatedAtMaxLte      *time.Time               `json:"updatedAtMax_lte"`
-	UpdatedAtIn          []*time.Time             `json:"updatedAt_in"`
-	UpdatedAtMinIn       []*time.Time             `json:"updatedAtMin_in"`
-	UpdatedAtMaxIn       []*time.Time             `json:"updatedAtMax_in"`
-	UpdatedAtNull        *bool                    `json:"updatedAt_null"`
-	CreatedAt            *time.Time               `json:"createdAt"`
-	CreatedAtMin         *time.Time               `json:"createdAtMin"`
-	CreatedAtMax         *time.Time               `json:"createdAtMax"`
-	CreatedAtNe          *time.Time               `json:"createdAt_ne"`
-	CreatedAtMinNe       *time.Time               `json:"createdAtMin_ne"`
-	CreatedAtMaxNe       *time.Time               `json:"createdAtMax_ne"`
-	CreatedAtGt          *time.Time               `json:"createdAt_gt"`
-	CreatedAtMinGt       *time.Time               `json:"createdAtMin_gt"`
-	CreatedAtMaxGt       *time.Time               `json:"createdAtMax_gt"`
-	CreatedAtLt          *time.Time               `json:"createdAt_lt"`
-	CreatedAtMinLt       *time.Time               `json:"createdAtMin_lt"`
-	CreatedAtMaxLt       *time.Time               `json:"createdAtMax_lt"`
-	CreatedAtGte         *time.Time               `json:"createdAt_gte"`
-	CreatedAtMinGte      *time.Time               `json:"createdAtMin_gte"`
-	CreatedAtMaxGte      *time.Time               `json:"createdAtMax_gte"`
-	CreatedAtLte         *time.Time               `json:"createdAt_lte"`
-	CreatedAtMinLte      *time.Time               `json:"createdAtMin_lte"`
-	CreatedAtMaxLte      *time.Time               `json:"createdAtMax_lte"`
-	CreatedAtIn          []*time.Time             `json:"createdAt_in"`
-	CreatedAtMinIn       []*time.Time             `json:"createdAtMin_in"`
-	CreatedAtMaxIn       []*time.Time             `json:"createdAtMax_in"`
-	CreatedAtNull        *bool                    `json:"createdAt_null"`
-	UpdatedBy            *string                  `json:"updatedBy"`
-	UpdatedByMin         *string                  `json:"updatedByMin"`
-	UpdatedByMax         *string                  `json:"updatedByMax"`
-	UpdatedByNe          *string                  `json:"updatedBy_ne"`
-	UpdatedByMinNe       *string                  `json:"updatedByMin_ne"`
-	UpdatedByMaxNe       *string                  `json:"updatedByMax_ne"`
-	UpdatedByGt          *string                  `json:"updatedBy_gt"`
-	UpdatedByMinGt       *string                  `json:"updatedByMin_gt"`
-	UpdatedByMaxGt       *string                  `json:"updatedByMax_gt"`
-	UpdatedByLt          *string                  `json:"updatedBy_lt"`
-	UpdatedByMinLt       *string                  `json:"updatedByMin_lt"`
-	UpdatedByMaxLt       *string                  `json:"updatedByMax_lt"`
-	UpdatedByGte         *string                  `json:"updatedBy_gte"`
-	UpdatedByMinGte      *string                  `json:"updatedByMin_gte"`
-	UpdatedByMaxGte      *string                  `json:"updatedByMax_gte"`
-	UpdatedByLte         *string                  `json:"updatedBy_lte"`
-	UpdatedByMinLte      *string                  `json:"updatedByMin_lte"`
-	UpdatedByMaxLte      *string                  `json:"updatedByMax_lte"`
-	UpdatedByIn          []string                 `json:"updatedBy_in"`
-	UpdatedByMinIn       []string                 `json:"updatedByMin_in"`
-	UpdatedByMaxIn       []string                 `json:"updatedByMax_in"`
-	UpdatedByNull        *bool                    `json:"updatedBy_null"`
-	CreatedBy            *string                  `json:"createdBy"`
-	CreatedByMin         *string                  `json:"createdByMin"`
-	CreatedByMax         *string                  `json:"createdByMax"`
-	CreatedByNe          *string                  `json:"createdBy_ne"`
-	CreatedByMinNe       *string                  `json:"createdByMin_ne"`
-	CreatedByMaxNe       *string                  `json:"createdByMax_ne"`
-	CreatedByGt          *string                  `json:"createdBy_gt"`
-	CreatedByMinGt       *string                  `json:"createdByMin_gt"`
-	CreatedByMaxGt       *string                  `json:"createdByMax_gt"`
-	CreatedByLt          *string                  `json:"createdBy_lt"`
-	CreatedByMinLt       *string                  `json:"createdByMin_lt"`
-	CreatedByMaxLt       *string                  `json:"createdByMax_lt"`
-	CreatedByGte         *string                  `json:"createdBy_gte"`
-	CreatedByMinGte      *string                  `json:"createdByMin_gte"`
-	CreatedByMaxGte      *string                  `json:"createdByMax_gte"`
-	CreatedByLte         *string                  `json:"createdBy_lte"`
-	CreatedByMinLte      *string                  `json:"createdByMin_lte"`
-	CreatedByMaxLte      *string                  `json:"createdByMax_lte"`
-	CreatedByIn          []string                 `json:"createdBy_in"`
-	CreatedByMinIn       []string                 `json:"createdByMin_in"`
-	CreatedByMaxIn       []string                 `json:"createdByMax_in"`
-	CreatedByNull        *bool                    `json:"createdBy_null"`
+type PaymentChannelFilterType struct {
+	And                  []*PaymentChannelFilterType `json:"AND"`
+	Or                   []*PaymentChannelFilterType `json:"OR"`
+	ID                   *string                     `json:"id"`
+	IDMin                *string                     `json:"idMin"`
+	IDMax                *string                     `json:"idMax"`
+	IDNe                 *string                     `json:"id_ne"`
+	IDMinNe              *string                     `json:"idMin_ne"`
+	IDMaxNe              *string                     `json:"idMax_ne"`
+	IDGt                 *string                     `json:"id_gt"`
+	IDMinGt              *string                     `json:"idMin_gt"`
+	IDMaxGt              *string                     `json:"idMax_gt"`
+	IDLt                 *string                     `json:"id_lt"`
+	IDMinLt              *string                     `json:"idMin_lt"`
+	IDMaxLt              *string                     `json:"idMax_lt"`
+	IDGte                *string                     `json:"id_gte"`
+	IDMinGte             *string                     `json:"idMin_gte"`
+	IDMaxGte             *string                     `json:"idMax_gte"`
+	IDLte                *string                     `json:"id_lte"`
+	IDMinLte             *string                     `json:"idMin_lte"`
+	IDMaxLte             *string                     `json:"idMax_lte"`
+	IDIn                 []string                    `json:"id_in"`
+	IDMinIn              []string                    `json:"idMin_in"`
+	IDMaxIn              []string                    `json:"idMax_in"`
+	IDNull               *bool                       `json:"id_null"`
+	Name                 *string                     `json:"name"`
+	NameMin              *string                     `json:"nameMin"`
+	NameMax              *string                     `json:"nameMax"`
+	NameNe               *string                     `json:"name_ne"`
+	NameMinNe            *string                     `json:"nameMin_ne"`
+	NameMaxNe            *string                     `json:"nameMax_ne"`
+	NameGt               *string                     `json:"name_gt"`
+	NameMinGt            *string                     `json:"nameMin_gt"`
+	NameMaxGt            *string                     `json:"nameMax_gt"`
+	NameLt               *string                     `json:"name_lt"`
+	NameMinLt            *string                     `json:"nameMin_lt"`
+	NameMaxLt            *string                     `json:"nameMax_lt"`
+	NameGte              *string                     `json:"name_gte"`
+	NameMinGte           *string                     `json:"nameMin_gte"`
+	NameMaxGte           *string                     `json:"nameMax_gte"`
+	NameLte              *string                     `json:"name_lte"`
+	NameMinLte           *string                     `json:"nameMin_lte"`
+	NameMaxLte           *string                     `json:"nameMax_lte"`
+	NameIn               []string                    `json:"name_in"`
+	NameMinIn            []string                    `json:"nameMin_in"`
+	NameMaxIn            []string                    `json:"nameMax_in"`
+	NameLike             *string                     `json:"name_like"`
+	NameMinLike          *string                     `json:"nameMin_like"`
+	NameMaxLike          *string                     `json:"nameMax_like"`
+	NamePrefix           *string                     `json:"name_prefix"`
+	NameMinPrefix        *string                     `json:"nameMin_prefix"`
+	NameMaxPrefix        *string                     `json:"nameMax_prefix"`
+	NameSuffix           *string                     `json:"name_suffix"`
+	NameMinSuffix        *string                     `json:"nameMin_suffix"`
+	NameMaxSuffix        *string                     `json:"nameMax_suffix"`
+	NameNull             *bool                       `json:"name_null"`
+	Description          *string                     `json:"description"`
+	DescriptionMin       *string                     `json:"descriptionMin"`
+	DescriptionMax       *string                     `json:"descriptionMax"`
+	DescriptionNe        *string                     `json:"description_ne"`
+	DescriptionMinNe     *string                     `json:"descriptionMin_ne"`
+	DescriptionMaxNe     *string                     `json:"descriptionMax_ne"`
+	DescriptionGt        *string                     `json:"description_gt"`
+	DescriptionMinGt     *string                     `json:"descriptionMin_gt"`
+	DescriptionMaxGt     *string                     `json:"descriptionMax_gt"`
+	DescriptionLt        *string                     `json:"description_lt"`
+	DescriptionMinLt     *string                     `json:"descriptionMin_lt"`
+	DescriptionMaxLt     *string                     `json:"descriptionMax_lt"`
+	DescriptionGte       *string                     `json:"description_gte"`
+	DescriptionMinGte    *string                     `json:"descriptionMin_gte"`
+	DescriptionMaxGte    *string                     `json:"descriptionMax_gte"`
+	DescriptionLte       *string                     `json:"description_lte"`
+	DescriptionMinLte    *string                     `json:"descriptionMin_lte"`
+	DescriptionMaxLte    *string                     `json:"descriptionMax_lte"`
+	DescriptionIn        []string                    `json:"description_in"`
+	DescriptionMinIn     []string                    `json:"descriptionMin_in"`
+	DescriptionMaxIn     []string                    `json:"descriptionMax_in"`
+	DescriptionLike      *string                     `json:"description_like"`
+	DescriptionMinLike   *string                     `json:"descriptionMin_like"`
+	DescriptionMaxLike   *string                     `json:"descriptionMax_like"`
+	DescriptionPrefix    *string                     `json:"description_prefix"`
+	DescriptionMinPrefix *string                     `json:"descriptionMin_prefix"`
+	DescriptionMaxPrefix *string                     `json:"descriptionMax_prefix"`
+	DescriptionSuffix    *string                     `json:"description_suffix"`
+	DescriptionMinSuffix *string                     `json:"descriptionMin_suffix"`
+	DescriptionMaxSuffix *string                     `json:"descriptionMax_suffix"`
+	DescriptionNull      *bool                       `json:"description_null"`
+	UpdatedAt            *time.Time                  `json:"updatedAt"`
+	UpdatedAtMin         *time.Time                  `json:"updatedAtMin"`
+	UpdatedAtMax         *time.Time                  `json:"updatedAtMax"`
+	UpdatedAtNe          *time.Time                  `json:"updatedAt_ne"`
+	UpdatedAtMinNe       *time.Time                  `json:"updatedAtMin_ne"`
+	UpdatedAtMaxNe       *time.Time                  `json:"updatedAtMax_ne"`
+	UpdatedAtGt          *time.Time                  `json:"updatedAt_gt"`
+	UpdatedAtMinGt       *time.Time                  `json:"updatedAtMin_gt"`
+	UpdatedAtMaxGt       *time.Time                  `json:"updatedAtMax_gt"`
+	UpdatedAtLt          *time.Time                  `json:"updatedAt_lt"`
+	UpdatedAtMinLt       *time.Time                  `json:"updatedAtMin_lt"`
+	UpdatedAtMaxLt       *time.Time                  `json:"updatedAtMax_lt"`
+	UpdatedAtGte         *time.Time                  `json:"updatedAt_gte"`
+	UpdatedAtMinGte      *time.Time                  `json:"updatedAtMin_gte"`
+	UpdatedAtMaxGte      *time.Time                  `json:"updatedAtMax_gte"`
+	UpdatedAtLte         *time.Time                  `json:"updatedAt_lte"`
+	UpdatedAtMinLte      *time.Time                  `json:"updatedAtMin_lte"`
+	UpdatedAtMaxLte      *time.Time                  `json:"updatedAtMax_lte"`
+	UpdatedAtIn          []*time.Time                `json:"updatedAt_in"`
+	UpdatedAtMinIn       []*time.Time                `json:"updatedAtMin_in"`
+	UpdatedAtMaxIn       []*time.Time                `json:"updatedAtMax_in"`
+	UpdatedAtNull        *bool                       `json:"updatedAt_null"`
+	CreatedAt            *time.Time                  `json:"createdAt"`
+	CreatedAtMin         *time.Time                  `json:"createdAtMin"`
+	CreatedAtMax         *time.Time                  `json:"createdAtMax"`
+	CreatedAtNe          *time.Time                  `json:"createdAt_ne"`
+	CreatedAtMinNe       *time.Time                  `json:"createdAtMin_ne"`
+	CreatedAtMaxNe       *time.Time                  `json:"createdAtMax_ne"`
+	CreatedAtGt          *time.Time                  `json:"createdAt_gt"`
+	CreatedAtMinGt       *time.Time                  `json:"createdAtMin_gt"`
+	CreatedAtMaxGt       *time.Time                  `json:"createdAtMax_gt"`
+	CreatedAtLt          *time.Time                  `json:"createdAt_lt"`
+	CreatedAtMinLt       *time.Time                  `json:"createdAtMin_lt"`
+	CreatedAtMaxLt       *time.Time                  `json:"createdAtMax_lt"`
+	CreatedAtGte         *time.Time                  `json:"createdAt_gte"`
+	CreatedAtMinGte      *time.Time                  `json:"createdAtMin_gte"`
+	CreatedAtMaxGte      *time.Time                  `json:"createdAtMax_gte"`
+	CreatedAtLte         *time.Time                  `json:"createdAt_lte"`
+	CreatedAtMinLte      *time.Time                  `json:"createdAtMin_lte"`
+	CreatedAtMaxLte      *time.Time                  `json:"createdAtMax_lte"`
+	CreatedAtIn          []*time.Time                `json:"createdAt_in"`
+	CreatedAtMinIn       []*time.Time                `json:"createdAtMin_in"`
+	CreatedAtMaxIn       []*time.Time                `json:"createdAtMax_in"`
+	CreatedAtNull        *bool                       `json:"createdAt_null"`
+	UpdatedBy            *string                     `json:"updatedBy"`
+	UpdatedByMin         *string                     `json:"updatedByMin"`
+	UpdatedByMax         *string                     `json:"updatedByMax"`
+	UpdatedByNe          *string                     `json:"updatedBy_ne"`
+	UpdatedByMinNe       *string                     `json:"updatedByMin_ne"`
+	UpdatedByMaxNe       *string                     `json:"updatedByMax_ne"`
+	UpdatedByGt          *string                     `json:"updatedBy_gt"`
+	UpdatedByMinGt       *string                     `json:"updatedByMin_gt"`
+	UpdatedByMaxGt       *string                     `json:"updatedByMax_gt"`
+	UpdatedByLt          *string                     `json:"updatedBy_lt"`
+	UpdatedByMinLt       *string                     `json:"updatedByMin_lt"`
+	UpdatedByMaxLt       *string                     `json:"updatedByMax_lt"`
+	UpdatedByGte         *string                     `json:"updatedBy_gte"`
+	UpdatedByMinGte      *string                     `json:"updatedByMin_gte"`
+	UpdatedByMaxGte      *string                     `json:"updatedByMax_gte"`
+	UpdatedByLte         *string                     `json:"updatedBy_lte"`
+	UpdatedByMinLte      *string                     `json:"updatedByMin_lte"`
+	UpdatedByMaxLte      *string                     `json:"updatedByMax_lte"`
+	UpdatedByIn          []string                    `json:"updatedBy_in"`
+	UpdatedByMinIn       []string                    `json:"updatedByMin_in"`
+	UpdatedByMaxIn       []string                    `json:"updatedByMax_in"`
+	UpdatedByNull        *bool                       `json:"updatedBy_null"`
+	CreatedBy            *string                     `json:"createdBy"`
+	CreatedByMin         *string                     `json:"createdByMin"`
+	CreatedByMax         *string                     `json:"createdByMax"`
+	CreatedByNe          *string                     `json:"createdBy_ne"`
+	CreatedByMinNe       *string                     `json:"createdByMin_ne"`
+	CreatedByMaxNe       *string                     `json:"createdByMax_ne"`
+	CreatedByGt          *string                     `json:"createdBy_gt"`
+	CreatedByMinGt       *string                     `json:"createdByMin_gt"`
+	CreatedByMaxGt       *string                     `json:"createdByMax_gt"`
+	CreatedByLt          *string                     `json:"createdBy_lt"`
+	CreatedByMinLt       *string                     `json:"createdByMin_lt"`
+	CreatedByMaxLt       *string                     `json:"createdByMax_lt"`
+	CreatedByGte         *string                     `json:"createdBy_gte"`
+	CreatedByMinGte      *string                     `json:"createdByMin_gte"`
+	CreatedByMaxGte      *string                     `json:"createdByMax_gte"`
+	CreatedByLte         *string                     `json:"createdBy_lte"`
+	CreatedByMinLte      *string                     `json:"createdByMin_lte"`
+	CreatedByMaxLte      *string                     `json:"createdByMax_lte"`
+	CreatedByIn          []string                    `json:"createdBy_in"`
+	CreatedByMinIn       []string                    `json:"createdByMin_in"`
+	CreatedByMaxIn       []string                    `json:"createdByMax_in"`
+	CreatedByNull        *bool                       `json:"createdBy_null"`
 }
 
-type PaymentFormSortType struct {
+type PaymentChannelSortType struct {
 	ID             *ObjectSortType `json:"id"`
 	IDMin          *ObjectSortType `json:"idMin"`
 	IDMax          *ObjectSortType `json:"idMax"`
@@ -1289,6 +1289,57 @@ type PaymentHistoryFilterType struct {
 	IDMinIn          []string                    `json:"idMin_in"`
 	IDMaxIn          []string                    `json:"idMax_in"`
 	IDNull           *bool                       `json:"id_null"`
+	Type             *PaymentType                `json:"type"`
+	TypeMin          *PaymentType                `json:"typeMin"`
+	TypeMax          *PaymentType                `json:"typeMax"`
+	TypeNe           *PaymentType                `json:"type_ne"`
+	TypeMinNe        *PaymentType                `json:"typeMin_ne"`
+	TypeMaxNe        *PaymentType                `json:"typeMax_ne"`
+	TypeGt           *PaymentType                `json:"type_gt"`
+	TypeMinGt        *PaymentType                `json:"typeMin_gt"`
+	TypeMaxGt        *PaymentType                `json:"typeMax_gt"`
+	TypeLt           *PaymentType                `json:"type_lt"`
+	TypeMinLt        *PaymentType                `json:"typeMin_lt"`
+	TypeMaxLt        *PaymentType                `json:"typeMax_lt"`
+	TypeGte          *PaymentType                `json:"type_gte"`
+	TypeMinGte       *PaymentType                `json:"typeMin_gte"`
+	TypeMaxGte       *PaymentType                `json:"typeMax_gte"`
+	TypeLte          *PaymentType                `json:"type_lte"`
+	TypeMinLte       *PaymentType                `json:"typeMin_lte"`
+	TypeMaxLte       *PaymentType                `json:"typeMax_lte"`
+	TypeIn           []PaymentType               `json:"type_in"`
+	TypeMinIn        []PaymentType               `json:"typeMin_in"`
+	TypeMaxIn        []PaymentType               `json:"typeMax_in"`
+	TypeNull         *bool                       `json:"type_null"`
+	Amount           *float64                    `json:"amount"`
+	AmountMin        *float64                    `json:"amountMin"`
+	AmountMax        *float64                    `json:"amountMax"`
+	AmountAvg        *float64                    `json:"amountAvg"`
+	AmountNe         *float64                    `json:"amount_ne"`
+	AmountMinNe      *float64                    `json:"amountMin_ne"`
+	AmountMaxNe      *float64                    `json:"amountMax_ne"`
+	AmountAvgNe      *float64                    `json:"amountAvg_ne"`
+	AmountGt         *float64                    `json:"amount_gt"`
+	AmountMinGt      *float64                    `json:"amountMin_gt"`
+	AmountMaxGt      *float64                    `json:"amountMax_gt"`
+	AmountAvgGt      *float64                    `json:"amountAvg_gt"`
+	AmountLt         *float64                    `json:"amount_lt"`
+	AmountMinLt      *float64                    `json:"amountMin_lt"`
+	AmountMaxLt      *float64                    `json:"amountMax_lt"`
+	AmountAvgLt      *float64                    `json:"amountAvg_lt"`
+	AmountGte        *float64                    `json:"amount_gte"`
+	AmountMinGte     *float64                    `json:"amountMin_gte"`
+	AmountMaxGte     *float64                    `json:"amountMax_gte"`
+	AmountAvgGte     *float64                    `json:"amountAvg_gte"`
+	AmountLte        *float64                    `json:"amount_lte"`
+	AmountMinLte     *float64                    `json:"amountMin_lte"`
+	AmountMaxLte     *float64                    `json:"amountMax_lte"`
+	AmountAvgLte     *float64                    `json:"amountAvg_lte"`
+	AmountIn         []float64                   `json:"amount_in"`
+	AmountMinIn      []float64                   `json:"amountMin_in"`
+	AmountMaxIn      []float64                   `json:"amountMax_in"`
+	AmountAvgIn      []float64                   `json:"amountAvg_in"`
+	AmountNull       *bool                       `json:"amount_null"`
 	Concept          *string                     `json:"concept"`
 	ConceptMin       *string                     `json:"conceptMin"`
 	ConceptMax       *string                     `json:"conceptMax"`
@@ -1320,35 +1371,6 @@ type PaymentHistoryFilterType struct {
 	ConceptMinSuffix *string                     `json:"conceptMin_suffix"`
 	ConceptMaxSuffix *string                     `json:"conceptMax_suffix"`
 	ConceptNull      *bool                       `json:"concept_null"`
-	Amount           *float64                    `json:"amount"`
-	AmountMin        *float64                    `json:"amountMin"`
-	AmountMax        *float64                    `json:"amountMax"`
-	AmountAvg        *float64                    `json:"amountAvg"`
-	AmountNe         *float64                    `json:"amount_ne"`
-	AmountMinNe      *float64                    `json:"amountMin_ne"`
-	AmountMaxNe      *float64                    `json:"amountMax_ne"`
-	AmountAvgNe      *float64                    `json:"amountAvg_ne"`
-	AmountGt         *float64                    `json:"amount_gt"`
-	AmountMinGt      *float64                    `json:"amountMin_gt"`
-	AmountMaxGt      *float64                    `json:"amountMax_gt"`
-	AmountAvgGt      *float64                    `json:"amountAvg_gt"`
-	AmountLt         *float64                    `json:"amount_lt"`
-	AmountMinLt      *float64                    `json:"amountMin_lt"`
-	AmountMaxLt      *float64                    `json:"amountMax_lt"`
-	AmountAvgLt      *float64                    `json:"amountAvg_lt"`
-	AmountGte        *float64                    `json:"amount_gte"`
-	AmountMinGte     *float64                    `json:"amountMin_gte"`
-	AmountMaxGte     *float64                    `json:"amountMax_gte"`
-	AmountAvgGte     *float64                    `json:"amountAvg_gte"`
-	AmountLte        *float64                    `json:"amount_lte"`
-	AmountMinLte     *float64                    `json:"amountMin_lte"`
-	AmountMaxLte     *float64                    `json:"amountMax_lte"`
-	AmountAvgLte     *float64                    `json:"amountAvg_lte"`
-	AmountIn         []float64                   `json:"amount_in"`
-	AmountMinIn      []float64                   `json:"amountMin_in"`
-	AmountMaxIn      []float64                   `json:"amountMax_in"`
-	AmountAvgIn      []float64                   `json:"amountAvg_in"`
-	AmountNull       *bool                       `json:"amount_null"`
 	PersonID         *string                     `json:"personId"`
 	PersonIDMin      *string                     `json:"personIdMin"`
 	PersonIDMax      *string                     `json:"personIdMax"`
@@ -1466,13 +1488,16 @@ type PaymentHistorySortType struct {
 	ID           *ObjectSortType `json:"id"`
 	IDMin        *ObjectSortType `json:"idMin"`
 	IDMax        *ObjectSortType `json:"idMax"`
-	Concept      *ObjectSortType `json:"concept"`
-	ConceptMin   *ObjectSortType `json:"conceptMin"`
-	ConceptMax   *ObjectSortType `json:"conceptMax"`
+	Type         *ObjectSortType `json:"type"`
+	TypeMin      *ObjectSortType `json:"typeMin"`
+	TypeMax      *ObjectSortType `json:"typeMax"`
 	Amount       *ObjectSortType `json:"amount"`
 	AmountMin    *ObjectSortType `json:"amountMin"`
 	AmountMax    *ObjectSortType `json:"amountMax"`
 	AmountAvg    *ObjectSortType `json:"amountAvg"`
+	Concept      *ObjectSortType `json:"concept"`
+	ConceptMin   *ObjectSortType `json:"conceptMin"`
+	ConceptMax   *ObjectSortType `json:"conceptMax"`
 	PersonID     *ObjectSortType `json:"personId"`
 	PersonIDMin  *ObjectSortType `json:"personIdMin"`
 	PersonIDMax  *ObjectSortType `json:"personIdMax"`
@@ -1516,64 +1541,57 @@ type PaymentStatusFilterType struct {
 	IDMinIn         []string                   `json:"idMin_in"`
 	IDMaxIn         []string                   `json:"idMax_in"`
 	IDNull          *bool                      `json:"id_null"`
-	Credit          *float64                   `json:"credit"`
-	CreditMin       *float64                   `json:"creditMin"`
-	CreditMax       *float64                   `json:"creditMax"`
-	CreditAvg       *float64                   `json:"creditAvg"`
-	CreditNe        *float64                   `json:"credit_ne"`
-	CreditMinNe     *float64                   `json:"creditMin_ne"`
-	CreditMaxNe     *float64                   `json:"creditMax_ne"`
-	CreditAvgNe     *float64                   `json:"creditAvg_ne"`
-	CreditGt        *float64                   `json:"credit_gt"`
-	CreditMinGt     *float64                   `json:"creditMin_gt"`
-	CreditMaxGt     *float64                   `json:"creditMax_gt"`
-	CreditAvgGt     *float64                   `json:"creditAvg_gt"`
-	CreditLt        *float64                   `json:"credit_lt"`
-	CreditMinLt     *float64                   `json:"creditMin_lt"`
-	CreditMaxLt     *float64                   `json:"creditMax_lt"`
-	CreditAvgLt     *float64                   `json:"creditAvg_lt"`
-	CreditGte       *float64                   `json:"credit_gte"`
-	CreditMinGte    *float64                   `json:"creditMin_gte"`
-	CreditMaxGte    *float64                   `json:"creditMax_gte"`
-	CreditAvgGte    *float64                   `json:"creditAvg_gte"`
-	CreditLte       *float64                   `json:"credit_lte"`
-	CreditMinLte    *float64                   `json:"creditMin_lte"`
-	CreditMaxLte    *float64                   `json:"creditMax_lte"`
-	CreditAvgLte    *float64                   `json:"creditAvg_lte"`
-	CreditIn        []float64                  `json:"credit_in"`
-	CreditMinIn     []float64                  `json:"creditMin_in"`
-	CreditMaxIn     []float64                  `json:"creditMax_in"`
-	CreditAvgIn     []float64                  `json:"creditAvg_in"`
-	CreditNull      *bool                      `json:"credit_null"`
-	Balance         *float64                   `json:"balance"`
-	BalanceMin      *float64                   `json:"balanceMin"`
-	BalanceMax      *float64                   `json:"balanceMax"`
-	BalanceAvg      *float64                   `json:"balanceAvg"`
-	BalanceNe       *float64                   `json:"balance_ne"`
-	BalanceMinNe    *float64                   `json:"balanceMin_ne"`
-	BalanceMaxNe    *float64                   `json:"balanceMax_ne"`
-	BalanceAvgNe    *float64                   `json:"balanceAvg_ne"`
-	BalanceGt       *float64                   `json:"balance_gt"`
-	BalanceMinGt    *float64                   `json:"balanceMin_gt"`
-	BalanceMaxGt    *float64                   `json:"balanceMax_gt"`
-	BalanceAvgGt    *float64                   `json:"balanceAvg_gt"`
-	BalanceLt       *float64                   `json:"balance_lt"`
-	BalanceMinLt    *float64                   `json:"balanceMin_lt"`
-	BalanceMaxLt    *float64                   `json:"balanceMax_lt"`
-	BalanceAvgLt    *float64                   `json:"balanceAvg_lt"`
-	BalanceGte      *float64                   `json:"balance_gte"`
-	BalanceMinGte   *float64                   `json:"balanceMin_gte"`
-	BalanceMaxGte   *float64                   `json:"balanceMax_gte"`
-	BalanceAvgGte   *float64                   `json:"balanceAvg_gte"`
-	BalanceLte      *float64                   `json:"balance_lte"`
-	BalanceMinLte   *float64                   `json:"balanceMin_lte"`
-	BalanceMaxLte   *float64                   `json:"balanceMax_lte"`
-	BalanceAvgLte   *float64                   `json:"balanceAvg_lte"`
-	BalanceIn       []float64                  `json:"balance_in"`
-	BalanceMinIn    []float64                  `json:"balanceMin_in"`
-	BalanceMaxIn    []float64                  `json:"balanceMax_in"`
-	BalanceAvgIn    []float64                  `json:"balanceAvg_in"`
-	BalanceNull     *bool                      `json:"balance_null"`
+	Type            *PaymentType               `json:"type"`
+	TypeMin         *PaymentType               `json:"typeMin"`
+	TypeMax         *PaymentType               `json:"typeMax"`
+	TypeNe          *PaymentType               `json:"type_ne"`
+	TypeMinNe       *PaymentType               `json:"typeMin_ne"`
+	TypeMaxNe       *PaymentType               `json:"typeMax_ne"`
+	TypeGt          *PaymentType               `json:"type_gt"`
+	TypeMinGt       *PaymentType               `json:"typeMin_gt"`
+	TypeMaxGt       *PaymentType               `json:"typeMax_gt"`
+	TypeLt          *PaymentType               `json:"type_lt"`
+	TypeMinLt       *PaymentType               `json:"typeMin_lt"`
+	TypeMaxLt       *PaymentType               `json:"typeMax_lt"`
+	TypeGte         *PaymentType               `json:"type_gte"`
+	TypeMinGte      *PaymentType               `json:"typeMin_gte"`
+	TypeMaxGte      *PaymentType               `json:"typeMax_gte"`
+	TypeLte         *PaymentType               `json:"type_lte"`
+	TypeMinLte      *PaymentType               `json:"typeMin_lte"`
+	TypeMaxLte      *PaymentType               `json:"typeMax_lte"`
+	TypeIn          []PaymentType              `json:"type_in"`
+	TypeMinIn       []PaymentType              `json:"typeMin_in"`
+	TypeMaxIn       []PaymentType              `json:"typeMax_in"`
+	TypeNull        *bool                      `json:"type_null"`
+	Amount          *float64                   `json:"amount"`
+	AmountMin       *float64                   `json:"amountMin"`
+	AmountMax       *float64                   `json:"amountMax"`
+	AmountAvg       *float64                   `json:"amountAvg"`
+	AmountNe        *float64                   `json:"amount_ne"`
+	AmountMinNe     *float64                   `json:"amountMin_ne"`
+	AmountMaxNe     *float64                   `json:"amountMax_ne"`
+	AmountAvgNe     *float64                   `json:"amountAvg_ne"`
+	AmountGt        *float64                   `json:"amount_gt"`
+	AmountMinGt     *float64                   `json:"amountMin_gt"`
+	AmountMaxGt     *float64                   `json:"amountMax_gt"`
+	AmountAvgGt     *float64                   `json:"amountAvg_gt"`
+	AmountLt        *float64                   `json:"amount_lt"`
+	AmountMinLt     *float64                   `json:"amountMin_lt"`
+	AmountMaxLt     *float64                   `json:"amountMax_lt"`
+	AmountAvgLt     *float64                   `json:"amountAvg_lt"`
+	AmountGte       *float64                   `json:"amount_gte"`
+	AmountMinGte    *float64                   `json:"amountMin_gte"`
+	AmountMaxGte    *float64                   `json:"amountMax_gte"`
+	AmountAvgGte    *float64                   `json:"amountAvg_gte"`
+	AmountLte       *float64                   `json:"amount_lte"`
+	AmountMinLte    *float64                   `json:"amountMin_lte"`
+	AmountMaxLte    *float64                   `json:"amountMax_lte"`
+	AmountAvgLte    *float64                   `json:"amountAvg_lte"`
+	AmountIn        []float64                  `json:"amount_in"`
+	AmountMinIn     []float64                  `json:"amountMin_in"`
+	AmountMaxIn     []float64                  `json:"amountMax_in"`
+	AmountAvgIn     []float64                  `json:"amountAvg_in"`
+	AmountNull      *bool                      `json:"amount_null"`
 	PersonID        *string                    `json:"personId"`
 	PersonIDMin     *string                    `json:"personIdMin"`
 	PersonIDMax     *string                    `json:"personIdMax"`
@@ -1691,14 +1709,13 @@ type PaymentStatusSortType struct {
 	ID           *ObjectSortType `json:"id"`
 	IDMin        *ObjectSortType `json:"idMin"`
 	IDMax        *ObjectSortType `json:"idMax"`
-	Credit       *ObjectSortType `json:"credit"`
-	CreditMin    *ObjectSortType `json:"creditMin"`
-	CreditMax    *ObjectSortType `json:"creditMax"`
-	CreditAvg    *ObjectSortType `json:"creditAvg"`
-	Balance      *ObjectSortType `json:"balance"`
-	BalanceMin   *ObjectSortType `json:"balanceMin"`
-	BalanceMax   *ObjectSortType `json:"balanceMax"`
-	BalanceAvg   *ObjectSortType `json:"balanceAvg"`
+	Type         *ObjectSortType `json:"type"`
+	TypeMin      *ObjectSortType `json:"typeMin"`
+	TypeMax      *ObjectSortType `json:"typeMax"`
+	Amount       *ObjectSortType `json:"amount"`
+	AmountMin    *ObjectSortType `json:"amountMin"`
+	AmountMax    *ObjectSortType `json:"amountMax"`
+	AmountAvg    *ObjectSortType `json:"amountAvg"`
 	PersonID     *ObjectSortType `json:"personId"`
 	PersonIDMin  *ObjectSortType `json:"personIdMin"`
 	PersonIDMax  *ObjectSortType `json:"personIdMax"`
@@ -2557,5 +2574,48 @@ func (e *ObjectSortType) UnmarshalGQL(v interface{}) error {
 }
 
 func (e ObjectSortType) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
+}
+
+type PaymentType string
+
+const (
+	PaymentTypeCredit  PaymentType = "Credit"
+	PaymentTypeBalance PaymentType = "Balance"
+	PaymentTypeLoan    PaymentType = "Loan"
+)
+
+var AllPaymentType = []PaymentType{
+	PaymentTypeCredit,
+	PaymentTypeBalance,
+	PaymentTypeLoan,
+}
+
+func (e PaymentType) IsValid() bool {
+	switch e {
+	case PaymentTypeCredit, PaymentTypeBalance, PaymentTypeLoan:
+		return true
+	}
+	return false
+}
+
+func (e PaymentType) String() string {
+	return string(e)
+}
+
+func (e *PaymentType) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = PaymentType(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid PaymentType", str)
+	}
+	return nil
+}
+
+func (e PaymentType) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }

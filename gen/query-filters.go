@@ -615,13 +615,13 @@ func (qf *VehicleTypeQueryFilter) applyQueryWithFields(dialect gorm.Dialect, fie
 	return nil
 }
 
-// PaymentFormQueryFilter struct
-type PaymentFormQueryFilter struct {
+// PaymentChannelQueryFilter struct
+type PaymentChannelQueryFilter struct {
 	Query *string
 }
 
 // Apply ...
-func (qf *PaymentFormQueryFilter) Apply(ctx context.Context, dialect gorm.Dialect, selectionSet *ast.SelectionSet, wheres *[]string, values *[]interface{}, joins *[]string) error {
+func (qf *PaymentChannelQueryFilter) Apply(ctx context.Context, dialect gorm.Dialect, selectionSet *ast.SelectionSet, wheres *[]string, values *[]interface{}, joins *[]string) error {
 	if qf.Query == nil {
 		return nil
 	}
@@ -640,7 +640,7 @@ func (qf *PaymentFormQueryFilter) Apply(ctx context.Context, dialect gorm.Dialec
 	queryParts := strings.Split(*qf.Query, " ")
 	for _, part := range queryParts {
 		ors := []string{}
-		if err := qf.applyQueryWithFields(dialect, fields, part, TableName("payment_forms"), &ors, values, joins); err != nil {
+		if err := qf.applyQueryWithFields(dialect, fields, part, TableName("payment_channels"), &ors, values, joins); err != nil {
 			return err
 		}
 		*wheres = append(*wheres, "("+strings.Join(ors, " OR ")+")")
@@ -648,7 +648,7 @@ func (qf *PaymentFormQueryFilter) Apply(ctx context.Context, dialect gorm.Dialec
 	return nil
 }
 
-func (qf *PaymentFormQueryFilter) applyQueryWithFields(dialect gorm.Dialect, fields []*ast.Field, query, alias string, ors *[]string, values *[]interface{}, joins *[]string) error {
+func (qf *PaymentChannelQueryFilter) applyQueryWithFields(dialect gorm.Dialect, fields []*ast.Field, query, alias string, ors *[]string, values *[]interface{}, joins *[]string) error {
 	if len(fields) == 0 {
 		return nil
 	}
@@ -720,25 +720,13 @@ func (qf *PaymentStatusQueryFilter) applyQueryWithFields(dialect gorm.Dialect, f
 		fieldsMap[f.Name] = append(fieldsMap[f.Name], f)
 	}
 
-	if _, ok := fieldsMap["credit"]; ok {
+	if _, ok := fieldsMap["amount"]; ok {
 
 		cast := "TEXT"
 		if dialect.GetName() == "mysql" {
 			cast = "CHAR"
 		}
-		column := fmt.Sprintf("CAST(%s"+dialect.Quote("credit")+" AS %s)", dialect.Quote(alias)+".", cast)
-
-		*ors = append(*ors, fmt.Sprintf("%[1]s LIKE ? OR %[1]s LIKE ?", column))
-		*values = append(*values, query+"%", "% "+query+"%")
-	}
-
-	if _, ok := fieldsMap["balance"]; ok {
-
-		cast := "TEXT"
-		if dialect.GetName() == "mysql" {
-			cast = "CHAR"
-		}
-		column := fmt.Sprintf("CAST(%s"+dialect.Quote("balance")+" AS %s)", dialect.Quote(alias)+".", cast)
+		column := fmt.Sprintf("CAST(%s"+dialect.Quote("amount")+" AS %s)", dialect.Quote(alias)+".", cast)
 
 		*ors = append(*ors, fmt.Sprintf("%[1]s LIKE ? OR %[1]s LIKE ?", column))
 		*values = append(*values, query+"%", "% "+query+"%")
@@ -809,14 +797,6 @@ func (qf *PaymentHistoryQueryFilter) applyQueryWithFields(dialect gorm.Dialect, 
 		fieldsMap[f.Name] = append(fieldsMap[f.Name], f)
 	}
 
-	if _, ok := fieldsMap["concept"]; ok {
-
-		column := dialect.Quote(alias) + "." + dialect.Quote("concept")
-
-		*ors = append(*ors, fmt.Sprintf("%[1]s LIKE ? OR %[1]s LIKE ?", column))
-		*values = append(*values, query+"%", "% "+query+"%")
-	}
-
 	if _, ok := fieldsMap["amount"]; ok {
 
 		cast := "TEXT"
@@ -824,6 +804,14 @@ func (qf *PaymentHistoryQueryFilter) applyQueryWithFields(dialect gorm.Dialect, 
 			cast = "CHAR"
 		}
 		column := fmt.Sprintf("CAST(%s"+dialect.Quote("amount")+" AS %s)", dialect.Quote(alias)+".", cast)
+
+		*ors = append(*ors, fmt.Sprintf("%[1]s LIKE ? OR %[1]s LIKE ?", column))
+		*values = append(*values, query+"%", "% "+query+"%")
+	}
+
+	if _, ok := fieldsMap["concept"]; ok {
+
+		column := dialect.Quote(alias) + "." + dialect.Quote("concept")
 
 		*ors = append(*ors, fmt.Sprintf("%[1]s LIKE ? OR %[1]s LIKE ?", column))
 		*values = append(*values, query+"%", "% "+query+"%")

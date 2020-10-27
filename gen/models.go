@@ -236,13 +236,13 @@ type VehicleTypeChanges struct {
 	CreatedBy   *string
 }
 
-// PaymentFormResultType struct
-type PaymentFormResultType struct {
+// PaymentChannelResultType struct
+type PaymentChannelResultType struct {
 	EntityResultType
 }
 
-// PaymentForm struct
-type PaymentForm struct {
+// PaymentChannel struct
+type PaymentChannel struct {
 	ID          string     `json:"id" gorm:"column:id;primary_key"`
 	Name        *string    `json:"name" gorm:"column:name"`
 	Description *string    `json:"description" gorm:"column:description;type:text"`
@@ -253,10 +253,10 @@ type PaymentForm struct {
 }
 
 // IsEntity ...
-func (m *PaymentForm) IsEntity() {}
+func (m *PaymentChannel) IsEntity() {}
 
-// PaymentFormChanges struct
-type PaymentFormChanges struct {
+// PaymentChannelChanges struct
+type PaymentChannelChanges struct {
 	ID          string
 	Name        *string
 	Description *string
@@ -273,14 +273,14 @@ type PaymentStatusResultType struct {
 
 // PaymentStatus struct
 type PaymentStatus struct {
-	ID        string     `json:"id" gorm:"column:id;primary_key"`
-	Credit    float64    `json:"credit" gorm:"column:credit;default:0.0"`
-	Balance   float64    `json:"balance" gorm:"column:balance;default:0.0"`
-	PersonID  *string    `json:"personId" gorm:"column:personId"`
-	UpdatedAt *time.Time `json:"updatedAt" gorm:"column:updatedAt"`
-	CreatedAt time.Time  `json:"createdAt" gorm:"column:createdAt"`
-	UpdatedBy *string    `json:"updatedBy" gorm:"column:updatedBy"`
-	CreatedBy *string    `json:"createdBy" gorm:"column:createdBy"`
+	ID        string      `json:"id" gorm:"column:id;primary_key"`
+	Type      PaymentType `json:"type" gorm:"column:type"`
+	Amount    float64     `json:"amount" gorm:"column:amount;default:0.0"`
+	PersonID  *string     `json:"personId" gorm:"column:personId"`
+	UpdatedAt *time.Time  `json:"updatedAt" gorm:"column:updatedAt"`
+	CreatedAt time.Time   `json:"createdAt" gorm:"column:createdAt"`
+	UpdatedBy *string     `json:"updatedBy" gorm:"column:updatedBy"`
+	CreatedBy *string     `json:"createdBy" gorm:"column:createdBy"`
 
 	Person *Person `json:"person"`
 }
@@ -291,8 +291,8 @@ func (m *PaymentStatus) IsEntity() {}
 // PaymentStatusChanges struct
 type PaymentStatusChanges struct {
 	ID        string
-	Credit    float64
-	Balance   float64
+	Type      PaymentType
+	Amount    float64
 	PersonID  *string
 	UpdatedAt *time.Time
 	CreatedAt time.Time
@@ -307,14 +307,15 @@ type PaymentHistoryResultType struct {
 
 // PaymentHistory struct
 type PaymentHistory struct {
-	ID        string     `json:"id" gorm:"column:id;primary_key"`
-	Concept   *string    `json:"concept" gorm:"column:concept;type:text"`
-	Amount    float64    `json:"amount" gorm:"column:amount;default:0.0"`
-	PersonID  *string    `json:"personId" gorm:"column:personId"`
-	UpdatedAt *time.Time `json:"updatedAt" gorm:"column:updatedAt"`
-	CreatedAt time.Time  `json:"createdAt" gorm:"column:createdAt"`
-	UpdatedBy *string    `json:"updatedBy" gorm:"column:updatedBy"`
-	CreatedBy *string    `json:"createdBy" gorm:"column:createdBy"`
+	ID        string      `json:"id" gorm:"column:id;primary_key"`
+	Type      PaymentType `json:"type" gorm:"column:type"`
+	Amount    float64     `json:"amount" gorm:"column:amount;default:0.0"`
+	Concept   *string     `json:"concept" gorm:"column:concept;type:text"`
+	PersonID  *string     `json:"personId" gorm:"column:personId"`
+	UpdatedAt *time.Time  `json:"updatedAt" gorm:"column:updatedAt"`
+	CreatedAt time.Time   `json:"createdAt" gorm:"column:createdAt"`
+	UpdatedBy *string     `json:"updatedBy" gorm:"column:updatedBy"`
+	CreatedBy *string     `json:"createdBy" gorm:"column:createdBy"`
 
 	Person *Person `json:"person"`
 }
@@ -325,8 +326,9 @@ func (m *PaymentHistory) IsEntity() {}
 // PaymentHistoryChanges struct
 type PaymentHistoryChanges struct {
 	ID        string
-	Concept   *string
+	Type      PaymentType
 	Amount    float64
+	Concept   *string
 	PersonID  *string
 	UpdatedAt *time.Time
 	CreatedAt time.Time

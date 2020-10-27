@@ -23,8 +23,8 @@ type Query {
   deliveryChannels(offset: Int, limit: Int = 30, q: String, sort: [DeliveryChannelSortType!], filter: DeliveryChannelFilterType): DeliveryChannelResultType!
   vehicleType(id: ID, q: String, filter: VehicleTypeFilterType): VehicleType
   vehicleTypes(offset: Int, limit: Int = 30, q: String, sort: [VehicleTypeSortType!], filter: VehicleTypeFilterType): VehicleTypeResultType!
-  paymentForm(id: ID, q: String, filter: PaymentFormFilterType): PaymentForm
-  paymentForms(offset: Int, limit: Int = 30, q: String, sort: [PaymentFormSortType!], filter: PaymentFormFilterType): PaymentFormResultType!
+  paymentChannel(id: ID, q: String, filter: PaymentChannelFilterType): PaymentChannel
+  paymentChannels(offset: Int, limit: Int = 30, q: String, sort: [PaymentChannelSortType!], filter: PaymentChannelFilterType): PaymentChannelResultType!
   paymentStatus(id: ID, q: String, filter: PaymentStatusFilterType): PaymentStatus
   paymentStatuses(offset: Int, limit: Int = 30, q: String, sort: [PaymentStatusSortType!], filter: PaymentStatusFilterType): PaymentStatusResultType!
   paymentHistory(id: ID, q: String, filter: PaymentHistoryFilterType): PaymentHistory
@@ -52,10 +52,10 @@ type Mutation {
   updateVehicleType(id: ID!, input: VehicleTypeUpdateInput!): VehicleType!
   deleteVehicleType(id: ID!): VehicleType!
   deleteAllVehicleTypes: Boolean!
-  createPaymentForm(input: PaymentFormCreateInput!): PaymentForm!
-  updatePaymentForm(id: ID!, input: PaymentFormUpdateInput!): PaymentForm!
-  deletePaymentForm(id: ID!): PaymentForm!
-  deleteAllPaymentForms: Boolean!
+  createPaymentChannel(input: PaymentChannelCreateInput!): PaymentChannel!
+  updatePaymentChannel(id: ID!, input: PaymentChannelUpdateInput!): PaymentChannel!
+  deletePaymentChannel(id: ID!): PaymentChannel!
+  deleteAllPaymentChannels: Boolean!
   createPaymentStatus(input: PaymentStatusCreateInput!): PaymentStatus!
   updatePaymentStatus(id: ID!, input: PaymentStatusUpdateInput!): PaymentStatus!
   deletePaymentStatus(id: ID!): PaymentStatus!
@@ -77,7 +77,7 @@ type Delivery {
   receiver: Person!
   deliver: Person!
   vehicleType: VehicleType
-  paymentForm: PaymentForm
+  paymentChannel: PaymentChannel
   deliveryType: DeliveryType
   deliveryChannel: DeliveryChannel
   collectDateTime: Time
@@ -166,7 +166,13 @@ type VehicleType {
   createdBy: ID
 }
 
-type PaymentForm {
+enum PaymentType {
+  Credit
+  Balance
+  Loan
+}
+
+type PaymentChannel {
   id: ID!
   name: String
   description: String
@@ -179,8 +185,8 @@ type PaymentForm {
 type PaymentStatus {
   id: ID!
   person: Person!
-  credit: Float!
-  balance: Float!
+  type: PaymentType!
+  amount: Float!
   personId: ID
   updatedAt: Time
   createdAt: Time!
@@ -191,9 +197,10 @@ type PaymentStatus {
 type PaymentHistory {
   id: ID!
   person: Person!
-  paymentForm: PaymentForm
-  concept: String
+  paymentChannel: PaymentChannel
+  type: PaymentType!
   amount: Float!
+  concept: String
   personId: ID
   updatedAt: Time
   createdAt: Time!
@@ -2197,18 +2204,18 @@ type VehicleTypeResultType {
   count: Int!
 }
 
-input PaymentFormCreateInput {
+input PaymentChannelCreateInput {
   id: ID
   name: String
   description: String
 }
 
-input PaymentFormUpdateInput {
+input PaymentChannelUpdateInput {
   name: String
   description: String
 }
 
-input PaymentFormSortType {
+input PaymentChannelSortType {
   id: ObjectSortType
   idMin: ObjectSortType
   idMax: ObjectSortType
@@ -2232,9 +2239,9 @@ input PaymentFormSortType {
   createdByMax: ObjectSortType
 }
 
-input PaymentFormFilterType {
-  AND: [PaymentFormFilterType!]
-  OR: [PaymentFormFilterType!]
+input PaymentChannelFilterType {
+  AND: [PaymentChannelFilterType!]
+  OR: [PaymentChannelFilterType!]
   id: ID
   idMin: ID
   idMax: ID
@@ -2409,21 +2416,21 @@ input PaymentFormFilterType {
   createdBy_null: Boolean
 }
 
-type PaymentFormResultType {
-  items: [PaymentForm!]!
+type PaymentChannelResultType {
+  items: [PaymentChannel!]!
   count: Int!
 }
 
 input PaymentStatusCreateInput {
   id: ID
-  credit: Float!
-  balance: Float!
+  type: PaymentType!
+  amount: Float!
   personId: ID
 }
 
 input PaymentStatusUpdateInput {
-  credit: Float
-  balance: Float
+  type: PaymentType
+  amount: Float
   personId: ID
 }
 
@@ -2431,14 +2438,13 @@ input PaymentStatusSortType {
   id: ObjectSortType
   idMin: ObjectSortType
   idMax: ObjectSortType
-  credit: ObjectSortType
-  creditMin: ObjectSortType
-  creditMax: ObjectSortType
-  creditAvg: ObjectSortType
-  balance: ObjectSortType
-  balanceMin: ObjectSortType
-  balanceMax: ObjectSortType
-  balanceAvg: ObjectSortType
+  type: ObjectSortType
+  typeMin: ObjectSortType
+  typeMax: ObjectSortType
+  amount: ObjectSortType
+  amountMin: ObjectSortType
+  amountMax: ObjectSortType
+  amountAvg: ObjectSortType
   personId: ObjectSortType
   personIdMin: ObjectSortType
   personIdMax: ObjectSortType
@@ -2482,64 +2488,57 @@ input PaymentStatusFilterType {
   idMin_in: [ID!]
   idMax_in: [ID!]
   id_null: Boolean
-  credit: Float
-  creditMin: Float
-  creditMax: Float
-  creditAvg: Float
-  credit_ne: Float
-  creditMin_ne: Float
-  creditMax_ne: Float
-  creditAvg_ne: Float
-  credit_gt: Float
-  creditMin_gt: Float
-  creditMax_gt: Float
-  creditAvg_gt: Float
-  credit_lt: Float
-  creditMin_lt: Float
-  creditMax_lt: Float
-  creditAvg_lt: Float
-  credit_gte: Float
-  creditMin_gte: Float
-  creditMax_gte: Float
-  creditAvg_gte: Float
-  credit_lte: Float
-  creditMin_lte: Float
-  creditMax_lte: Float
-  creditAvg_lte: Float
-  credit_in: [Float!]
-  creditMin_in: [Float!]
-  creditMax_in: [Float!]
-  creditAvg_in: [Float!]
-  credit_null: Boolean
-  balance: Float
-  balanceMin: Float
-  balanceMax: Float
-  balanceAvg: Float
-  balance_ne: Float
-  balanceMin_ne: Float
-  balanceMax_ne: Float
-  balanceAvg_ne: Float
-  balance_gt: Float
-  balanceMin_gt: Float
-  balanceMax_gt: Float
-  balanceAvg_gt: Float
-  balance_lt: Float
-  balanceMin_lt: Float
-  balanceMax_lt: Float
-  balanceAvg_lt: Float
-  balance_gte: Float
-  balanceMin_gte: Float
-  balanceMax_gte: Float
-  balanceAvg_gte: Float
-  balance_lte: Float
-  balanceMin_lte: Float
-  balanceMax_lte: Float
-  balanceAvg_lte: Float
-  balance_in: [Float!]
-  balanceMin_in: [Float!]
-  balanceMax_in: [Float!]
-  balanceAvg_in: [Float!]
-  balance_null: Boolean
+  type: PaymentType
+  typeMin: PaymentType
+  typeMax: PaymentType
+  type_ne: PaymentType
+  typeMin_ne: PaymentType
+  typeMax_ne: PaymentType
+  type_gt: PaymentType
+  typeMin_gt: PaymentType
+  typeMax_gt: PaymentType
+  type_lt: PaymentType
+  typeMin_lt: PaymentType
+  typeMax_lt: PaymentType
+  type_gte: PaymentType
+  typeMin_gte: PaymentType
+  typeMax_gte: PaymentType
+  type_lte: PaymentType
+  typeMin_lte: PaymentType
+  typeMax_lte: PaymentType
+  type_in: [PaymentType!]
+  typeMin_in: [PaymentType!]
+  typeMax_in: [PaymentType!]
+  type_null: Boolean
+  amount: Float
+  amountMin: Float
+  amountMax: Float
+  amountAvg: Float
+  amount_ne: Float
+  amountMin_ne: Float
+  amountMax_ne: Float
+  amountAvg_ne: Float
+  amount_gt: Float
+  amountMin_gt: Float
+  amountMax_gt: Float
+  amountAvg_gt: Float
+  amount_lt: Float
+  amountMin_lt: Float
+  amountMax_lt: Float
+  amountAvg_lt: Float
+  amount_gte: Float
+  amountMin_gte: Float
+  amountMax_gte: Float
+  amountAvg_gte: Float
+  amount_lte: Float
+  amountMin_lte: Float
+  amountMax_lte: Float
+  amountAvg_lte: Float
+  amount_in: [Float!]
+  amountMin_in: [Float!]
+  amountMax_in: [Float!]
+  amountAvg_in: [Float!]
+  amount_null: Boolean
   personId: ID
   personIdMin: ID
   personIdMax: ID
@@ -2660,14 +2659,16 @@ type PaymentStatusResultType {
 
 input PaymentHistoryCreateInput {
   id: ID
-  concept: String
+  type: PaymentType!
   amount: Float!
+  concept: String
   personId: ID
 }
 
 input PaymentHistoryUpdateInput {
-  concept: String
+  type: PaymentType
   amount: Float
+  concept: String
   personId: ID
 }
 
@@ -2675,13 +2676,16 @@ input PaymentHistorySortType {
   id: ObjectSortType
   idMin: ObjectSortType
   idMax: ObjectSortType
-  concept: ObjectSortType
-  conceptMin: ObjectSortType
-  conceptMax: ObjectSortType
+  type: ObjectSortType
+  typeMin: ObjectSortType
+  typeMax: ObjectSortType
   amount: ObjectSortType
   amountMin: ObjectSortType
   amountMax: ObjectSortType
   amountAvg: ObjectSortType
+  concept: ObjectSortType
+  conceptMin: ObjectSortType
+  conceptMax: ObjectSortType
   personId: ObjectSortType
   personIdMin: ObjectSortType
   personIdMax: ObjectSortType
@@ -2725,6 +2729,57 @@ input PaymentHistoryFilterType {
   idMin_in: [ID!]
   idMax_in: [ID!]
   id_null: Boolean
+  type: PaymentType
+  typeMin: PaymentType
+  typeMax: PaymentType
+  type_ne: PaymentType
+  typeMin_ne: PaymentType
+  typeMax_ne: PaymentType
+  type_gt: PaymentType
+  typeMin_gt: PaymentType
+  typeMax_gt: PaymentType
+  type_lt: PaymentType
+  typeMin_lt: PaymentType
+  typeMax_lt: PaymentType
+  type_gte: PaymentType
+  typeMin_gte: PaymentType
+  typeMax_gte: PaymentType
+  type_lte: PaymentType
+  typeMin_lte: PaymentType
+  typeMax_lte: PaymentType
+  type_in: [PaymentType!]
+  typeMin_in: [PaymentType!]
+  typeMax_in: [PaymentType!]
+  type_null: Boolean
+  amount: Float
+  amountMin: Float
+  amountMax: Float
+  amountAvg: Float
+  amount_ne: Float
+  amountMin_ne: Float
+  amountMax_ne: Float
+  amountAvg_ne: Float
+  amount_gt: Float
+  amountMin_gt: Float
+  amountMax_gt: Float
+  amountAvg_gt: Float
+  amount_lt: Float
+  amountMin_lt: Float
+  amountMax_lt: Float
+  amountAvg_lt: Float
+  amount_gte: Float
+  amountMin_gte: Float
+  amountMax_gte: Float
+  amountAvg_gte: Float
+  amount_lte: Float
+  amountMin_lte: Float
+  amountMax_lte: Float
+  amountAvg_lte: Float
+  amount_in: [Float!]
+  amountMin_in: [Float!]
+  amountMax_in: [Float!]
+  amountAvg_in: [Float!]
+  amount_null: Boolean
   concept: String
   conceptMin: String
   conceptMax: String
@@ -2756,35 +2811,6 @@ input PaymentHistoryFilterType {
   conceptMin_suffix: String
   conceptMax_suffix: String
   concept_null: Boolean
-  amount: Float
-  amountMin: Float
-  amountMax: Float
-  amountAvg: Float
-  amount_ne: Float
-  amountMin_ne: Float
-  amountMax_ne: Float
-  amountAvg_ne: Float
-  amount_gt: Float
-  amountMin_gt: Float
-  amountMax_gt: Float
-  amountAvg_gt: Float
-  amount_lt: Float
-  amountMin_lt: Float
-  amountMax_lt: Float
-  amountAvg_lt: Float
-  amount_gte: Float
-  amountMin_gte: Float
-  amountMax_gte: Float
-  amountAvg_gte: Float
-  amount_lte: Float
-  amountMin_lte: Float
-  amountMax_lte: Float
-  amountAvg_lte: Float
-  amount_in: [Float!]
-  amountMin_in: [Float!]
-  amountMax_in: [Float!]
-  amountAvg_in: [Float!]
-  amount_null: Boolean
   personId: ID
   personIdMin: ID
   personIdMax: ID
