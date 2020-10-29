@@ -3,7 +3,9 @@ type Delivery @entity {
   receiver: Person! @relationship(inverse: "deliveriesReceived", preload: true)
   deliver: Person! @relationship(inverse: "deliveries", preload: true)
   vehicleType: VehicleType
-  paymentChannel: PaymentChannel
+  paymentChannelId: String! @column(index: "pcidx") #PaymentChannel
+  paymentTotal: Float @column
+  paymentOnDeliver: Boolean @column
   deliveryType: DeliveryType
   deliveryChannel: DeliveryChannel
   collectDateTime: Time @column
@@ -12,8 +14,6 @@ type Delivery @entity {
   dropDateTime: Time @column
   dropAddress: String @column
   dropPoint: String @column
-  paymentTotal: Float @column
-  paymentOnDeliver: Boolean @column
   expectedDistance: String @column
   expectedCost: Float @column
   completed: Boolean @column
@@ -37,7 +37,7 @@ type Person @entity {
   deliveries: [Delivery!]! @relationship(inverse: "deliver")
   deliveriesSent: [Delivery!]! @relationship(inverse: "sender")
   deliveriesReceived: [Delivery!]! @relationship(inverse: "receiver")
-  userId: String @column #Comes from auth-api
+  userId: String @column(index: "useridx") #Comes from auth-api
   paymentStatus: PaymentStatus! @relationship(inverse: "person")
   paymentHistory: PaymentHistory! @relationship(inverse: "person")
 }
@@ -55,29 +55,4 @@ type DeliveryChannel @entity {
 type VehicleType @entity {
   name: String @column
   description: String @column(type: "text")
-}
-
-enum PaymentType {
-  Credit
-  Balance
-  Loan
-}
-
-type PaymentChannel @entity {
-  name: String @column
-  description: String @column(type: "text")
-}
-
-type PaymentStatus @entity {
-  person: Person! @relationship(inverse: "paymentStatus", unique: true)
-  type: PaymentType! @column # Credit, Balance or Loan
-  amount: Float! @column(default: 0.0)
-}
-
-type PaymentHistory @entity {
-  person: Person! @relationship(inverse: "paymentHistory")
-  paymentChannel: PaymentChannel
-  type: PaymentType! @column # Credit, Balance or Loan
-  amount: Float! @column(default: 0.0)
-  concept: String @column(type: "text")
 }
