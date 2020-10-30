@@ -27,6 +27,10 @@ models:
         resolver: true
       deliver:
         resolver: true
+      deliveryType:
+        resolver: true
+      deliveryChannel:
+        resolver: true
   DeliveryResultType:
     model: github.com/loopcontext/deliver-api-go/gen.DeliveryResultType
     fields:
@@ -48,10 +52,6 @@ models:
         resolver: true
       deliveriesReceived:
         resolver: true
-      paymentStatus:
-        resolver: true
-      paymentHistory:
-        resolver: true
   PersonResultType:
     model: github.com/loopcontext/deliver-api-go/gen.PersonResultType
     fields:
@@ -67,6 +67,8 @@ models:
   DeliveryType:
     model: github.com/loopcontext/deliver-api-go/gen.DeliveryType
     fields:
+      delivery:
+        resolver: true
   DeliveryTypeResultType:
     model: github.com/loopcontext/deliver-api-go/gen.DeliveryTypeResultType
     fields:
@@ -82,6 +84,8 @@ models:
   DeliveryChannel:
     model: github.com/loopcontext/deliver-api-go/gen.DeliveryChannel
     fields:
+      delivery:
+        resolver: true
   DeliveryChannelResultType:
     model: github.com/loopcontext/deliver-api-go/gen.DeliveryChannelResultType
     fields:
@@ -107,55 +111,6 @@ models:
   VehicleTypeCreateInput:
     model: "map[string]interface{}"
   VehicleTypeUpdateInput:
-    model: "map[string]interface{}"
-  
-  PaymentChannel:
-    model: github.com/loopcontext/deliver-api-go/gen.PaymentChannel
-    fields:
-  PaymentChannelResultType:
-    model: github.com/loopcontext/deliver-api-go/gen.PaymentChannelResultType
-    fields:
-      count:
-        resolver: true
-      items:
-        resolver: true
-  PaymentChannelCreateInput:
-    model: "map[string]interface{}"
-  PaymentChannelUpdateInput:
-    model: "map[string]interface{}"
-  
-  PaymentStatus:
-    model: github.com/loopcontext/deliver-api-go/gen.PaymentStatus
-    fields:
-      person:
-        resolver: true
-  PaymentStatusResultType:
-    model: github.com/loopcontext/deliver-api-go/gen.PaymentStatusResultType
-    fields:
-      count:
-        resolver: true
-      items:
-        resolver: true
-  PaymentStatusCreateInput:
-    model: "map[string]interface{}"
-  PaymentStatusUpdateInput:
-    model: "map[string]interface{}"
-  
-  PaymentHistory:
-    model: github.com/loopcontext/deliver-api-go/gen.PaymentHistory
-    fields:
-      person:
-        resolver: true
-  PaymentHistoryResultType:
-    model: github.com/loopcontext/deliver-api-go/gen.PaymentHistoryResultType
-    fields:
-      count:
-        resolver: true
-      items:
-        resolver: true
-  PaymentHistoryCreateInput:
-    model: "map[string]interface{}"
-  PaymentHistoryUpdateInput:
     model: "map[string]interface{}"
   
 

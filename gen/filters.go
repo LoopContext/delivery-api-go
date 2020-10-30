@@ -121,6 +121,24 @@ func (f *DeliveryFilterType) ApplyWithAlias(ctx context.Context, dialect gorm.Di
 		}
 	}
 
+	if f.DeliveryType != nil {
+		_alias := alias + "_deliveryType"
+		*joins = append(*joins, "LEFT JOIN "+dialect.Quote(TableName("delivery_types"))+" "+dialect.Quote(_alias)+" ON "+dialect.Quote(_alias)+".id = "+alias+"."+dialect.Quote("deliveryTypeId"))
+		err := f.DeliveryType.ApplyWithAlias(ctx, dialect, _alias, wheres, whereValues, havings, havingValues, joins)
+		if err != nil {
+			return err
+		}
+	}
+
+	if f.DeliveryChannel != nil {
+		_alias := alias + "_deliveryChannel"
+		*joins = append(*joins, "LEFT JOIN "+dialect.Quote(TableName("delivery_channels"))+" "+dialect.Quote(_alias)+" ON "+dialect.Quote(_alias)+".id = "+alias+"."+dialect.Quote("deliveryChannelId"))
+		err := f.DeliveryChannel.ApplyWithAlias(ctx, dialect, _alias, wheres, whereValues, havings, havingValues, joins)
+		if err != nil {
+			return err
+		}
+	}
+
 	return nil
 }
 
@@ -169,6 +187,135 @@ func (f *DeliveryFilterType) WhereContent(dialect gorm.Dialect, aliasPrefix stri
 			conditions = append(conditions, aliasPrefix+dialect.Quote("id")+" IS NULL")
 		} else {
 			conditions = append(conditions, aliasPrefix+dialect.Quote("id")+" IS NOT NULL")
+		}
+	}
+
+	if f.PaymentID != nil {
+		conditions = append(conditions, aliasPrefix+dialect.Quote("paymentId")+" = ?")
+		values = append(values, f.PaymentID)
+	}
+
+	if f.PaymentIDNe != nil {
+		conditions = append(conditions, aliasPrefix+dialect.Quote("paymentId")+" != ?")
+		values = append(values, f.PaymentIDNe)
+	}
+
+	if f.PaymentIDGt != nil {
+		conditions = append(conditions, aliasPrefix+dialect.Quote("paymentId")+" > ?")
+		values = append(values, f.PaymentIDGt)
+	}
+
+	if f.PaymentIDLt != nil {
+		conditions = append(conditions, aliasPrefix+dialect.Quote("paymentId")+" < ?")
+		values = append(values, f.PaymentIDLt)
+	}
+
+	if f.PaymentIDGte != nil {
+		conditions = append(conditions, aliasPrefix+dialect.Quote("paymentId")+" >= ?")
+		values = append(values, f.PaymentIDGte)
+	}
+
+	if f.PaymentIDLte != nil {
+		conditions = append(conditions, aliasPrefix+dialect.Quote("paymentId")+" <= ?")
+		values = append(values, f.PaymentIDLte)
+	}
+
+	if f.PaymentIDIn != nil {
+		conditions = append(conditions, aliasPrefix+dialect.Quote("paymentId")+" IN (?)")
+		values = append(values, f.PaymentIDIn)
+	}
+
+	if f.PaymentIDNull != nil {
+		if *f.PaymentIDNull {
+			conditions = append(conditions, aliasPrefix+dialect.Quote("paymentId")+" IS NULL")
+		} else {
+			conditions = append(conditions, aliasPrefix+dialect.Quote("paymentId")+" IS NOT NULL")
+		}
+	}
+
+	if f.PaymentTotal != nil {
+		conditions = append(conditions, aliasPrefix+dialect.Quote("paymentTotal")+" = ?")
+		values = append(values, f.PaymentTotal)
+	}
+
+	if f.PaymentTotalNe != nil {
+		conditions = append(conditions, aliasPrefix+dialect.Quote("paymentTotal")+" != ?")
+		values = append(values, f.PaymentTotalNe)
+	}
+
+	if f.PaymentTotalGt != nil {
+		conditions = append(conditions, aliasPrefix+dialect.Quote("paymentTotal")+" > ?")
+		values = append(values, f.PaymentTotalGt)
+	}
+
+	if f.PaymentTotalLt != nil {
+		conditions = append(conditions, aliasPrefix+dialect.Quote("paymentTotal")+" < ?")
+		values = append(values, f.PaymentTotalLt)
+	}
+
+	if f.PaymentTotalGte != nil {
+		conditions = append(conditions, aliasPrefix+dialect.Quote("paymentTotal")+" >= ?")
+		values = append(values, f.PaymentTotalGte)
+	}
+
+	if f.PaymentTotalLte != nil {
+		conditions = append(conditions, aliasPrefix+dialect.Quote("paymentTotal")+" <= ?")
+		values = append(values, f.PaymentTotalLte)
+	}
+
+	if f.PaymentTotalIn != nil {
+		conditions = append(conditions, aliasPrefix+dialect.Quote("paymentTotal")+" IN (?)")
+		values = append(values, f.PaymentTotalIn)
+	}
+
+	if f.PaymentTotalNull != nil {
+		if *f.PaymentTotalNull {
+			conditions = append(conditions, aliasPrefix+dialect.Quote("paymentTotal")+" IS NULL")
+		} else {
+			conditions = append(conditions, aliasPrefix+dialect.Quote("paymentTotal")+" IS NOT NULL")
+		}
+	}
+
+	if f.PaymentOnDeliver != nil {
+		conditions = append(conditions, aliasPrefix+dialect.Quote("paymentOnDeliver")+" = ?")
+		values = append(values, f.PaymentOnDeliver)
+	}
+
+	if f.PaymentOnDeliverNe != nil {
+		conditions = append(conditions, aliasPrefix+dialect.Quote("paymentOnDeliver")+" != ?")
+		values = append(values, f.PaymentOnDeliverNe)
+	}
+
+	if f.PaymentOnDeliverGt != nil {
+		conditions = append(conditions, aliasPrefix+dialect.Quote("paymentOnDeliver")+" > ?")
+		values = append(values, f.PaymentOnDeliverGt)
+	}
+
+	if f.PaymentOnDeliverLt != nil {
+		conditions = append(conditions, aliasPrefix+dialect.Quote("paymentOnDeliver")+" < ?")
+		values = append(values, f.PaymentOnDeliverLt)
+	}
+
+	if f.PaymentOnDeliverGte != nil {
+		conditions = append(conditions, aliasPrefix+dialect.Quote("paymentOnDeliver")+" >= ?")
+		values = append(values, f.PaymentOnDeliverGte)
+	}
+
+	if f.PaymentOnDeliverLte != nil {
+		conditions = append(conditions, aliasPrefix+dialect.Quote("paymentOnDeliver")+" <= ?")
+		values = append(values, f.PaymentOnDeliverLte)
+	}
+
+	if f.PaymentOnDeliverIn != nil {
+		conditions = append(conditions, aliasPrefix+dialect.Quote("paymentOnDeliver")+" IN (?)")
+		values = append(values, f.PaymentOnDeliverIn)
+	}
+
+	if f.PaymentOnDeliverNull != nil {
+		if *f.PaymentOnDeliverNull {
+			conditions = append(conditions, aliasPrefix+dialect.Quote("paymentOnDeliver")+" IS NULL")
+		} else {
+			conditions = append(conditions, aliasPrefix+dialect.Quote("paymentOnDeliver")+" IS NOT NULL")
 		}
 	}
 
@@ -487,92 +634,6 @@ func (f *DeliveryFilterType) WhereContent(dialect gorm.Dialect, aliasPrefix stri
 			conditions = append(conditions, aliasPrefix+dialect.Quote("dropPoint")+" IS NULL")
 		} else {
 			conditions = append(conditions, aliasPrefix+dialect.Quote("dropPoint")+" IS NOT NULL")
-		}
-	}
-
-	if f.PaymentTotal != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("paymentTotal")+" = ?")
-		values = append(values, f.PaymentTotal)
-	}
-
-	if f.PaymentTotalNe != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("paymentTotal")+" != ?")
-		values = append(values, f.PaymentTotalNe)
-	}
-
-	if f.PaymentTotalGt != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("paymentTotal")+" > ?")
-		values = append(values, f.PaymentTotalGt)
-	}
-
-	if f.PaymentTotalLt != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("paymentTotal")+" < ?")
-		values = append(values, f.PaymentTotalLt)
-	}
-
-	if f.PaymentTotalGte != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("paymentTotal")+" >= ?")
-		values = append(values, f.PaymentTotalGte)
-	}
-
-	if f.PaymentTotalLte != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("paymentTotal")+" <= ?")
-		values = append(values, f.PaymentTotalLte)
-	}
-
-	if f.PaymentTotalIn != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("paymentTotal")+" IN (?)")
-		values = append(values, f.PaymentTotalIn)
-	}
-
-	if f.PaymentTotalNull != nil {
-		if *f.PaymentTotalNull {
-			conditions = append(conditions, aliasPrefix+dialect.Quote("paymentTotal")+" IS NULL")
-		} else {
-			conditions = append(conditions, aliasPrefix+dialect.Quote("paymentTotal")+" IS NOT NULL")
-		}
-	}
-
-	if f.PaymentOnDeliver != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("paymentOnDeliver")+" = ?")
-		values = append(values, f.PaymentOnDeliver)
-	}
-
-	if f.PaymentOnDeliverNe != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("paymentOnDeliver")+" != ?")
-		values = append(values, f.PaymentOnDeliverNe)
-	}
-
-	if f.PaymentOnDeliverGt != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("paymentOnDeliver")+" > ?")
-		values = append(values, f.PaymentOnDeliverGt)
-	}
-
-	if f.PaymentOnDeliverLt != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("paymentOnDeliver")+" < ?")
-		values = append(values, f.PaymentOnDeliverLt)
-	}
-
-	if f.PaymentOnDeliverGte != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("paymentOnDeliver")+" >= ?")
-		values = append(values, f.PaymentOnDeliverGte)
-	}
-
-	if f.PaymentOnDeliverLte != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("paymentOnDeliver")+" <= ?")
-		values = append(values, f.PaymentOnDeliverLte)
-	}
-
-	if f.PaymentOnDeliverIn != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("paymentOnDeliver")+" IN (?)")
-		values = append(values, f.PaymentOnDeliverIn)
-	}
-
-	if f.PaymentOnDeliverNull != nil {
-		if *f.PaymentOnDeliverNull {
-			conditions = append(conditions, aliasPrefix+dialect.Quote("paymentOnDeliver")+" IS NULL")
-		} else {
-			conditions = append(conditions, aliasPrefix+dialect.Quote("paymentOnDeliver")+" IS NOT NULL")
 		}
 	}
 
@@ -1023,6 +1084,92 @@ func (f *DeliveryFilterType) WhereContent(dialect gorm.Dialect, aliasPrefix stri
 		}
 	}
 
+	if f.DeliveryTypeID != nil {
+		conditions = append(conditions, aliasPrefix+dialect.Quote("deliveryTypeId")+" = ?")
+		values = append(values, f.DeliveryTypeID)
+	}
+
+	if f.DeliveryTypeIDNe != nil {
+		conditions = append(conditions, aliasPrefix+dialect.Quote("deliveryTypeId")+" != ?")
+		values = append(values, f.DeliveryTypeIDNe)
+	}
+
+	if f.DeliveryTypeIDGt != nil {
+		conditions = append(conditions, aliasPrefix+dialect.Quote("deliveryTypeId")+" > ?")
+		values = append(values, f.DeliveryTypeIDGt)
+	}
+
+	if f.DeliveryTypeIDLt != nil {
+		conditions = append(conditions, aliasPrefix+dialect.Quote("deliveryTypeId")+" < ?")
+		values = append(values, f.DeliveryTypeIDLt)
+	}
+
+	if f.DeliveryTypeIDGte != nil {
+		conditions = append(conditions, aliasPrefix+dialect.Quote("deliveryTypeId")+" >= ?")
+		values = append(values, f.DeliveryTypeIDGte)
+	}
+
+	if f.DeliveryTypeIDLte != nil {
+		conditions = append(conditions, aliasPrefix+dialect.Quote("deliveryTypeId")+" <= ?")
+		values = append(values, f.DeliveryTypeIDLte)
+	}
+
+	if f.DeliveryTypeIDIn != nil {
+		conditions = append(conditions, aliasPrefix+dialect.Quote("deliveryTypeId")+" IN (?)")
+		values = append(values, f.DeliveryTypeIDIn)
+	}
+
+	if f.DeliveryTypeIDNull != nil {
+		if *f.DeliveryTypeIDNull {
+			conditions = append(conditions, aliasPrefix+dialect.Quote("deliveryTypeId")+" IS NULL")
+		} else {
+			conditions = append(conditions, aliasPrefix+dialect.Quote("deliveryTypeId")+" IS NOT NULL")
+		}
+	}
+
+	if f.DeliveryChannelID != nil {
+		conditions = append(conditions, aliasPrefix+dialect.Quote("deliveryChannelId")+" = ?")
+		values = append(values, f.DeliveryChannelID)
+	}
+
+	if f.DeliveryChannelIDNe != nil {
+		conditions = append(conditions, aliasPrefix+dialect.Quote("deliveryChannelId")+" != ?")
+		values = append(values, f.DeliveryChannelIDNe)
+	}
+
+	if f.DeliveryChannelIDGt != nil {
+		conditions = append(conditions, aliasPrefix+dialect.Quote("deliveryChannelId")+" > ?")
+		values = append(values, f.DeliveryChannelIDGt)
+	}
+
+	if f.DeliveryChannelIDLt != nil {
+		conditions = append(conditions, aliasPrefix+dialect.Quote("deliveryChannelId")+" < ?")
+		values = append(values, f.DeliveryChannelIDLt)
+	}
+
+	if f.DeliveryChannelIDGte != nil {
+		conditions = append(conditions, aliasPrefix+dialect.Quote("deliveryChannelId")+" >= ?")
+		values = append(values, f.DeliveryChannelIDGte)
+	}
+
+	if f.DeliveryChannelIDLte != nil {
+		conditions = append(conditions, aliasPrefix+dialect.Quote("deliveryChannelId")+" <= ?")
+		values = append(values, f.DeliveryChannelIDLte)
+	}
+
+	if f.DeliveryChannelIDIn != nil {
+		conditions = append(conditions, aliasPrefix+dialect.Quote("deliveryChannelId")+" IN (?)")
+		values = append(values, f.DeliveryChannelIDIn)
+	}
+
+	if f.DeliveryChannelIDNull != nil {
+		if *f.DeliveryChannelIDNull {
+			conditions = append(conditions, aliasPrefix+dialect.Quote("deliveryChannelId")+" IS NULL")
+		} else {
+			conditions = append(conditions, aliasPrefix+dialect.Quote("deliveryChannelId")+" IS NOT NULL")
+		}
+	}
+
 	if f.UpdatedAt != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("updatedAt")+" = ?")
 		values = append(values, f.UpdatedAt)
@@ -1271,6 +1418,251 @@ func (f *DeliveryFilterType) HavingContent(dialect gorm.Dialect, aliasPrefix str
 	if f.IDMaxIn != nil {
 		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("id")+") IN (?)")
 		values = append(values, f.IDMaxIn)
+	}
+
+	if f.PaymentIDMin != nil {
+		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("paymentId")+") = ?")
+		values = append(values, f.PaymentIDMin)
+	}
+
+	if f.PaymentIDMax != nil {
+		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("paymentId")+") = ?")
+		values = append(values, f.PaymentIDMax)
+	}
+
+	if f.PaymentIDMinNe != nil {
+		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("paymentId")+") != ?")
+		values = append(values, f.PaymentIDMinNe)
+	}
+
+	if f.PaymentIDMaxNe != nil {
+		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("paymentId")+") != ?")
+		values = append(values, f.PaymentIDMaxNe)
+	}
+
+	if f.PaymentIDMinGt != nil {
+		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("paymentId")+") > ?")
+		values = append(values, f.PaymentIDMinGt)
+	}
+
+	if f.PaymentIDMaxGt != nil {
+		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("paymentId")+") > ?")
+		values = append(values, f.PaymentIDMaxGt)
+	}
+
+	if f.PaymentIDMinLt != nil {
+		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("paymentId")+") < ?")
+		values = append(values, f.PaymentIDMinLt)
+	}
+
+	if f.PaymentIDMaxLt != nil {
+		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("paymentId")+") < ?")
+		values = append(values, f.PaymentIDMaxLt)
+	}
+
+	if f.PaymentIDMinGte != nil {
+		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("paymentId")+") >= ?")
+		values = append(values, f.PaymentIDMinGte)
+	}
+
+	if f.PaymentIDMaxGte != nil {
+		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("paymentId")+") >= ?")
+		values = append(values, f.PaymentIDMaxGte)
+	}
+
+	if f.PaymentIDMinLte != nil {
+		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("paymentId")+") <= ?")
+		values = append(values, f.PaymentIDMinLte)
+	}
+
+	if f.PaymentIDMaxLte != nil {
+		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("paymentId")+") <= ?")
+		values = append(values, f.PaymentIDMaxLte)
+	}
+
+	if f.PaymentIDMinIn != nil {
+		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("paymentId")+") IN (?)")
+		values = append(values, f.PaymentIDMinIn)
+	}
+
+	if f.PaymentIDMaxIn != nil {
+		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("paymentId")+") IN (?)")
+		values = append(values, f.PaymentIDMaxIn)
+	}
+
+	if f.PaymentTotalMin != nil {
+		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("paymentTotal")+") = ?")
+		values = append(values, f.PaymentTotalMin)
+	}
+
+	if f.PaymentTotalMax != nil {
+		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("paymentTotal")+") = ?")
+		values = append(values, f.PaymentTotalMax)
+	}
+
+	if f.PaymentTotalAvg != nil {
+		conditions = append(conditions, "Avg("+aliasPrefix+dialect.Quote("paymentTotal")+") = ?")
+		values = append(values, f.PaymentTotalAvg)
+	}
+
+	if f.PaymentTotalMinNe != nil {
+		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("paymentTotal")+") != ?")
+		values = append(values, f.PaymentTotalMinNe)
+	}
+
+	if f.PaymentTotalMaxNe != nil {
+		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("paymentTotal")+") != ?")
+		values = append(values, f.PaymentTotalMaxNe)
+	}
+
+	if f.PaymentTotalAvgNe != nil {
+		conditions = append(conditions, "Avg("+aliasPrefix+dialect.Quote("paymentTotal")+") != ?")
+		values = append(values, f.PaymentTotalAvgNe)
+	}
+
+	if f.PaymentTotalMinGt != nil {
+		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("paymentTotal")+") > ?")
+		values = append(values, f.PaymentTotalMinGt)
+	}
+
+	if f.PaymentTotalMaxGt != nil {
+		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("paymentTotal")+") > ?")
+		values = append(values, f.PaymentTotalMaxGt)
+	}
+
+	if f.PaymentTotalAvgGt != nil {
+		conditions = append(conditions, "Avg("+aliasPrefix+dialect.Quote("paymentTotal")+") > ?")
+		values = append(values, f.PaymentTotalAvgGt)
+	}
+
+	if f.PaymentTotalMinLt != nil {
+		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("paymentTotal")+") < ?")
+		values = append(values, f.PaymentTotalMinLt)
+	}
+
+	if f.PaymentTotalMaxLt != nil {
+		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("paymentTotal")+") < ?")
+		values = append(values, f.PaymentTotalMaxLt)
+	}
+
+	if f.PaymentTotalAvgLt != nil {
+		conditions = append(conditions, "Avg("+aliasPrefix+dialect.Quote("paymentTotal")+") < ?")
+		values = append(values, f.PaymentTotalAvgLt)
+	}
+
+	if f.PaymentTotalMinGte != nil {
+		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("paymentTotal")+") >= ?")
+		values = append(values, f.PaymentTotalMinGte)
+	}
+
+	if f.PaymentTotalMaxGte != nil {
+		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("paymentTotal")+") >= ?")
+		values = append(values, f.PaymentTotalMaxGte)
+	}
+
+	if f.PaymentTotalAvgGte != nil {
+		conditions = append(conditions, "Avg("+aliasPrefix+dialect.Quote("paymentTotal")+") >= ?")
+		values = append(values, f.PaymentTotalAvgGte)
+	}
+
+	if f.PaymentTotalMinLte != nil {
+		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("paymentTotal")+") <= ?")
+		values = append(values, f.PaymentTotalMinLte)
+	}
+
+	if f.PaymentTotalMaxLte != nil {
+		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("paymentTotal")+") <= ?")
+		values = append(values, f.PaymentTotalMaxLte)
+	}
+
+	if f.PaymentTotalAvgLte != nil {
+		conditions = append(conditions, "Avg("+aliasPrefix+dialect.Quote("paymentTotal")+") <= ?")
+		values = append(values, f.PaymentTotalAvgLte)
+	}
+
+	if f.PaymentTotalMinIn != nil {
+		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("paymentTotal")+") IN (?)")
+		values = append(values, f.PaymentTotalMinIn)
+	}
+
+	if f.PaymentTotalMaxIn != nil {
+		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("paymentTotal")+") IN (?)")
+		values = append(values, f.PaymentTotalMaxIn)
+	}
+
+	if f.PaymentTotalAvgIn != nil {
+		conditions = append(conditions, "Avg("+aliasPrefix+dialect.Quote("paymentTotal")+") IN (?)")
+		values = append(values, f.PaymentTotalAvgIn)
+	}
+
+	if f.PaymentOnDeliverMin != nil {
+		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("paymentOnDeliver")+") = ?")
+		values = append(values, f.PaymentOnDeliverMin)
+	}
+
+	if f.PaymentOnDeliverMax != nil {
+		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("paymentOnDeliver")+") = ?")
+		values = append(values, f.PaymentOnDeliverMax)
+	}
+
+	if f.PaymentOnDeliverMinNe != nil {
+		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("paymentOnDeliver")+") != ?")
+		values = append(values, f.PaymentOnDeliverMinNe)
+	}
+
+	if f.PaymentOnDeliverMaxNe != nil {
+		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("paymentOnDeliver")+") != ?")
+		values = append(values, f.PaymentOnDeliverMaxNe)
+	}
+
+	if f.PaymentOnDeliverMinGt != nil {
+		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("paymentOnDeliver")+") > ?")
+		values = append(values, f.PaymentOnDeliverMinGt)
+	}
+
+	if f.PaymentOnDeliverMaxGt != nil {
+		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("paymentOnDeliver")+") > ?")
+		values = append(values, f.PaymentOnDeliverMaxGt)
+	}
+
+	if f.PaymentOnDeliverMinLt != nil {
+		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("paymentOnDeliver")+") < ?")
+		values = append(values, f.PaymentOnDeliverMinLt)
+	}
+
+	if f.PaymentOnDeliverMaxLt != nil {
+		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("paymentOnDeliver")+") < ?")
+		values = append(values, f.PaymentOnDeliverMaxLt)
+	}
+
+	if f.PaymentOnDeliverMinGte != nil {
+		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("paymentOnDeliver")+") >= ?")
+		values = append(values, f.PaymentOnDeliverMinGte)
+	}
+
+	if f.PaymentOnDeliverMaxGte != nil {
+		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("paymentOnDeliver")+") >= ?")
+		values = append(values, f.PaymentOnDeliverMaxGte)
+	}
+
+	if f.PaymentOnDeliverMinLte != nil {
+		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("paymentOnDeliver")+") <= ?")
+		values = append(values, f.PaymentOnDeliverMinLte)
+	}
+
+	if f.PaymentOnDeliverMaxLte != nil {
+		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("paymentOnDeliver")+") <= ?")
+		values = append(values, f.PaymentOnDeliverMaxLte)
+	}
+
+	if f.PaymentOnDeliverMinIn != nil {
+		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("paymentOnDeliver")+") IN (?)")
+		values = append(values, f.PaymentOnDeliverMinIn)
+	}
+
+	if f.PaymentOnDeliverMaxIn != nil {
+		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("paymentOnDeliver")+") IN (?)")
+		values = append(values, f.PaymentOnDeliverMaxIn)
 	}
 
 	if f.CollectDateTimeMin != nil {
@@ -1811,181 +2203,6 @@ func (f *DeliveryFilterType) HavingContent(dialect gorm.Dialect, aliasPrefix str
 	if f.DropPointMaxSuffix != nil {
 		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("dropPoint")+") LIKE ?")
 		values = append(values, fmt.Sprintf("%%%s", *f.DropPointMaxSuffix))
-	}
-
-	if f.PaymentTotalMin != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("paymentTotal")+") = ?")
-		values = append(values, f.PaymentTotalMin)
-	}
-
-	if f.PaymentTotalMax != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("paymentTotal")+") = ?")
-		values = append(values, f.PaymentTotalMax)
-	}
-
-	if f.PaymentTotalAvg != nil {
-		conditions = append(conditions, "Avg("+aliasPrefix+dialect.Quote("paymentTotal")+") = ?")
-		values = append(values, f.PaymentTotalAvg)
-	}
-
-	if f.PaymentTotalMinNe != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("paymentTotal")+") != ?")
-		values = append(values, f.PaymentTotalMinNe)
-	}
-
-	if f.PaymentTotalMaxNe != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("paymentTotal")+") != ?")
-		values = append(values, f.PaymentTotalMaxNe)
-	}
-
-	if f.PaymentTotalAvgNe != nil {
-		conditions = append(conditions, "Avg("+aliasPrefix+dialect.Quote("paymentTotal")+") != ?")
-		values = append(values, f.PaymentTotalAvgNe)
-	}
-
-	if f.PaymentTotalMinGt != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("paymentTotal")+") > ?")
-		values = append(values, f.PaymentTotalMinGt)
-	}
-
-	if f.PaymentTotalMaxGt != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("paymentTotal")+") > ?")
-		values = append(values, f.PaymentTotalMaxGt)
-	}
-
-	if f.PaymentTotalAvgGt != nil {
-		conditions = append(conditions, "Avg("+aliasPrefix+dialect.Quote("paymentTotal")+") > ?")
-		values = append(values, f.PaymentTotalAvgGt)
-	}
-
-	if f.PaymentTotalMinLt != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("paymentTotal")+") < ?")
-		values = append(values, f.PaymentTotalMinLt)
-	}
-
-	if f.PaymentTotalMaxLt != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("paymentTotal")+") < ?")
-		values = append(values, f.PaymentTotalMaxLt)
-	}
-
-	if f.PaymentTotalAvgLt != nil {
-		conditions = append(conditions, "Avg("+aliasPrefix+dialect.Quote("paymentTotal")+") < ?")
-		values = append(values, f.PaymentTotalAvgLt)
-	}
-
-	if f.PaymentTotalMinGte != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("paymentTotal")+") >= ?")
-		values = append(values, f.PaymentTotalMinGte)
-	}
-
-	if f.PaymentTotalMaxGte != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("paymentTotal")+") >= ?")
-		values = append(values, f.PaymentTotalMaxGte)
-	}
-
-	if f.PaymentTotalAvgGte != nil {
-		conditions = append(conditions, "Avg("+aliasPrefix+dialect.Quote("paymentTotal")+") >= ?")
-		values = append(values, f.PaymentTotalAvgGte)
-	}
-
-	if f.PaymentTotalMinLte != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("paymentTotal")+") <= ?")
-		values = append(values, f.PaymentTotalMinLte)
-	}
-
-	if f.PaymentTotalMaxLte != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("paymentTotal")+") <= ?")
-		values = append(values, f.PaymentTotalMaxLte)
-	}
-
-	if f.PaymentTotalAvgLte != nil {
-		conditions = append(conditions, "Avg("+aliasPrefix+dialect.Quote("paymentTotal")+") <= ?")
-		values = append(values, f.PaymentTotalAvgLte)
-	}
-
-	if f.PaymentTotalMinIn != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("paymentTotal")+") IN (?)")
-		values = append(values, f.PaymentTotalMinIn)
-	}
-
-	if f.PaymentTotalMaxIn != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("paymentTotal")+") IN (?)")
-		values = append(values, f.PaymentTotalMaxIn)
-	}
-
-	if f.PaymentTotalAvgIn != nil {
-		conditions = append(conditions, "Avg("+aliasPrefix+dialect.Quote("paymentTotal")+") IN (?)")
-		values = append(values, f.PaymentTotalAvgIn)
-	}
-
-	if f.PaymentOnDeliverMin != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("paymentOnDeliver")+") = ?")
-		values = append(values, f.PaymentOnDeliverMin)
-	}
-
-	if f.PaymentOnDeliverMax != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("paymentOnDeliver")+") = ?")
-		values = append(values, f.PaymentOnDeliverMax)
-	}
-
-	if f.PaymentOnDeliverMinNe != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("paymentOnDeliver")+") != ?")
-		values = append(values, f.PaymentOnDeliverMinNe)
-	}
-
-	if f.PaymentOnDeliverMaxNe != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("paymentOnDeliver")+") != ?")
-		values = append(values, f.PaymentOnDeliverMaxNe)
-	}
-
-	if f.PaymentOnDeliverMinGt != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("paymentOnDeliver")+") > ?")
-		values = append(values, f.PaymentOnDeliverMinGt)
-	}
-
-	if f.PaymentOnDeliverMaxGt != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("paymentOnDeliver")+") > ?")
-		values = append(values, f.PaymentOnDeliverMaxGt)
-	}
-
-	if f.PaymentOnDeliverMinLt != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("paymentOnDeliver")+") < ?")
-		values = append(values, f.PaymentOnDeliverMinLt)
-	}
-
-	if f.PaymentOnDeliverMaxLt != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("paymentOnDeliver")+") < ?")
-		values = append(values, f.PaymentOnDeliverMaxLt)
-	}
-
-	if f.PaymentOnDeliverMinGte != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("paymentOnDeliver")+") >= ?")
-		values = append(values, f.PaymentOnDeliverMinGte)
-	}
-
-	if f.PaymentOnDeliverMaxGte != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("paymentOnDeliver")+") >= ?")
-		values = append(values, f.PaymentOnDeliverMaxGte)
-	}
-
-	if f.PaymentOnDeliverMinLte != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("paymentOnDeliver")+") <= ?")
-		values = append(values, f.PaymentOnDeliverMinLte)
-	}
-
-	if f.PaymentOnDeliverMaxLte != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("paymentOnDeliver")+") <= ?")
-		values = append(values, f.PaymentOnDeliverMaxLte)
-	}
-
-	if f.PaymentOnDeliverMinIn != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("paymentOnDeliver")+") IN (?)")
-		values = append(values, f.PaymentOnDeliverMinIn)
-	}
-
-	if f.PaymentOnDeliverMaxIn != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("paymentOnDeliver")+") IN (?)")
-		values = append(values, f.PaymentOnDeliverMaxIn)
 	}
 
 	if f.ExpectedDistanceMin != nil {
@@ -2773,6 +2990,146 @@ func (f *DeliveryFilterType) HavingContent(dialect gorm.Dialect, aliasPrefix str
 		values = append(values, f.DeliverIDMaxIn)
 	}
 
+	if f.DeliveryTypeIDMin != nil {
+		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("deliveryTypeId")+") = ?")
+		values = append(values, f.DeliveryTypeIDMin)
+	}
+
+	if f.DeliveryTypeIDMax != nil {
+		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("deliveryTypeId")+") = ?")
+		values = append(values, f.DeliveryTypeIDMax)
+	}
+
+	if f.DeliveryTypeIDMinNe != nil {
+		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("deliveryTypeId")+") != ?")
+		values = append(values, f.DeliveryTypeIDMinNe)
+	}
+
+	if f.DeliveryTypeIDMaxNe != nil {
+		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("deliveryTypeId")+") != ?")
+		values = append(values, f.DeliveryTypeIDMaxNe)
+	}
+
+	if f.DeliveryTypeIDMinGt != nil {
+		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("deliveryTypeId")+") > ?")
+		values = append(values, f.DeliveryTypeIDMinGt)
+	}
+
+	if f.DeliveryTypeIDMaxGt != nil {
+		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("deliveryTypeId")+") > ?")
+		values = append(values, f.DeliveryTypeIDMaxGt)
+	}
+
+	if f.DeliveryTypeIDMinLt != nil {
+		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("deliveryTypeId")+") < ?")
+		values = append(values, f.DeliveryTypeIDMinLt)
+	}
+
+	if f.DeliveryTypeIDMaxLt != nil {
+		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("deliveryTypeId")+") < ?")
+		values = append(values, f.DeliveryTypeIDMaxLt)
+	}
+
+	if f.DeliveryTypeIDMinGte != nil {
+		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("deliveryTypeId")+") >= ?")
+		values = append(values, f.DeliveryTypeIDMinGte)
+	}
+
+	if f.DeliveryTypeIDMaxGte != nil {
+		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("deliveryTypeId")+") >= ?")
+		values = append(values, f.DeliveryTypeIDMaxGte)
+	}
+
+	if f.DeliveryTypeIDMinLte != nil {
+		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("deliveryTypeId")+") <= ?")
+		values = append(values, f.DeliveryTypeIDMinLte)
+	}
+
+	if f.DeliveryTypeIDMaxLte != nil {
+		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("deliveryTypeId")+") <= ?")
+		values = append(values, f.DeliveryTypeIDMaxLte)
+	}
+
+	if f.DeliveryTypeIDMinIn != nil {
+		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("deliveryTypeId")+") IN (?)")
+		values = append(values, f.DeliveryTypeIDMinIn)
+	}
+
+	if f.DeliveryTypeIDMaxIn != nil {
+		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("deliveryTypeId")+") IN (?)")
+		values = append(values, f.DeliveryTypeIDMaxIn)
+	}
+
+	if f.DeliveryChannelIDMin != nil {
+		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("deliveryChannelId")+") = ?")
+		values = append(values, f.DeliveryChannelIDMin)
+	}
+
+	if f.DeliveryChannelIDMax != nil {
+		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("deliveryChannelId")+") = ?")
+		values = append(values, f.DeliveryChannelIDMax)
+	}
+
+	if f.DeliveryChannelIDMinNe != nil {
+		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("deliveryChannelId")+") != ?")
+		values = append(values, f.DeliveryChannelIDMinNe)
+	}
+
+	if f.DeliveryChannelIDMaxNe != nil {
+		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("deliveryChannelId")+") != ?")
+		values = append(values, f.DeliveryChannelIDMaxNe)
+	}
+
+	if f.DeliveryChannelIDMinGt != nil {
+		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("deliveryChannelId")+") > ?")
+		values = append(values, f.DeliveryChannelIDMinGt)
+	}
+
+	if f.DeliveryChannelIDMaxGt != nil {
+		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("deliveryChannelId")+") > ?")
+		values = append(values, f.DeliveryChannelIDMaxGt)
+	}
+
+	if f.DeliveryChannelIDMinLt != nil {
+		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("deliveryChannelId")+") < ?")
+		values = append(values, f.DeliveryChannelIDMinLt)
+	}
+
+	if f.DeliveryChannelIDMaxLt != nil {
+		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("deliveryChannelId")+") < ?")
+		values = append(values, f.DeliveryChannelIDMaxLt)
+	}
+
+	if f.DeliveryChannelIDMinGte != nil {
+		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("deliveryChannelId")+") >= ?")
+		values = append(values, f.DeliveryChannelIDMinGte)
+	}
+
+	if f.DeliveryChannelIDMaxGte != nil {
+		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("deliveryChannelId")+") >= ?")
+		values = append(values, f.DeliveryChannelIDMaxGte)
+	}
+
+	if f.DeliveryChannelIDMinLte != nil {
+		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("deliveryChannelId")+") <= ?")
+		values = append(values, f.DeliveryChannelIDMinLte)
+	}
+
+	if f.DeliveryChannelIDMaxLte != nil {
+		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("deliveryChannelId")+") <= ?")
+		values = append(values, f.DeliveryChannelIDMaxLte)
+	}
+
+	if f.DeliveryChannelIDMinIn != nil {
+		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("deliveryChannelId")+") IN (?)")
+		values = append(values, f.DeliveryChannelIDMinIn)
+	}
+
+	if f.DeliveryChannelIDMaxIn != nil {
+		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("deliveryChannelId")+") IN (?)")
+		values = append(values, f.DeliveryChannelIDMaxIn)
+	}
+
 	if f.UpdatedAtMin != nil {
 		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("updatedAt")+") = ?")
 		values = append(values, f.UpdatedAtMin)
@@ -3196,24 +3553,6 @@ func (f *PersonFilterType) ApplyWithAlias(ctx context.Context, dialect gorm.Dial
 		_alias := alias + "_deliveriesReceived"
 		*joins = append(*joins, "LEFT JOIN "+dialect.Quote(TableName("deliveries"))+" "+dialect.Quote(_alias)+" ON "+dialect.Quote(_alias)+"."+dialect.Quote("receiverId")+" = "+dialect.Quote(alias)+".id")
 		err := f.DeliveriesReceived.ApplyWithAlias(ctx, dialect, _alias, wheres, whereValues, havings, havingValues, joins)
-		if err != nil {
-			return err
-		}
-	}
-
-	if f.PaymentStatus != nil {
-		_alias := alias + "_paymentStatus"
-		*joins = append(*joins, "LEFT JOIN "+dialect.Quote(TableName("payment_statuses"))+" "+dialect.Quote(_alias)+" ON "+dialect.Quote(_alias)+".id = "+alias+"."+dialect.Quote("paymentStatusId"))
-		err := f.PaymentStatus.ApplyWithAlias(ctx, dialect, _alias, wheres, whereValues, havings, havingValues, joins)
-		if err != nil {
-			return err
-		}
-	}
-
-	if f.PaymentHistory != nil {
-		_alias := alias + "_paymentHistory"
-		*joins = append(*joins, "LEFT JOIN "+dialect.Quote(TableName("payment_histories"))+" "+dialect.Quote(_alias)+" ON "+dialect.Quote(_alias)+".id = "+alias+"."+dialect.Quote("paymentHistoryId"))
-		err := f.PaymentHistory.ApplyWithAlias(ctx, dialect, _alias, wheres, whereValues, havings, havingValues, joins)
 		if err != nil {
 			return err
 		}
@@ -3948,92 +4287,6 @@ func (f *PersonFilterType) WhereContent(dialect gorm.Dialect, aliasPrefix string
 			conditions = append(conditions, aliasPrefix+dialect.Quote("userId")+" IS NULL")
 		} else {
 			conditions = append(conditions, aliasPrefix+dialect.Quote("userId")+" IS NOT NULL")
-		}
-	}
-
-	if f.PaymentStatusID != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("paymentStatusId")+" = ?")
-		values = append(values, f.PaymentStatusID)
-	}
-
-	if f.PaymentStatusIDNe != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("paymentStatusId")+" != ?")
-		values = append(values, f.PaymentStatusIDNe)
-	}
-
-	if f.PaymentStatusIDGt != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("paymentStatusId")+" > ?")
-		values = append(values, f.PaymentStatusIDGt)
-	}
-
-	if f.PaymentStatusIDLt != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("paymentStatusId")+" < ?")
-		values = append(values, f.PaymentStatusIDLt)
-	}
-
-	if f.PaymentStatusIDGte != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("paymentStatusId")+" >= ?")
-		values = append(values, f.PaymentStatusIDGte)
-	}
-
-	if f.PaymentStatusIDLte != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("paymentStatusId")+" <= ?")
-		values = append(values, f.PaymentStatusIDLte)
-	}
-
-	if f.PaymentStatusIDIn != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("paymentStatusId")+" IN (?)")
-		values = append(values, f.PaymentStatusIDIn)
-	}
-
-	if f.PaymentStatusIDNull != nil {
-		if *f.PaymentStatusIDNull {
-			conditions = append(conditions, aliasPrefix+dialect.Quote("paymentStatusId")+" IS NULL")
-		} else {
-			conditions = append(conditions, aliasPrefix+dialect.Quote("paymentStatusId")+" IS NOT NULL")
-		}
-	}
-
-	if f.PaymentHistoryID != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("paymentHistoryId")+" = ?")
-		values = append(values, f.PaymentHistoryID)
-	}
-
-	if f.PaymentHistoryIDNe != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("paymentHistoryId")+" != ?")
-		values = append(values, f.PaymentHistoryIDNe)
-	}
-
-	if f.PaymentHistoryIDGt != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("paymentHistoryId")+" > ?")
-		values = append(values, f.PaymentHistoryIDGt)
-	}
-
-	if f.PaymentHistoryIDLt != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("paymentHistoryId")+" < ?")
-		values = append(values, f.PaymentHistoryIDLt)
-	}
-
-	if f.PaymentHistoryIDGte != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("paymentHistoryId")+" >= ?")
-		values = append(values, f.PaymentHistoryIDGte)
-	}
-
-	if f.PaymentHistoryIDLte != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("paymentHistoryId")+" <= ?")
-		values = append(values, f.PaymentHistoryIDLte)
-	}
-
-	if f.PaymentHistoryIDIn != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("paymentHistoryId")+" IN (?)")
-		values = append(values, f.PaymentHistoryIDIn)
-	}
-
-	if f.PaymentHistoryIDNull != nil {
-		if *f.PaymentHistoryIDNull {
-			conditions = append(conditions, aliasPrefix+dialect.Quote("paymentHistoryId")+" IS NULL")
-		} else {
-			conditions = append(conditions, aliasPrefix+dialect.Quote("paymentHistoryId")+" IS NOT NULL")
 		}
 	}
 
@@ -5457,146 +5710,6 @@ func (f *PersonFilterType) HavingContent(dialect gorm.Dialect, aliasPrefix strin
 		values = append(values, fmt.Sprintf("%%%s", *f.UserIDMaxSuffix))
 	}
 
-	if f.PaymentStatusIDMin != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("paymentStatusId")+") = ?")
-		values = append(values, f.PaymentStatusIDMin)
-	}
-
-	if f.PaymentStatusIDMax != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("paymentStatusId")+") = ?")
-		values = append(values, f.PaymentStatusIDMax)
-	}
-
-	if f.PaymentStatusIDMinNe != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("paymentStatusId")+") != ?")
-		values = append(values, f.PaymentStatusIDMinNe)
-	}
-
-	if f.PaymentStatusIDMaxNe != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("paymentStatusId")+") != ?")
-		values = append(values, f.PaymentStatusIDMaxNe)
-	}
-
-	if f.PaymentStatusIDMinGt != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("paymentStatusId")+") > ?")
-		values = append(values, f.PaymentStatusIDMinGt)
-	}
-
-	if f.PaymentStatusIDMaxGt != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("paymentStatusId")+") > ?")
-		values = append(values, f.PaymentStatusIDMaxGt)
-	}
-
-	if f.PaymentStatusIDMinLt != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("paymentStatusId")+") < ?")
-		values = append(values, f.PaymentStatusIDMinLt)
-	}
-
-	if f.PaymentStatusIDMaxLt != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("paymentStatusId")+") < ?")
-		values = append(values, f.PaymentStatusIDMaxLt)
-	}
-
-	if f.PaymentStatusIDMinGte != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("paymentStatusId")+") >= ?")
-		values = append(values, f.PaymentStatusIDMinGte)
-	}
-
-	if f.PaymentStatusIDMaxGte != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("paymentStatusId")+") >= ?")
-		values = append(values, f.PaymentStatusIDMaxGte)
-	}
-
-	if f.PaymentStatusIDMinLte != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("paymentStatusId")+") <= ?")
-		values = append(values, f.PaymentStatusIDMinLte)
-	}
-
-	if f.PaymentStatusIDMaxLte != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("paymentStatusId")+") <= ?")
-		values = append(values, f.PaymentStatusIDMaxLte)
-	}
-
-	if f.PaymentStatusIDMinIn != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("paymentStatusId")+") IN (?)")
-		values = append(values, f.PaymentStatusIDMinIn)
-	}
-
-	if f.PaymentStatusIDMaxIn != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("paymentStatusId")+") IN (?)")
-		values = append(values, f.PaymentStatusIDMaxIn)
-	}
-
-	if f.PaymentHistoryIDMin != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("paymentHistoryId")+") = ?")
-		values = append(values, f.PaymentHistoryIDMin)
-	}
-
-	if f.PaymentHistoryIDMax != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("paymentHistoryId")+") = ?")
-		values = append(values, f.PaymentHistoryIDMax)
-	}
-
-	if f.PaymentHistoryIDMinNe != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("paymentHistoryId")+") != ?")
-		values = append(values, f.PaymentHistoryIDMinNe)
-	}
-
-	if f.PaymentHistoryIDMaxNe != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("paymentHistoryId")+") != ?")
-		values = append(values, f.PaymentHistoryIDMaxNe)
-	}
-
-	if f.PaymentHistoryIDMinGt != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("paymentHistoryId")+") > ?")
-		values = append(values, f.PaymentHistoryIDMinGt)
-	}
-
-	if f.PaymentHistoryIDMaxGt != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("paymentHistoryId")+") > ?")
-		values = append(values, f.PaymentHistoryIDMaxGt)
-	}
-
-	if f.PaymentHistoryIDMinLt != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("paymentHistoryId")+") < ?")
-		values = append(values, f.PaymentHistoryIDMinLt)
-	}
-
-	if f.PaymentHistoryIDMaxLt != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("paymentHistoryId")+") < ?")
-		values = append(values, f.PaymentHistoryIDMaxLt)
-	}
-
-	if f.PaymentHistoryIDMinGte != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("paymentHistoryId")+") >= ?")
-		values = append(values, f.PaymentHistoryIDMinGte)
-	}
-
-	if f.PaymentHistoryIDMaxGte != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("paymentHistoryId")+") >= ?")
-		values = append(values, f.PaymentHistoryIDMaxGte)
-	}
-
-	if f.PaymentHistoryIDMinLte != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("paymentHistoryId")+") <= ?")
-		values = append(values, f.PaymentHistoryIDMinLte)
-	}
-
-	if f.PaymentHistoryIDMaxLte != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("paymentHistoryId")+") <= ?")
-		values = append(values, f.PaymentHistoryIDMaxLte)
-	}
-
-	if f.PaymentHistoryIDMinIn != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("paymentHistoryId")+") IN (?)")
-		values = append(values, f.PaymentHistoryIDMinIn)
-	}
-
-	if f.PaymentHistoryIDMaxIn != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("paymentHistoryId")+") IN (?)")
-		values = append(values, f.PaymentHistoryIDMaxIn)
-	}
-
 	if f.UpdatedAtMin != nil {
 		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("updatedAt")+") = ?")
 		values = append(values, f.UpdatedAtMin)
@@ -5998,6 +6111,15 @@ func (f *DeliveryTypeFilterType) ApplyWithAlias(ctx context.Context, dialect gor
 		*joins = append(*joins, js...)
 	}
 
+	if f.Delivery != nil {
+		_alias := alias + "_delivery"
+		*joins = append(*joins, "LEFT JOIN "+dialect.Quote(TableName("deliveries"))+" "+dialect.Quote(_alias)+" ON "+dialect.Quote(_alias)+".id = "+alias+"."+dialect.Quote("deliveryId"))
+		err := f.Delivery.ApplyWithAlias(ctx, dialect, _alias, wheres, whereValues, havings, havingValues, joins)
+		if err != nil {
+			return err
+		}
+	}
+
 	return nil
 }
 
@@ -6162,6 +6284,49 @@ func (f *DeliveryTypeFilterType) WhereContent(dialect gorm.Dialect, aliasPrefix 
 			conditions = append(conditions, aliasPrefix+dialect.Quote("description")+" IS NULL")
 		} else {
 			conditions = append(conditions, aliasPrefix+dialect.Quote("description")+" IS NOT NULL")
+		}
+	}
+
+	if f.DeliveryID != nil {
+		conditions = append(conditions, aliasPrefix+dialect.Quote("deliveryId")+" = ?")
+		values = append(values, f.DeliveryID)
+	}
+
+	if f.DeliveryIDNe != nil {
+		conditions = append(conditions, aliasPrefix+dialect.Quote("deliveryId")+" != ?")
+		values = append(values, f.DeliveryIDNe)
+	}
+
+	if f.DeliveryIDGt != nil {
+		conditions = append(conditions, aliasPrefix+dialect.Quote("deliveryId")+" > ?")
+		values = append(values, f.DeliveryIDGt)
+	}
+
+	if f.DeliveryIDLt != nil {
+		conditions = append(conditions, aliasPrefix+dialect.Quote("deliveryId")+" < ?")
+		values = append(values, f.DeliveryIDLt)
+	}
+
+	if f.DeliveryIDGte != nil {
+		conditions = append(conditions, aliasPrefix+dialect.Quote("deliveryId")+" >= ?")
+		values = append(values, f.DeliveryIDGte)
+	}
+
+	if f.DeliveryIDLte != nil {
+		conditions = append(conditions, aliasPrefix+dialect.Quote("deliveryId")+" <= ?")
+		values = append(values, f.DeliveryIDLte)
+	}
+
+	if f.DeliveryIDIn != nil {
+		conditions = append(conditions, aliasPrefix+dialect.Quote("deliveryId")+" IN (?)")
+		values = append(values, f.DeliveryIDIn)
+	}
+
+	if f.DeliveryIDNull != nil {
+		if *f.DeliveryIDNull {
+			conditions = append(conditions, aliasPrefix+dialect.Quote("deliveryId")+" IS NULL")
+		} else {
+			conditions = append(conditions, aliasPrefix+dialect.Quote("deliveryId")+" IS NOT NULL")
 		}
 	}
 
@@ -6615,6 +6780,76 @@ func (f *DeliveryTypeFilterType) HavingContent(dialect gorm.Dialect, aliasPrefix
 		values = append(values, fmt.Sprintf("%%%s", *f.DescriptionMaxSuffix))
 	}
 
+	if f.DeliveryIDMin != nil {
+		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("deliveryId")+") = ?")
+		values = append(values, f.DeliveryIDMin)
+	}
+
+	if f.DeliveryIDMax != nil {
+		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("deliveryId")+") = ?")
+		values = append(values, f.DeliveryIDMax)
+	}
+
+	if f.DeliveryIDMinNe != nil {
+		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("deliveryId")+") != ?")
+		values = append(values, f.DeliveryIDMinNe)
+	}
+
+	if f.DeliveryIDMaxNe != nil {
+		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("deliveryId")+") != ?")
+		values = append(values, f.DeliveryIDMaxNe)
+	}
+
+	if f.DeliveryIDMinGt != nil {
+		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("deliveryId")+") > ?")
+		values = append(values, f.DeliveryIDMinGt)
+	}
+
+	if f.DeliveryIDMaxGt != nil {
+		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("deliveryId")+") > ?")
+		values = append(values, f.DeliveryIDMaxGt)
+	}
+
+	if f.DeliveryIDMinLt != nil {
+		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("deliveryId")+") < ?")
+		values = append(values, f.DeliveryIDMinLt)
+	}
+
+	if f.DeliveryIDMaxLt != nil {
+		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("deliveryId")+") < ?")
+		values = append(values, f.DeliveryIDMaxLt)
+	}
+
+	if f.DeliveryIDMinGte != nil {
+		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("deliveryId")+") >= ?")
+		values = append(values, f.DeliveryIDMinGte)
+	}
+
+	if f.DeliveryIDMaxGte != nil {
+		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("deliveryId")+") >= ?")
+		values = append(values, f.DeliveryIDMaxGte)
+	}
+
+	if f.DeliveryIDMinLte != nil {
+		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("deliveryId")+") <= ?")
+		values = append(values, f.DeliveryIDMinLte)
+	}
+
+	if f.DeliveryIDMaxLte != nil {
+		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("deliveryId")+") <= ?")
+		values = append(values, f.DeliveryIDMaxLte)
+	}
+
+	if f.DeliveryIDMinIn != nil {
+		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("deliveryId")+") IN (?)")
+		values = append(values, f.DeliveryIDMinIn)
+	}
+
+	if f.DeliveryIDMaxIn != nil {
+		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("deliveryId")+") IN (?)")
+		values = append(values, f.DeliveryIDMaxIn)
+	}
+
 	if f.UpdatedAtMin != nil {
 		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("updatedAt")+") = ?")
 		values = append(values, f.UpdatedAtMin)
@@ -7016,6 +7251,15 @@ func (f *DeliveryChannelFilterType) ApplyWithAlias(ctx context.Context, dialect 
 		*joins = append(*joins, js...)
 	}
 
+	if f.Delivery != nil {
+		_alias := alias + "_delivery"
+		*joins = append(*joins, "LEFT JOIN "+dialect.Quote(TableName("deliveries"))+" "+dialect.Quote(_alias)+" ON "+dialect.Quote(_alias)+".id = "+alias+"."+dialect.Quote("deliveryId"))
+		err := f.Delivery.ApplyWithAlias(ctx, dialect, _alias, wheres, whereValues, havings, havingValues, joins)
+		if err != nil {
+			return err
+		}
+	}
+
 	return nil
 }
 
@@ -7180,6 +7424,49 @@ func (f *DeliveryChannelFilterType) WhereContent(dialect gorm.Dialect, aliasPref
 			conditions = append(conditions, aliasPrefix+dialect.Quote("description")+" IS NULL")
 		} else {
 			conditions = append(conditions, aliasPrefix+dialect.Quote("description")+" IS NOT NULL")
+		}
+	}
+
+	if f.DeliveryID != nil {
+		conditions = append(conditions, aliasPrefix+dialect.Quote("deliveryId")+" = ?")
+		values = append(values, f.DeliveryID)
+	}
+
+	if f.DeliveryIDNe != nil {
+		conditions = append(conditions, aliasPrefix+dialect.Quote("deliveryId")+" != ?")
+		values = append(values, f.DeliveryIDNe)
+	}
+
+	if f.DeliveryIDGt != nil {
+		conditions = append(conditions, aliasPrefix+dialect.Quote("deliveryId")+" > ?")
+		values = append(values, f.DeliveryIDGt)
+	}
+
+	if f.DeliveryIDLt != nil {
+		conditions = append(conditions, aliasPrefix+dialect.Quote("deliveryId")+" < ?")
+		values = append(values, f.DeliveryIDLt)
+	}
+
+	if f.DeliveryIDGte != nil {
+		conditions = append(conditions, aliasPrefix+dialect.Quote("deliveryId")+" >= ?")
+		values = append(values, f.DeliveryIDGte)
+	}
+
+	if f.DeliveryIDLte != nil {
+		conditions = append(conditions, aliasPrefix+dialect.Quote("deliveryId")+" <= ?")
+		values = append(values, f.DeliveryIDLte)
+	}
+
+	if f.DeliveryIDIn != nil {
+		conditions = append(conditions, aliasPrefix+dialect.Quote("deliveryId")+" IN (?)")
+		values = append(values, f.DeliveryIDIn)
+	}
+
+	if f.DeliveryIDNull != nil {
+		if *f.DeliveryIDNull {
+			conditions = append(conditions, aliasPrefix+dialect.Quote("deliveryId")+" IS NULL")
+		} else {
+			conditions = append(conditions, aliasPrefix+dialect.Quote("deliveryId")+" IS NOT NULL")
 		}
 	}
 
@@ -7631,6 +7918,76 @@ func (f *DeliveryChannelFilterType) HavingContent(dialect gorm.Dialect, aliasPre
 	if f.DescriptionMaxSuffix != nil {
 		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("description")+") LIKE ?")
 		values = append(values, fmt.Sprintf("%%%s", *f.DescriptionMaxSuffix))
+	}
+
+	if f.DeliveryIDMin != nil {
+		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("deliveryId")+") = ?")
+		values = append(values, f.DeliveryIDMin)
+	}
+
+	if f.DeliveryIDMax != nil {
+		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("deliveryId")+") = ?")
+		values = append(values, f.DeliveryIDMax)
+	}
+
+	if f.DeliveryIDMinNe != nil {
+		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("deliveryId")+") != ?")
+		values = append(values, f.DeliveryIDMinNe)
+	}
+
+	if f.DeliveryIDMaxNe != nil {
+		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("deliveryId")+") != ?")
+		values = append(values, f.DeliveryIDMaxNe)
+	}
+
+	if f.DeliveryIDMinGt != nil {
+		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("deliveryId")+") > ?")
+		values = append(values, f.DeliveryIDMinGt)
+	}
+
+	if f.DeliveryIDMaxGt != nil {
+		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("deliveryId")+") > ?")
+		values = append(values, f.DeliveryIDMaxGt)
+	}
+
+	if f.DeliveryIDMinLt != nil {
+		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("deliveryId")+") < ?")
+		values = append(values, f.DeliveryIDMinLt)
+	}
+
+	if f.DeliveryIDMaxLt != nil {
+		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("deliveryId")+") < ?")
+		values = append(values, f.DeliveryIDMaxLt)
+	}
+
+	if f.DeliveryIDMinGte != nil {
+		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("deliveryId")+") >= ?")
+		values = append(values, f.DeliveryIDMinGte)
+	}
+
+	if f.DeliveryIDMaxGte != nil {
+		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("deliveryId")+") >= ?")
+		values = append(values, f.DeliveryIDMaxGte)
+	}
+
+	if f.DeliveryIDMinLte != nil {
+		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("deliveryId")+") <= ?")
+		values = append(values, f.DeliveryIDMinLte)
+	}
+
+	if f.DeliveryIDMaxLte != nil {
+		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("deliveryId")+") <= ?")
+		values = append(values, f.DeliveryIDMaxLte)
+	}
+
+	if f.DeliveryIDMinIn != nil {
+		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("deliveryId")+") IN (?)")
+		values = append(values, f.DeliveryIDMinIn)
+	}
+
+	if f.DeliveryIDMaxIn != nil {
+		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("deliveryId")+") IN (?)")
+		values = append(values, f.DeliveryIDMaxIn)
 	}
 
 	if f.UpdatedAtMin != nil {
@@ -8962,3352 +9319,6 @@ func (f *VehicleTypeFilterType) OrWith(f2 ...*VehicleTypeFilterType) *VehicleTyp
 		return f
 	}
 	return &VehicleTypeFilterType{
-		Or: append(_f2, f),
-	}
-}
-
-// IsEmpty ...
-func (f *PaymentChannelFilterType) IsEmpty(ctx context.Context, dialect gorm.Dialect) bool {
-	wheres := []string{}
-	havings := []string{}
-	whereValues := []interface{}{}
-	havingValues := []interface{}{}
-	joins := []string{}
-	err := f.ApplyWithAlias(ctx, dialect, "companies", &wheres, &whereValues, &havings, &havingValues, &joins)
-	if err != nil {
-		panic(err)
-	}
-	return len(wheres) == 0 && len(havings) == 0
-}
-
-// Apply method
-func (f *PaymentChannelFilterType) Apply(ctx context.Context, dialect gorm.Dialect, wheres *[]string, whereValues *[]interface{}, havings *[]string, havingValues *[]interface{}, joins *[]string) error {
-	return f.ApplyWithAlias(ctx, dialect, TableName("payment_channels"), wheres, whereValues, havings, havingValues, joins)
-}
-
-// ApplyWithAlias method
-func (f *PaymentChannelFilterType) ApplyWithAlias(ctx context.Context, dialect gorm.Dialect, alias string, wheres *[]string, whereValues *[]interface{}, havings *[]string, havingValues *[]interface{}, joins *[]string) error {
-	if f == nil {
-		return nil
-	}
-	aliasPrefix := dialect.Quote(alias) + "."
-
-	_where, _whereValues := f.WhereContent(dialect, aliasPrefix)
-	_having, _havingValues := f.HavingContent(dialect, aliasPrefix)
-	*wheres = append(*wheres, _where...)
-	*havings = append(*havings, _having...)
-	*whereValues = append(*whereValues, _whereValues...)
-	*havingValues = append(*havingValues, _havingValues...)
-
-	if f.Or != nil {
-		ws := []string{}
-		hs := []string{}
-		wvs := []interface{}{}
-		hvs := []interface{}{}
-		js := []string{}
-		for _, or := range f.Or {
-			_ws := []string{}
-			_hs := []string{}
-			err := or.ApplyWithAlias(ctx, dialect, alias, &_ws, &wvs, &_hs, &hvs, &js)
-			if err != nil {
-				return err
-			}
-			if len(_ws) > 0 {
-				ws = append(ws, strings.Join(_ws, " AND "))
-			}
-			if len(_hs) > 0 {
-				hs = append(hs, strings.Join(_hs, " AND "))
-			}
-		}
-		if len(ws) > 0 {
-			*wheres = append(*wheres, "("+strings.Join(ws, " OR ")+")")
-		}
-		if len(hs) > 0 {
-			*havings = append(*havings, "("+strings.Join(hs, " OR ")+")")
-		}
-		*whereValues = append(*whereValues, wvs...)
-		*havingValues = append(*havingValues, hvs...)
-		*joins = append(*joins, js...)
-	}
-	if f.And != nil {
-		ws := []string{}
-		hs := []string{}
-		wvs := []interface{}{}
-		hvs := []interface{}{}
-		js := []string{}
-		for _, and := range f.And {
-			err := and.ApplyWithAlias(ctx, dialect, alias, &ws, &wvs, &hs, &hvs, &js)
-			if err != nil {
-				return err
-			}
-		}
-		if len(ws) > 0 {
-			*wheres = append(*wheres, strings.Join(ws, " AND "))
-		}
-		if len(hs) > 0 {
-			*havings = append(*havings, strings.Join(hs, " AND "))
-		}
-		*whereValues = append(*whereValues, wvs...)
-		*havingValues = append(*havingValues, hvs...)
-		*joins = append(*joins, js...)
-	}
-
-	return nil
-}
-
-// WhereContent ...
-func (f *PaymentChannelFilterType) WhereContent(dialect gorm.Dialect, aliasPrefix string) (conditions []string, values []interface{}) {
-	conditions = []string{}
-	values = []interface{}{}
-
-	if f.ID != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("id")+" = ?")
-		values = append(values, f.ID)
-	}
-
-	if f.IDNe != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("id")+" != ?")
-		values = append(values, f.IDNe)
-	}
-
-	if f.IDGt != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("id")+" > ?")
-		values = append(values, f.IDGt)
-	}
-
-	if f.IDLt != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("id")+" < ?")
-		values = append(values, f.IDLt)
-	}
-
-	if f.IDGte != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("id")+" >= ?")
-		values = append(values, f.IDGte)
-	}
-
-	if f.IDLte != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("id")+" <= ?")
-		values = append(values, f.IDLte)
-	}
-
-	if f.IDIn != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("id")+" IN (?)")
-		values = append(values, f.IDIn)
-	}
-
-	if f.IDNull != nil {
-		if *f.IDNull {
-			conditions = append(conditions, aliasPrefix+dialect.Quote("id")+" IS NULL")
-		} else {
-			conditions = append(conditions, aliasPrefix+dialect.Quote("id")+" IS NOT NULL")
-		}
-	}
-
-	if f.Name != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("name")+" = ?")
-		values = append(values, f.Name)
-	}
-
-	if f.NameNe != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("name")+" != ?")
-		values = append(values, f.NameNe)
-	}
-
-	if f.NameGt != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("name")+" > ?")
-		values = append(values, f.NameGt)
-	}
-
-	if f.NameLt != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("name")+" < ?")
-		values = append(values, f.NameLt)
-	}
-
-	if f.NameGte != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("name")+" >= ?")
-		values = append(values, f.NameGte)
-	}
-
-	if f.NameLte != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("name")+" <= ?")
-		values = append(values, f.NameLte)
-	}
-
-	if f.NameIn != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("name")+" IN (?)")
-		values = append(values, f.NameIn)
-	}
-
-	if f.NameLike != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("name")+" LIKE ?")
-		values = append(values, strings.Replace(strings.Replace(*f.NameLike, "?", "_", -1), "*", "%", -1))
-	}
-
-	if f.NamePrefix != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("name")+" LIKE ?")
-		values = append(values, fmt.Sprintf("%s%%", *f.NamePrefix))
-	}
-
-	if f.NameSuffix != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("name")+" LIKE ?")
-		values = append(values, fmt.Sprintf("%%%s", *f.NameSuffix))
-	}
-
-	if f.NameNull != nil {
-		if *f.NameNull {
-			conditions = append(conditions, aliasPrefix+dialect.Quote("name")+" IS NULL")
-		} else {
-			conditions = append(conditions, aliasPrefix+dialect.Quote("name")+" IS NOT NULL")
-		}
-	}
-
-	if f.Description != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("description")+" = ?")
-		values = append(values, f.Description)
-	}
-
-	if f.DescriptionNe != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("description")+" != ?")
-		values = append(values, f.DescriptionNe)
-	}
-
-	if f.DescriptionGt != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("description")+" > ?")
-		values = append(values, f.DescriptionGt)
-	}
-
-	if f.DescriptionLt != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("description")+" < ?")
-		values = append(values, f.DescriptionLt)
-	}
-
-	if f.DescriptionGte != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("description")+" >= ?")
-		values = append(values, f.DescriptionGte)
-	}
-
-	if f.DescriptionLte != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("description")+" <= ?")
-		values = append(values, f.DescriptionLte)
-	}
-
-	if f.DescriptionIn != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("description")+" IN (?)")
-		values = append(values, f.DescriptionIn)
-	}
-
-	if f.DescriptionLike != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("description")+" LIKE ?")
-		values = append(values, strings.Replace(strings.Replace(*f.DescriptionLike, "?", "_", -1), "*", "%", -1))
-	}
-
-	if f.DescriptionPrefix != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("description")+" LIKE ?")
-		values = append(values, fmt.Sprintf("%s%%", *f.DescriptionPrefix))
-	}
-
-	if f.DescriptionSuffix != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("description")+" LIKE ?")
-		values = append(values, fmt.Sprintf("%%%s", *f.DescriptionSuffix))
-	}
-
-	if f.DescriptionNull != nil {
-		if *f.DescriptionNull {
-			conditions = append(conditions, aliasPrefix+dialect.Quote("description")+" IS NULL")
-		} else {
-			conditions = append(conditions, aliasPrefix+dialect.Quote("description")+" IS NOT NULL")
-		}
-	}
-
-	if f.UpdatedAt != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("updatedAt")+" = ?")
-		values = append(values, f.UpdatedAt)
-	}
-
-	if f.UpdatedAtNe != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("updatedAt")+" != ?")
-		values = append(values, f.UpdatedAtNe)
-	}
-
-	if f.UpdatedAtGt != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("updatedAt")+" > ?")
-		values = append(values, f.UpdatedAtGt)
-	}
-
-	if f.UpdatedAtLt != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("updatedAt")+" < ?")
-		values = append(values, f.UpdatedAtLt)
-	}
-
-	if f.UpdatedAtGte != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("updatedAt")+" >= ?")
-		values = append(values, f.UpdatedAtGte)
-	}
-
-	if f.UpdatedAtLte != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("updatedAt")+" <= ?")
-		values = append(values, f.UpdatedAtLte)
-	}
-
-	if f.UpdatedAtIn != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("updatedAt")+" IN (?)")
-		values = append(values, f.UpdatedAtIn)
-	}
-
-	if f.UpdatedAtNull != nil {
-		if *f.UpdatedAtNull {
-			conditions = append(conditions, aliasPrefix+dialect.Quote("updatedAt")+" IS NULL")
-		} else {
-			conditions = append(conditions, aliasPrefix+dialect.Quote("updatedAt")+" IS NOT NULL")
-		}
-	}
-
-	if f.CreatedAt != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("createdAt")+" = ?")
-		values = append(values, f.CreatedAt)
-	}
-
-	if f.CreatedAtNe != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("createdAt")+" != ?")
-		values = append(values, f.CreatedAtNe)
-	}
-
-	if f.CreatedAtGt != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("createdAt")+" > ?")
-		values = append(values, f.CreatedAtGt)
-	}
-
-	if f.CreatedAtLt != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("createdAt")+" < ?")
-		values = append(values, f.CreatedAtLt)
-	}
-
-	if f.CreatedAtGte != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("createdAt")+" >= ?")
-		values = append(values, f.CreatedAtGte)
-	}
-
-	if f.CreatedAtLte != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("createdAt")+" <= ?")
-		values = append(values, f.CreatedAtLte)
-	}
-
-	if f.CreatedAtIn != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("createdAt")+" IN (?)")
-		values = append(values, f.CreatedAtIn)
-	}
-
-	if f.CreatedAtNull != nil {
-		if *f.CreatedAtNull {
-			conditions = append(conditions, aliasPrefix+dialect.Quote("createdAt")+" IS NULL")
-		} else {
-			conditions = append(conditions, aliasPrefix+dialect.Quote("createdAt")+" IS NOT NULL")
-		}
-	}
-
-	if f.UpdatedBy != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("updatedBy")+" = ?")
-		values = append(values, f.UpdatedBy)
-	}
-
-	if f.UpdatedByNe != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("updatedBy")+" != ?")
-		values = append(values, f.UpdatedByNe)
-	}
-
-	if f.UpdatedByGt != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("updatedBy")+" > ?")
-		values = append(values, f.UpdatedByGt)
-	}
-
-	if f.UpdatedByLt != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("updatedBy")+" < ?")
-		values = append(values, f.UpdatedByLt)
-	}
-
-	if f.UpdatedByGte != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("updatedBy")+" >= ?")
-		values = append(values, f.UpdatedByGte)
-	}
-
-	if f.UpdatedByLte != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("updatedBy")+" <= ?")
-		values = append(values, f.UpdatedByLte)
-	}
-
-	if f.UpdatedByIn != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("updatedBy")+" IN (?)")
-		values = append(values, f.UpdatedByIn)
-	}
-
-	if f.UpdatedByNull != nil {
-		if *f.UpdatedByNull {
-			conditions = append(conditions, aliasPrefix+dialect.Quote("updatedBy")+" IS NULL")
-		} else {
-			conditions = append(conditions, aliasPrefix+dialect.Quote("updatedBy")+" IS NOT NULL")
-		}
-	}
-
-	if f.CreatedBy != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("createdBy")+" = ?")
-		values = append(values, f.CreatedBy)
-	}
-
-	if f.CreatedByNe != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("createdBy")+" != ?")
-		values = append(values, f.CreatedByNe)
-	}
-
-	if f.CreatedByGt != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("createdBy")+" > ?")
-		values = append(values, f.CreatedByGt)
-	}
-
-	if f.CreatedByLt != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("createdBy")+" < ?")
-		values = append(values, f.CreatedByLt)
-	}
-
-	if f.CreatedByGte != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("createdBy")+" >= ?")
-		values = append(values, f.CreatedByGte)
-	}
-
-	if f.CreatedByLte != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("createdBy")+" <= ?")
-		values = append(values, f.CreatedByLte)
-	}
-
-	if f.CreatedByIn != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("createdBy")+" IN (?)")
-		values = append(values, f.CreatedByIn)
-	}
-
-	if f.CreatedByNull != nil {
-		if *f.CreatedByNull {
-			conditions = append(conditions, aliasPrefix+dialect.Quote("createdBy")+" IS NULL")
-		} else {
-			conditions = append(conditions, aliasPrefix+dialect.Quote("createdBy")+" IS NOT NULL")
-		}
-	}
-
-	return
-}
-
-// HavingContent method
-func (f *PaymentChannelFilterType) HavingContent(dialect gorm.Dialect, aliasPrefix string) (conditions []string, values []interface{}) {
-	conditions = []string{}
-	values = []interface{}{}
-
-	if f.IDMin != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("id")+") = ?")
-		values = append(values, f.IDMin)
-	}
-
-	if f.IDMax != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("id")+") = ?")
-		values = append(values, f.IDMax)
-	}
-
-	if f.IDMinNe != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("id")+") != ?")
-		values = append(values, f.IDMinNe)
-	}
-
-	if f.IDMaxNe != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("id")+") != ?")
-		values = append(values, f.IDMaxNe)
-	}
-
-	if f.IDMinGt != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("id")+") > ?")
-		values = append(values, f.IDMinGt)
-	}
-
-	if f.IDMaxGt != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("id")+") > ?")
-		values = append(values, f.IDMaxGt)
-	}
-
-	if f.IDMinLt != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("id")+") < ?")
-		values = append(values, f.IDMinLt)
-	}
-
-	if f.IDMaxLt != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("id")+") < ?")
-		values = append(values, f.IDMaxLt)
-	}
-
-	if f.IDMinGte != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("id")+") >= ?")
-		values = append(values, f.IDMinGte)
-	}
-
-	if f.IDMaxGte != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("id")+") >= ?")
-		values = append(values, f.IDMaxGte)
-	}
-
-	if f.IDMinLte != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("id")+") <= ?")
-		values = append(values, f.IDMinLte)
-	}
-
-	if f.IDMaxLte != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("id")+") <= ?")
-		values = append(values, f.IDMaxLte)
-	}
-
-	if f.IDMinIn != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("id")+") IN (?)")
-		values = append(values, f.IDMinIn)
-	}
-
-	if f.IDMaxIn != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("id")+") IN (?)")
-		values = append(values, f.IDMaxIn)
-	}
-
-	if f.NameMin != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("name")+") = ?")
-		values = append(values, f.NameMin)
-	}
-
-	if f.NameMax != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("name")+") = ?")
-		values = append(values, f.NameMax)
-	}
-
-	if f.NameMinNe != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("name")+") != ?")
-		values = append(values, f.NameMinNe)
-	}
-
-	if f.NameMaxNe != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("name")+") != ?")
-		values = append(values, f.NameMaxNe)
-	}
-
-	if f.NameMinGt != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("name")+") > ?")
-		values = append(values, f.NameMinGt)
-	}
-
-	if f.NameMaxGt != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("name")+") > ?")
-		values = append(values, f.NameMaxGt)
-	}
-
-	if f.NameMinLt != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("name")+") < ?")
-		values = append(values, f.NameMinLt)
-	}
-
-	if f.NameMaxLt != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("name")+") < ?")
-		values = append(values, f.NameMaxLt)
-	}
-
-	if f.NameMinGte != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("name")+") >= ?")
-		values = append(values, f.NameMinGte)
-	}
-
-	if f.NameMaxGte != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("name")+") >= ?")
-		values = append(values, f.NameMaxGte)
-	}
-
-	if f.NameMinLte != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("name")+") <= ?")
-		values = append(values, f.NameMinLte)
-	}
-
-	if f.NameMaxLte != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("name")+") <= ?")
-		values = append(values, f.NameMaxLte)
-	}
-
-	if f.NameMinIn != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("name")+") IN (?)")
-		values = append(values, f.NameMinIn)
-	}
-
-	if f.NameMaxIn != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("name")+") IN (?)")
-		values = append(values, f.NameMaxIn)
-	}
-
-	if f.NameMinLike != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("name")+") LIKE ?")
-		values = append(values, strings.Replace(strings.Replace(*f.NameMinLike, "?", "_", -1), "*", "%", -1))
-	}
-
-	if f.NameMaxLike != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("name")+") LIKE ?")
-		values = append(values, strings.Replace(strings.Replace(*f.NameMaxLike, "?", "_", -1), "*", "%", -1))
-	}
-
-	if f.NameMinPrefix != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("name")+") LIKE ?")
-		values = append(values, fmt.Sprintf("%s%%", *f.NameMinPrefix))
-	}
-
-	if f.NameMaxPrefix != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("name")+") LIKE ?")
-		values = append(values, fmt.Sprintf("%s%%", *f.NameMaxPrefix))
-	}
-
-	if f.NameMinSuffix != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("name")+") LIKE ?")
-		values = append(values, fmt.Sprintf("%%%s", *f.NameMinSuffix))
-	}
-
-	if f.NameMaxSuffix != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("name")+") LIKE ?")
-		values = append(values, fmt.Sprintf("%%%s", *f.NameMaxSuffix))
-	}
-
-	if f.DescriptionMin != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("description")+") = ?")
-		values = append(values, f.DescriptionMin)
-	}
-
-	if f.DescriptionMax != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("description")+") = ?")
-		values = append(values, f.DescriptionMax)
-	}
-
-	if f.DescriptionMinNe != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("description")+") != ?")
-		values = append(values, f.DescriptionMinNe)
-	}
-
-	if f.DescriptionMaxNe != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("description")+") != ?")
-		values = append(values, f.DescriptionMaxNe)
-	}
-
-	if f.DescriptionMinGt != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("description")+") > ?")
-		values = append(values, f.DescriptionMinGt)
-	}
-
-	if f.DescriptionMaxGt != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("description")+") > ?")
-		values = append(values, f.DescriptionMaxGt)
-	}
-
-	if f.DescriptionMinLt != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("description")+") < ?")
-		values = append(values, f.DescriptionMinLt)
-	}
-
-	if f.DescriptionMaxLt != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("description")+") < ?")
-		values = append(values, f.DescriptionMaxLt)
-	}
-
-	if f.DescriptionMinGte != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("description")+") >= ?")
-		values = append(values, f.DescriptionMinGte)
-	}
-
-	if f.DescriptionMaxGte != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("description")+") >= ?")
-		values = append(values, f.DescriptionMaxGte)
-	}
-
-	if f.DescriptionMinLte != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("description")+") <= ?")
-		values = append(values, f.DescriptionMinLte)
-	}
-
-	if f.DescriptionMaxLte != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("description")+") <= ?")
-		values = append(values, f.DescriptionMaxLte)
-	}
-
-	if f.DescriptionMinIn != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("description")+") IN (?)")
-		values = append(values, f.DescriptionMinIn)
-	}
-
-	if f.DescriptionMaxIn != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("description")+") IN (?)")
-		values = append(values, f.DescriptionMaxIn)
-	}
-
-	if f.DescriptionMinLike != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("description")+") LIKE ?")
-		values = append(values, strings.Replace(strings.Replace(*f.DescriptionMinLike, "?", "_", -1), "*", "%", -1))
-	}
-
-	if f.DescriptionMaxLike != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("description")+") LIKE ?")
-		values = append(values, strings.Replace(strings.Replace(*f.DescriptionMaxLike, "?", "_", -1), "*", "%", -1))
-	}
-
-	if f.DescriptionMinPrefix != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("description")+") LIKE ?")
-		values = append(values, fmt.Sprintf("%s%%", *f.DescriptionMinPrefix))
-	}
-
-	if f.DescriptionMaxPrefix != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("description")+") LIKE ?")
-		values = append(values, fmt.Sprintf("%s%%", *f.DescriptionMaxPrefix))
-	}
-
-	if f.DescriptionMinSuffix != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("description")+") LIKE ?")
-		values = append(values, fmt.Sprintf("%%%s", *f.DescriptionMinSuffix))
-	}
-
-	if f.DescriptionMaxSuffix != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("description")+") LIKE ?")
-		values = append(values, fmt.Sprintf("%%%s", *f.DescriptionMaxSuffix))
-	}
-
-	if f.UpdatedAtMin != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("updatedAt")+") = ?")
-		values = append(values, f.UpdatedAtMin)
-	}
-
-	if f.UpdatedAtMax != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("updatedAt")+") = ?")
-		values = append(values, f.UpdatedAtMax)
-	}
-
-	if f.UpdatedAtMinNe != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("updatedAt")+") != ?")
-		values = append(values, f.UpdatedAtMinNe)
-	}
-
-	if f.UpdatedAtMaxNe != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("updatedAt")+") != ?")
-		values = append(values, f.UpdatedAtMaxNe)
-	}
-
-	if f.UpdatedAtMinGt != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("updatedAt")+") > ?")
-		values = append(values, f.UpdatedAtMinGt)
-	}
-
-	if f.UpdatedAtMaxGt != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("updatedAt")+") > ?")
-		values = append(values, f.UpdatedAtMaxGt)
-	}
-
-	if f.UpdatedAtMinLt != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("updatedAt")+") < ?")
-		values = append(values, f.UpdatedAtMinLt)
-	}
-
-	if f.UpdatedAtMaxLt != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("updatedAt")+") < ?")
-		values = append(values, f.UpdatedAtMaxLt)
-	}
-
-	if f.UpdatedAtMinGte != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("updatedAt")+") >= ?")
-		values = append(values, f.UpdatedAtMinGte)
-	}
-
-	if f.UpdatedAtMaxGte != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("updatedAt")+") >= ?")
-		values = append(values, f.UpdatedAtMaxGte)
-	}
-
-	if f.UpdatedAtMinLte != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("updatedAt")+") <= ?")
-		values = append(values, f.UpdatedAtMinLte)
-	}
-
-	if f.UpdatedAtMaxLte != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("updatedAt")+") <= ?")
-		values = append(values, f.UpdatedAtMaxLte)
-	}
-
-	if f.UpdatedAtMinIn != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("updatedAt")+") IN (?)")
-		values = append(values, f.UpdatedAtMinIn)
-	}
-
-	if f.UpdatedAtMaxIn != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("updatedAt")+") IN (?)")
-		values = append(values, f.UpdatedAtMaxIn)
-	}
-
-	if f.CreatedAtMin != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("createdAt")+") = ?")
-		values = append(values, f.CreatedAtMin)
-	}
-
-	if f.CreatedAtMax != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("createdAt")+") = ?")
-		values = append(values, f.CreatedAtMax)
-	}
-
-	if f.CreatedAtMinNe != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("createdAt")+") != ?")
-		values = append(values, f.CreatedAtMinNe)
-	}
-
-	if f.CreatedAtMaxNe != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("createdAt")+") != ?")
-		values = append(values, f.CreatedAtMaxNe)
-	}
-
-	if f.CreatedAtMinGt != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("createdAt")+") > ?")
-		values = append(values, f.CreatedAtMinGt)
-	}
-
-	if f.CreatedAtMaxGt != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("createdAt")+") > ?")
-		values = append(values, f.CreatedAtMaxGt)
-	}
-
-	if f.CreatedAtMinLt != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("createdAt")+") < ?")
-		values = append(values, f.CreatedAtMinLt)
-	}
-
-	if f.CreatedAtMaxLt != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("createdAt")+") < ?")
-		values = append(values, f.CreatedAtMaxLt)
-	}
-
-	if f.CreatedAtMinGte != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("createdAt")+") >= ?")
-		values = append(values, f.CreatedAtMinGte)
-	}
-
-	if f.CreatedAtMaxGte != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("createdAt")+") >= ?")
-		values = append(values, f.CreatedAtMaxGte)
-	}
-
-	if f.CreatedAtMinLte != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("createdAt")+") <= ?")
-		values = append(values, f.CreatedAtMinLte)
-	}
-
-	if f.CreatedAtMaxLte != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("createdAt")+") <= ?")
-		values = append(values, f.CreatedAtMaxLte)
-	}
-
-	if f.CreatedAtMinIn != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("createdAt")+") IN (?)")
-		values = append(values, f.CreatedAtMinIn)
-	}
-
-	if f.CreatedAtMaxIn != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("createdAt")+") IN (?)")
-		values = append(values, f.CreatedAtMaxIn)
-	}
-
-	if f.UpdatedByMin != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("updatedBy")+") = ?")
-		values = append(values, f.UpdatedByMin)
-	}
-
-	if f.UpdatedByMax != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("updatedBy")+") = ?")
-		values = append(values, f.UpdatedByMax)
-	}
-
-	if f.UpdatedByMinNe != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("updatedBy")+") != ?")
-		values = append(values, f.UpdatedByMinNe)
-	}
-
-	if f.UpdatedByMaxNe != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("updatedBy")+") != ?")
-		values = append(values, f.UpdatedByMaxNe)
-	}
-
-	if f.UpdatedByMinGt != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("updatedBy")+") > ?")
-		values = append(values, f.UpdatedByMinGt)
-	}
-
-	if f.UpdatedByMaxGt != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("updatedBy")+") > ?")
-		values = append(values, f.UpdatedByMaxGt)
-	}
-
-	if f.UpdatedByMinLt != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("updatedBy")+") < ?")
-		values = append(values, f.UpdatedByMinLt)
-	}
-
-	if f.UpdatedByMaxLt != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("updatedBy")+") < ?")
-		values = append(values, f.UpdatedByMaxLt)
-	}
-
-	if f.UpdatedByMinGte != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("updatedBy")+") >= ?")
-		values = append(values, f.UpdatedByMinGte)
-	}
-
-	if f.UpdatedByMaxGte != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("updatedBy")+") >= ?")
-		values = append(values, f.UpdatedByMaxGte)
-	}
-
-	if f.UpdatedByMinLte != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("updatedBy")+") <= ?")
-		values = append(values, f.UpdatedByMinLte)
-	}
-
-	if f.UpdatedByMaxLte != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("updatedBy")+") <= ?")
-		values = append(values, f.UpdatedByMaxLte)
-	}
-
-	if f.UpdatedByMinIn != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("updatedBy")+") IN (?)")
-		values = append(values, f.UpdatedByMinIn)
-	}
-
-	if f.UpdatedByMaxIn != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("updatedBy")+") IN (?)")
-		values = append(values, f.UpdatedByMaxIn)
-	}
-
-	if f.CreatedByMin != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("createdBy")+") = ?")
-		values = append(values, f.CreatedByMin)
-	}
-
-	if f.CreatedByMax != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("createdBy")+") = ?")
-		values = append(values, f.CreatedByMax)
-	}
-
-	if f.CreatedByMinNe != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("createdBy")+") != ?")
-		values = append(values, f.CreatedByMinNe)
-	}
-
-	if f.CreatedByMaxNe != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("createdBy")+") != ?")
-		values = append(values, f.CreatedByMaxNe)
-	}
-
-	if f.CreatedByMinGt != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("createdBy")+") > ?")
-		values = append(values, f.CreatedByMinGt)
-	}
-
-	if f.CreatedByMaxGt != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("createdBy")+") > ?")
-		values = append(values, f.CreatedByMaxGt)
-	}
-
-	if f.CreatedByMinLt != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("createdBy")+") < ?")
-		values = append(values, f.CreatedByMinLt)
-	}
-
-	if f.CreatedByMaxLt != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("createdBy")+") < ?")
-		values = append(values, f.CreatedByMaxLt)
-	}
-
-	if f.CreatedByMinGte != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("createdBy")+") >= ?")
-		values = append(values, f.CreatedByMinGte)
-	}
-
-	if f.CreatedByMaxGte != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("createdBy")+") >= ?")
-		values = append(values, f.CreatedByMaxGte)
-	}
-
-	if f.CreatedByMinLte != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("createdBy")+") <= ?")
-		values = append(values, f.CreatedByMinLte)
-	}
-
-	if f.CreatedByMaxLte != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("createdBy")+") <= ?")
-		values = append(values, f.CreatedByMaxLte)
-	}
-
-	if f.CreatedByMinIn != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("createdBy")+") IN (?)")
-		values = append(values, f.CreatedByMinIn)
-	}
-
-	if f.CreatedByMaxIn != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("createdBy")+") IN (?)")
-		values = append(values, f.CreatedByMaxIn)
-	}
-
-	return
-}
-
-// AndWith convenience method for combining two or more filters with AND statement
-func (f *PaymentChannelFilterType) AndWith(f2 ...*PaymentChannelFilterType) *PaymentChannelFilterType {
-	_f2 := f2[:0]
-	for _, x := range f2 {
-		if x != nil {
-			_f2 = append(_f2, x)
-		}
-	}
-	if len(_f2) == 0 {
-		return f
-	}
-	return &PaymentChannelFilterType{
-		And: append(_f2, f),
-	}
-}
-
-// OrWith convenience method for combining two or more filters with OR statement
-func (f *PaymentChannelFilterType) OrWith(f2 ...*PaymentChannelFilterType) *PaymentChannelFilterType {
-	_f2 := f2[:0]
-	for _, x := range f2 {
-		if x != nil {
-			_f2 = append(_f2, x)
-		}
-	}
-	if len(_f2) == 0 {
-		return f
-	}
-	return &PaymentChannelFilterType{
-		Or: append(_f2, f),
-	}
-}
-
-// IsEmpty ...
-func (f *PaymentStatusFilterType) IsEmpty(ctx context.Context, dialect gorm.Dialect) bool {
-	wheres := []string{}
-	havings := []string{}
-	whereValues := []interface{}{}
-	havingValues := []interface{}{}
-	joins := []string{}
-	err := f.ApplyWithAlias(ctx, dialect, "companies", &wheres, &whereValues, &havings, &havingValues, &joins)
-	if err != nil {
-		panic(err)
-	}
-	return len(wheres) == 0 && len(havings) == 0
-}
-
-// Apply method
-func (f *PaymentStatusFilterType) Apply(ctx context.Context, dialect gorm.Dialect, wheres *[]string, whereValues *[]interface{}, havings *[]string, havingValues *[]interface{}, joins *[]string) error {
-	return f.ApplyWithAlias(ctx, dialect, TableName("payment_statuses"), wheres, whereValues, havings, havingValues, joins)
-}
-
-// ApplyWithAlias method
-func (f *PaymentStatusFilterType) ApplyWithAlias(ctx context.Context, dialect gorm.Dialect, alias string, wheres *[]string, whereValues *[]interface{}, havings *[]string, havingValues *[]interface{}, joins *[]string) error {
-	if f == nil {
-		return nil
-	}
-	aliasPrefix := dialect.Quote(alias) + "."
-
-	_where, _whereValues := f.WhereContent(dialect, aliasPrefix)
-	_having, _havingValues := f.HavingContent(dialect, aliasPrefix)
-	*wheres = append(*wheres, _where...)
-	*havings = append(*havings, _having...)
-	*whereValues = append(*whereValues, _whereValues...)
-	*havingValues = append(*havingValues, _havingValues...)
-
-	if f.Or != nil {
-		ws := []string{}
-		hs := []string{}
-		wvs := []interface{}{}
-		hvs := []interface{}{}
-		js := []string{}
-		for _, or := range f.Or {
-			_ws := []string{}
-			_hs := []string{}
-			err := or.ApplyWithAlias(ctx, dialect, alias, &_ws, &wvs, &_hs, &hvs, &js)
-			if err != nil {
-				return err
-			}
-			if len(_ws) > 0 {
-				ws = append(ws, strings.Join(_ws, " AND "))
-			}
-			if len(_hs) > 0 {
-				hs = append(hs, strings.Join(_hs, " AND "))
-			}
-		}
-		if len(ws) > 0 {
-			*wheres = append(*wheres, "("+strings.Join(ws, " OR ")+")")
-		}
-		if len(hs) > 0 {
-			*havings = append(*havings, "("+strings.Join(hs, " OR ")+")")
-		}
-		*whereValues = append(*whereValues, wvs...)
-		*havingValues = append(*havingValues, hvs...)
-		*joins = append(*joins, js...)
-	}
-	if f.And != nil {
-		ws := []string{}
-		hs := []string{}
-		wvs := []interface{}{}
-		hvs := []interface{}{}
-		js := []string{}
-		for _, and := range f.And {
-			err := and.ApplyWithAlias(ctx, dialect, alias, &ws, &wvs, &hs, &hvs, &js)
-			if err != nil {
-				return err
-			}
-		}
-		if len(ws) > 0 {
-			*wheres = append(*wheres, strings.Join(ws, " AND "))
-		}
-		if len(hs) > 0 {
-			*havings = append(*havings, strings.Join(hs, " AND "))
-		}
-		*whereValues = append(*whereValues, wvs...)
-		*havingValues = append(*havingValues, hvs...)
-		*joins = append(*joins, js...)
-	}
-
-	if f.Person != nil {
-		_alias := alias + "_person"
-		*joins = append(*joins, "LEFT JOIN "+dialect.Quote(TableName("people"))+" "+dialect.Quote(_alias)+" ON "+dialect.Quote(_alias)+".id = "+alias+"."+dialect.Quote("personId"))
-		err := f.Person.ApplyWithAlias(ctx, dialect, _alias, wheres, whereValues, havings, havingValues, joins)
-		if err != nil {
-			return err
-		}
-	}
-
-	return nil
-}
-
-// WhereContent ...
-func (f *PaymentStatusFilterType) WhereContent(dialect gorm.Dialect, aliasPrefix string) (conditions []string, values []interface{}) {
-	conditions = []string{}
-	values = []interface{}{}
-
-	if f.ID != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("id")+" = ?")
-		values = append(values, f.ID)
-	}
-
-	if f.IDNe != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("id")+" != ?")
-		values = append(values, f.IDNe)
-	}
-
-	if f.IDGt != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("id")+" > ?")
-		values = append(values, f.IDGt)
-	}
-
-	if f.IDLt != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("id")+" < ?")
-		values = append(values, f.IDLt)
-	}
-
-	if f.IDGte != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("id")+" >= ?")
-		values = append(values, f.IDGte)
-	}
-
-	if f.IDLte != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("id")+" <= ?")
-		values = append(values, f.IDLte)
-	}
-
-	if f.IDIn != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("id")+" IN (?)")
-		values = append(values, f.IDIn)
-	}
-
-	if f.IDNull != nil {
-		if *f.IDNull {
-			conditions = append(conditions, aliasPrefix+dialect.Quote("id")+" IS NULL")
-		} else {
-			conditions = append(conditions, aliasPrefix+dialect.Quote("id")+" IS NOT NULL")
-		}
-	}
-
-	if f.Type != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("type")+" = ?")
-		values = append(values, f.Type)
-	}
-
-	if f.TypeNe != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("type")+" != ?")
-		values = append(values, f.TypeNe)
-	}
-
-	if f.TypeGt != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("type")+" > ?")
-		values = append(values, f.TypeGt)
-	}
-
-	if f.TypeLt != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("type")+" < ?")
-		values = append(values, f.TypeLt)
-	}
-
-	if f.TypeGte != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("type")+" >= ?")
-		values = append(values, f.TypeGte)
-	}
-
-	if f.TypeLte != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("type")+" <= ?")
-		values = append(values, f.TypeLte)
-	}
-
-	if f.TypeIn != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("type")+" IN (?)")
-		values = append(values, f.TypeIn)
-	}
-
-	if f.TypeNull != nil {
-		if *f.TypeNull {
-			conditions = append(conditions, aliasPrefix+dialect.Quote("type")+" IS NULL")
-		} else {
-			conditions = append(conditions, aliasPrefix+dialect.Quote("type")+" IS NOT NULL")
-		}
-	}
-
-	if f.Amount != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("amount")+" = ?")
-		values = append(values, f.Amount)
-	}
-
-	if f.AmountNe != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("amount")+" != ?")
-		values = append(values, f.AmountNe)
-	}
-
-	if f.AmountGt != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("amount")+" > ?")
-		values = append(values, f.AmountGt)
-	}
-
-	if f.AmountLt != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("amount")+" < ?")
-		values = append(values, f.AmountLt)
-	}
-
-	if f.AmountGte != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("amount")+" >= ?")
-		values = append(values, f.AmountGte)
-	}
-
-	if f.AmountLte != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("amount")+" <= ?")
-		values = append(values, f.AmountLte)
-	}
-
-	if f.AmountIn != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("amount")+" IN (?)")
-		values = append(values, f.AmountIn)
-	}
-
-	if f.AmountNull != nil {
-		if *f.AmountNull {
-			conditions = append(conditions, aliasPrefix+dialect.Quote("amount")+" IS NULL")
-		} else {
-			conditions = append(conditions, aliasPrefix+dialect.Quote("amount")+" IS NOT NULL")
-		}
-	}
-
-	if f.PersonID != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("personId")+" = ?")
-		values = append(values, f.PersonID)
-	}
-
-	if f.PersonIDNe != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("personId")+" != ?")
-		values = append(values, f.PersonIDNe)
-	}
-
-	if f.PersonIDGt != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("personId")+" > ?")
-		values = append(values, f.PersonIDGt)
-	}
-
-	if f.PersonIDLt != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("personId")+" < ?")
-		values = append(values, f.PersonIDLt)
-	}
-
-	if f.PersonIDGte != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("personId")+" >= ?")
-		values = append(values, f.PersonIDGte)
-	}
-
-	if f.PersonIDLte != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("personId")+" <= ?")
-		values = append(values, f.PersonIDLte)
-	}
-
-	if f.PersonIDIn != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("personId")+" IN (?)")
-		values = append(values, f.PersonIDIn)
-	}
-
-	if f.PersonIDNull != nil {
-		if *f.PersonIDNull {
-			conditions = append(conditions, aliasPrefix+dialect.Quote("personId")+" IS NULL")
-		} else {
-			conditions = append(conditions, aliasPrefix+dialect.Quote("personId")+" IS NOT NULL")
-		}
-	}
-
-	if f.UpdatedAt != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("updatedAt")+" = ?")
-		values = append(values, f.UpdatedAt)
-	}
-
-	if f.UpdatedAtNe != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("updatedAt")+" != ?")
-		values = append(values, f.UpdatedAtNe)
-	}
-
-	if f.UpdatedAtGt != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("updatedAt")+" > ?")
-		values = append(values, f.UpdatedAtGt)
-	}
-
-	if f.UpdatedAtLt != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("updatedAt")+" < ?")
-		values = append(values, f.UpdatedAtLt)
-	}
-
-	if f.UpdatedAtGte != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("updatedAt")+" >= ?")
-		values = append(values, f.UpdatedAtGte)
-	}
-
-	if f.UpdatedAtLte != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("updatedAt")+" <= ?")
-		values = append(values, f.UpdatedAtLte)
-	}
-
-	if f.UpdatedAtIn != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("updatedAt")+" IN (?)")
-		values = append(values, f.UpdatedAtIn)
-	}
-
-	if f.UpdatedAtNull != nil {
-		if *f.UpdatedAtNull {
-			conditions = append(conditions, aliasPrefix+dialect.Quote("updatedAt")+" IS NULL")
-		} else {
-			conditions = append(conditions, aliasPrefix+dialect.Quote("updatedAt")+" IS NOT NULL")
-		}
-	}
-
-	if f.CreatedAt != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("createdAt")+" = ?")
-		values = append(values, f.CreatedAt)
-	}
-
-	if f.CreatedAtNe != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("createdAt")+" != ?")
-		values = append(values, f.CreatedAtNe)
-	}
-
-	if f.CreatedAtGt != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("createdAt")+" > ?")
-		values = append(values, f.CreatedAtGt)
-	}
-
-	if f.CreatedAtLt != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("createdAt")+" < ?")
-		values = append(values, f.CreatedAtLt)
-	}
-
-	if f.CreatedAtGte != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("createdAt")+" >= ?")
-		values = append(values, f.CreatedAtGte)
-	}
-
-	if f.CreatedAtLte != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("createdAt")+" <= ?")
-		values = append(values, f.CreatedAtLte)
-	}
-
-	if f.CreatedAtIn != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("createdAt")+" IN (?)")
-		values = append(values, f.CreatedAtIn)
-	}
-
-	if f.CreatedAtNull != nil {
-		if *f.CreatedAtNull {
-			conditions = append(conditions, aliasPrefix+dialect.Quote("createdAt")+" IS NULL")
-		} else {
-			conditions = append(conditions, aliasPrefix+dialect.Quote("createdAt")+" IS NOT NULL")
-		}
-	}
-
-	if f.UpdatedBy != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("updatedBy")+" = ?")
-		values = append(values, f.UpdatedBy)
-	}
-
-	if f.UpdatedByNe != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("updatedBy")+" != ?")
-		values = append(values, f.UpdatedByNe)
-	}
-
-	if f.UpdatedByGt != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("updatedBy")+" > ?")
-		values = append(values, f.UpdatedByGt)
-	}
-
-	if f.UpdatedByLt != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("updatedBy")+" < ?")
-		values = append(values, f.UpdatedByLt)
-	}
-
-	if f.UpdatedByGte != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("updatedBy")+" >= ?")
-		values = append(values, f.UpdatedByGte)
-	}
-
-	if f.UpdatedByLte != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("updatedBy")+" <= ?")
-		values = append(values, f.UpdatedByLte)
-	}
-
-	if f.UpdatedByIn != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("updatedBy")+" IN (?)")
-		values = append(values, f.UpdatedByIn)
-	}
-
-	if f.UpdatedByNull != nil {
-		if *f.UpdatedByNull {
-			conditions = append(conditions, aliasPrefix+dialect.Quote("updatedBy")+" IS NULL")
-		} else {
-			conditions = append(conditions, aliasPrefix+dialect.Quote("updatedBy")+" IS NOT NULL")
-		}
-	}
-
-	if f.CreatedBy != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("createdBy")+" = ?")
-		values = append(values, f.CreatedBy)
-	}
-
-	if f.CreatedByNe != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("createdBy")+" != ?")
-		values = append(values, f.CreatedByNe)
-	}
-
-	if f.CreatedByGt != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("createdBy")+" > ?")
-		values = append(values, f.CreatedByGt)
-	}
-
-	if f.CreatedByLt != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("createdBy")+" < ?")
-		values = append(values, f.CreatedByLt)
-	}
-
-	if f.CreatedByGte != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("createdBy")+" >= ?")
-		values = append(values, f.CreatedByGte)
-	}
-
-	if f.CreatedByLte != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("createdBy")+" <= ?")
-		values = append(values, f.CreatedByLte)
-	}
-
-	if f.CreatedByIn != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("createdBy")+" IN (?)")
-		values = append(values, f.CreatedByIn)
-	}
-
-	if f.CreatedByNull != nil {
-		if *f.CreatedByNull {
-			conditions = append(conditions, aliasPrefix+dialect.Quote("createdBy")+" IS NULL")
-		} else {
-			conditions = append(conditions, aliasPrefix+dialect.Quote("createdBy")+" IS NOT NULL")
-		}
-	}
-
-	return
-}
-
-// HavingContent method
-func (f *PaymentStatusFilterType) HavingContent(dialect gorm.Dialect, aliasPrefix string) (conditions []string, values []interface{}) {
-	conditions = []string{}
-	values = []interface{}{}
-
-	if f.IDMin != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("id")+") = ?")
-		values = append(values, f.IDMin)
-	}
-
-	if f.IDMax != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("id")+") = ?")
-		values = append(values, f.IDMax)
-	}
-
-	if f.IDMinNe != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("id")+") != ?")
-		values = append(values, f.IDMinNe)
-	}
-
-	if f.IDMaxNe != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("id")+") != ?")
-		values = append(values, f.IDMaxNe)
-	}
-
-	if f.IDMinGt != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("id")+") > ?")
-		values = append(values, f.IDMinGt)
-	}
-
-	if f.IDMaxGt != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("id")+") > ?")
-		values = append(values, f.IDMaxGt)
-	}
-
-	if f.IDMinLt != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("id")+") < ?")
-		values = append(values, f.IDMinLt)
-	}
-
-	if f.IDMaxLt != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("id")+") < ?")
-		values = append(values, f.IDMaxLt)
-	}
-
-	if f.IDMinGte != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("id")+") >= ?")
-		values = append(values, f.IDMinGte)
-	}
-
-	if f.IDMaxGte != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("id")+") >= ?")
-		values = append(values, f.IDMaxGte)
-	}
-
-	if f.IDMinLte != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("id")+") <= ?")
-		values = append(values, f.IDMinLte)
-	}
-
-	if f.IDMaxLte != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("id")+") <= ?")
-		values = append(values, f.IDMaxLte)
-	}
-
-	if f.IDMinIn != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("id")+") IN (?)")
-		values = append(values, f.IDMinIn)
-	}
-
-	if f.IDMaxIn != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("id")+") IN (?)")
-		values = append(values, f.IDMaxIn)
-	}
-
-	if f.TypeMin != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("type")+") = ?")
-		values = append(values, f.TypeMin)
-	}
-
-	if f.TypeMax != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("type")+") = ?")
-		values = append(values, f.TypeMax)
-	}
-
-	if f.TypeMinNe != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("type")+") != ?")
-		values = append(values, f.TypeMinNe)
-	}
-
-	if f.TypeMaxNe != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("type")+") != ?")
-		values = append(values, f.TypeMaxNe)
-	}
-
-	if f.TypeMinGt != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("type")+") > ?")
-		values = append(values, f.TypeMinGt)
-	}
-
-	if f.TypeMaxGt != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("type")+") > ?")
-		values = append(values, f.TypeMaxGt)
-	}
-
-	if f.TypeMinLt != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("type")+") < ?")
-		values = append(values, f.TypeMinLt)
-	}
-
-	if f.TypeMaxLt != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("type")+") < ?")
-		values = append(values, f.TypeMaxLt)
-	}
-
-	if f.TypeMinGte != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("type")+") >= ?")
-		values = append(values, f.TypeMinGte)
-	}
-
-	if f.TypeMaxGte != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("type")+") >= ?")
-		values = append(values, f.TypeMaxGte)
-	}
-
-	if f.TypeMinLte != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("type")+") <= ?")
-		values = append(values, f.TypeMinLte)
-	}
-
-	if f.TypeMaxLte != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("type")+") <= ?")
-		values = append(values, f.TypeMaxLte)
-	}
-
-	if f.TypeMinIn != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("type")+") IN (?)")
-		values = append(values, f.TypeMinIn)
-	}
-
-	if f.TypeMaxIn != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("type")+") IN (?)")
-		values = append(values, f.TypeMaxIn)
-	}
-
-	if f.AmountMin != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("amount")+") = ?")
-		values = append(values, f.AmountMin)
-	}
-
-	if f.AmountMax != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("amount")+") = ?")
-		values = append(values, f.AmountMax)
-	}
-
-	if f.AmountAvg != nil {
-		conditions = append(conditions, "Avg("+aliasPrefix+dialect.Quote("amount")+") = ?")
-		values = append(values, f.AmountAvg)
-	}
-
-	if f.AmountMinNe != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("amount")+") != ?")
-		values = append(values, f.AmountMinNe)
-	}
-
-	if f.AmountMaxNe != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("amount")+") != ?")
-		values = append(values, f.AmountMaxNe)
-	}
-
-	if f.AmountAvgNe != nil {
-		conditions = append(conditions, "Avg("+aliasPrefix+dialect.Quote("amount")+") != ?")
-		values = append(values, f.AmountAvgNe)
-	}
-
-	if f.AmountMinGt != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("amount")+") > ?")
-		values = append(values, f.AmountMinGt)
-	}
-
-	if f.AmountMaxGt != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("amount")+") > ?")
-		values = append(values, f.AmountMaxGt)
-	}
-
-	if f.AmountAvgGt != nil {
-		conditions = append(conditions, "Avg("+aliasPrefix+dialect.Quote("amount")+") > ?")
-		values = append(values, f.AmountAvgGt)
-	}
-
-	if f.AmountMinLt != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("amount")+") < ?")
-		values = append(values, f.AmountMinLt)
-	}
-
-	if f.AmountMaxLt != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("amount")+") < ?")
-		values = append(values, f.AmountMaxLt)
-	}
-
-	if f.AmountAvgLt != nil {
-		conditions = append(conditions, "Avg("+aliasPrefix+dialect.Quote("amount")+") < ?")
-		values = append(values, f.AmountAvgLt)
-	}
-
-	if f.AmountMinGte != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("amount")+") >= ?")
-		values = append(values, f.AmountMinGte)
-	}
-
-	if f.AmountMaxGte != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("amount")+") >= ?")
-		values = append(values, f.AmountMaxGte)
-	}
-
-	if f.AmountAvgGte != nil {
-		conditions = append(conditions, "Avg("+aliasPrefix+dialect.Quote("amount")+") >= ?")
-		values = append(values, f.AmountAvgGte)
-	}
-
-	if f.AmountMinLte != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("amount")+") <= ?")
-		values = append(values, f.AmountMinLte)
-	}
-
-	if f.AmountMaxLte != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("amount")+") <= ?")
-		values = append(values, f.AmountMaxLte)
-	}
-
-	if f.AmountAvgLte != nil {
-		conditions = append(conditions, "Avg("+aliasPrefix+dialect.Quote("amount")+") <= ?")
-		values = append(values, f.AmountAvgLte)
-	}
-
-	if f.AmountMinIn != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("amount")+") IN (?)")
-		values = append(values, f.AmountMinIn)
-	}
-
-	if f.AmountMaxIn != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("amount")+") IN (?)")
-		values = append(values, f.AmountMaxIn)
-	}
-
-	if f.AmountAvgIn != nil {
-		conditions = append(conditions, "Avg("+aliasPrefix+dialect.Quote("amount")+") IN (?)")
-		values = append(values, f.AmountAvgIn)
-	}
-
-	if f.PersonIDMin != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("personId")+") = ?")
-		values = append(values, f.PersonIDMin)
-	}
-
-	if f.PersonIDMax != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("personId")+") = ?")
-		values = append(values, f.PersonIDMax)
-	}
-
-	if f.PersonIDMinNe != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("personId")+") != ?")
-		values = append(values, f.PersonIDMinNe)
-	}
-
-	if f.PersonIDMaxNe != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("personId")+") != ?")
-		values = append(values, f.PersonIDMaxNe)
-	}
-
-	if f.PersonIDMinGt != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("personId")+") > ?")
-		values = append(values, f.PersonIDMinGt)
-	}
-
-	if f.PersonIDMaxGt != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("personId")+") > ?")
-		values = append(values, f.PersonIDMaxGt)
-	}
-
-	if f.PersonIDMinLt != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("personId")+") < ?")
-		values = append(values, f.PersonIDMinLt)
-	}
-
-	if f.PersonIDMaxLt != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("personId")+") < ?")
-		values = append(values, f.PersonIDMaxLt)
-	}
-
-	if f.PersonIDMinGte != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("personId")+") >= ?")
-		values = append(values, f.PersonIDMinGte)
-	}
-
-	if f.PersonIDMaxGte != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("personId")+") >= ?")
-		values = append(values, f.PersonIDMaxGte)
-	}
-
-	if f.PersonIDMinLte != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("personId")+") <= ?")
-		values = append(values, f.PersonIDMinLte)
-	}
-
-	if f.PersonIDMaxLte != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("personId")+") <= ?")
-		values = append(values, f.PersonIDMaxLte)
-	}
-
-	if f.PersonIDMinIn != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("personId")+") IN (?)")
-		values = append(values, f.PersonIDMinIn)
-	}
-
-	if f.PersonIDMaxIn != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("personId")+") IN (?)")
-		values = append(values, f.PersonIDMaxIn)
-	}
-
-	if f.UpdatedAtMin != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("updatedAt")+") = ?")
-		values = append(values, f.UpdatedAtMin)
-	}
-
-	if f.UpdatedAtMax != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("updatedAt")+") = ?")
-		values = append(values, f.UpdatedAtMax)
-	}
-
-	if f.UpdatedAtMinNe != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("updatedAt")+") != ?")
-		values = append(values, f.UpdatedAtMinNe)
-	}
-
-	if f.UpdatedAtMaxNe != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("updatedAt")+") != ?")
-		values = append(values, f.UpdatedAtMaxNe)
-	}
-
-	if f.UpdatedAtMinGt != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("updatedAt")+") > ?")
-		values = append(values, f.UpdatedAtMinGt)
-	}
-
-	if f.UpdatedAtMaxGt != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("updatedAt")+") > ?")
-		values = append(values, f.UpdatedAtMaxGt)
-	}
-
-	if f.UpdatedAtMinLt != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("updatedAt")+") < ?")
-		values = append(values, f.UpdatedAtMinLt)
-	}
-
-	if f.UpdatedAtMaxLt != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("updatedAt")+") < ?")
-		values = append(values, f.UpdatedAtMaxLt)
-	}
-
-	if f.UpdatedAtMinGte != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("updatedAt")+") >= ?")
-		values = append(values, f.UpdatedAtMinGte)
-	}
-
-	if f.UpdatedAtMaxGte != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("updatedAt")+") >= ?")
-		values = append(values, f.UpdatedAtMaxGte)
-	}
-
-	if f.UpdatedAtMinLte != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("updatedAt")+") <= ?")
-		values = append(values, f.UpdatedAtMinLte)
-	}
-
-	if f.UpdatedAtMaxLte != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("updatedAt")+") <= ?")
-		values = append(values, f.UpdatedAtMaxLte)
-	}
-
-	if f.UpdatedAtMinIn != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("updatedAt")+") IN (?)")
-		values = append(values, f.UpdatedAtMinIn)
-	}
-
-	if f.UpdatedAtMaxIn != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("updatedAt")+") IN (?)")
-		values = append(values, f.UpdatedAtMaxIn)
-	}
-
-	if f.CreatedAtMin != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("createdAt")+") = ?")
-		values = append(values, f.CreatedAtMin)
-	}
-
-	if f.CreatedAtMax != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("createdAt")+") = ?")
-		values = append(values, f.CreatedAtMax)
-	}
-
-	if f.CreatedAtMinNe != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("createdAt")+") != ?")
-		values = append(values, f.CreatedAtMinNe)
-	}
-
-	if f.CreatedAtMaxNe != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("createdAt")+") != ?")
-		values = append(values, f.CreatedAtMaxNe)
-	}
-
-	if f.CreatedAtMinGt != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("createdAt")+") > ?")
-		values = append(values, f.CreatedAtMinGt)
-	}
-
-	if f.CreatedAtMaxGt != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("createdAt")+") > ?")
-		values = append(values, f.CreatedAtMaxGt)
-	}
-
-	if f.CreatedAtMinLt != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("createdAt")+") < ?")
-		values = append(values, f.CreatedAtMinLt)
-	}
-
-	if f.CreatedAtMaxLt != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("createdAt")+") < ?")
-		values = append(values, f.CreatedAtMaxLt)
-	}
-
-	if f.CreatedAtMinGte != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("createdAt")+") >= ?")
-		values = append(values, f.CreatedAtMinGte)
-	}
-
-	if f.CreatedAtMaxGte != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("createdAt")+") >= ?")
-		values = append(values, f.CreatedAtMaxGte)
-	}
-
-	if f.CreatedAtMinLte != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("createdAt")+") <= ?")
-		values = append(values, f.CreatedAtMinLte)
-	}
-
-	if f.CreatedAtMaxLte != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("createdAt")+") <= ?")
-		values = append(values, f.CreatedAtMaxLte)
-	}
-
-	if f.CreatedAtMinIn != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("createdAt")+") IN (?)")
-		values = append(values, f.CreatedAtMinIn)
-	}
-
-	if f.CreatedAtMaxIn != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("createdAt")+") IN (?)")
-		values = append(values, f.CreatedAtMaxIn)
-	}
-
-	if f.UpdatedByMin != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("updatedBy")+") = ?")
-		values = append(values, f.UpdatedByMin)
-	}
-
-	if f.UpdatedByMax != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("updatedBy")+") = ?")
-		values = append(values, f.UpdatedByMax)
-	}
-
-	if f.UpdatedByMinNe != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("updatedBy")+") != ?")
-		values = append(values, f.UpdatedByMinNe)
-	}
-
-	if f.UpdatedByMaxNe != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("updatedBy")+") != ?")
-		values = append(values, f.UpdatedByMaxNe)
-	}
-
-	if f.UpdatedByMinGt != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("updatedBy")+") > ?")
-		values = append(values, f.UpdatedByMinGt)
-	}
-
-	if f.UpdatedByMaxGt != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("updatedBy")+") > ?")
-		values = append(values, f.UpdatedByMaxGt)
-	}
-
-	if f.UpdatedByMinLt != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("updatedBy")+") < ?")
-		values = append(values, f.UpdatedByMinLt)
-	}
-
-	if f.UpdatedByMaxLt != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("updatedBy")+") < ?")
-		values = append(values, f.UpdatedByMaxLt)
-	}
-
-	if f.UpdatedByMinGte != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("updatedBy")+") >= ?")
-		values = append(values, f.UpdatedByMinGte)
-	}
-
-	if f.UpdatedByMaxGte != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("updatedBy")+") >= ?")
-		values = append(values, f.UpdatedByMaxGte)
-	}
-
-	if f.UpdatedByMinLte != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("updatedBy")+") <= ?")
-		values = append(values, f.UpdatedByMinLte)
-	}
-
-	if f.UpdatedByMaxLte != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("updatedBy")+") <= ?")
-		values = append(values, f.UpdatedByMaxLte)
-	}
-
-	if f.UpdatedByMinIn != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("updatedBy")+") IN (?)")
-		values = append(values, f.UpdatedByMinIn)
-	}
-
-	if f.UpdatedByMaxIn != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("updatedBy")+") IN (?)")
-		values = append(values, f.UpdatedByMaxIn)
-	}
-
-	if f.CreatedByMin != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("createdBy")+") = ?")
-		values = append(values, f.CreatedByMin)
-	}
-
-	if f.CreatedByMax != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("createdBy")+") = ?")
-		values = append(values, f.CreatedByMax)
-	}
-
-	if f.CreatedByMinNe != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("createdBy")+") != ?")
-		values = append(values, f.CreatedByMinNe)
-	}
-
-	if f.CreatedByMaxNe != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("createdBy")+") != ?")
-		values = append(values, f.CreatedByMaxNe)
-	}
-
-	if f.CreatedByMinGt != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("createdBy")+") > ?")
-		values = append(values, f.CreatedByMinGt)
-	}
-
-	if f.CreatedByMaxGt != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("createdBy")+") > ?")
-		values = append(values, f.CreatedByMaxGt)
-	}
-
-	if f.CreatedByMinLt != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("createdBy")+") < ?")
-		values = append(values, f.CreatedByMinLt)
-	}
-
-	if f.CreatedByMaxLt != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("createdBy")+") < ?")
-		values = append(values, f.CreatedByMaxLt)
-	}
-
-	if f.CreatedByMinGte != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("createdBy")+") >= ?")
-		values = append(values, f.CreatedByMinGte)
-	}
-
-	if f.CreatedByMaxGte != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("createdBy")+") >= ?")
-		values = append(values, f.CreatedByMaxGte)
-	}
-
-	if f.CreatedByMinLte != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("createdBy")+") <= ?")
-		values = append(values, f.CreatedByMinLte)
-	}
-
-	if f.CreatedByMaxLte != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("createdBy")+") <= ?")
-		values = append(values, f.CreatedByMaxLte)
-	}
-
-	if f.CreatedByMinIn != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("createdBy")+") IN (?)")
-		values = append(values, f.CreatedByMinIn)
-	}
-
-	if f.CreatedByMaxIn != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("createdBy")+") IN (?)")
-		values = append(values, f.CreatedByMaxIn)
-	}
-
-	return
-}
-
-// AndWith convenience method for combining two or more filters with AND statement
-func (f *PaymentStatusFilterType) AndWith(f2 ...*PaymentStatusFilterType) *PaymentStatusFilterType {
-	_f2 := f2[:0]
-	for _, x := range f2 {
-		if x != nil {
-			_f2 = append(_f2, x)
-		}
-	}
-	if len(_f2) == 0 {
-		return f
-	}
-	return &PaymentStatusFilterType{
-		And: append(_f2, f),
-	}
-}
-
-// OrWith convenience method for combining two or more filters with OR statement
-func (f *PaymentStatusFilterType) OrWith(f2 ...*PaymentStatusFilterType) *PaymentStatusFilterType {
-	_f2 := f2[:0]
-	for _, x := range f2 {
-		if x != nil {
-			_f2 = append(_f2, x)
-		}
-	}
-	if len(_f2) == 0 {
-		return f
-	}
-	return &PaymentStatusFilterType{
-		Or: append(_f2, f),
-	}
-}
-
-// IsEmpty ...
-func (f *PaymentHistoryFilterType) IsEmpty(ctx context.Context, dialect gorm.Dialect) bool {
-	wheres := []string{}
-	havings := []string{}
-	whereValues := []interface{}{}
-	havingValues := []interface{}{}
-	joins := []string{}
-	err := f.ApplyWithAlias(ctx, dialect, "companies", &wheres, &whereValues, &havings, &havingValues, &joins)
-	if err != nil {
-		panic(err)
-	}
-	return len(wheres) == 0 && len(havings) == 0
-}
-
-// Apply method
-func (f *PaymentHistoryFilterType) Apply(ctx context.Context, dialect gorm.Dialect, wheres *[]string, whereValues *[]interface{}, havings *[]string, havingValues *[]interface{}, joins *[]string) error {
-	return f.ApplyWithAlias(ctx, dialect, TableName("payment_histories"), wheres, whereValues, havings, havingValues, joins)
-}
-
-// ApplyWithAlias method
-func (f *PaymentHistoryFilterType) ApplyWithAlias(ctx context.Context, dialect gorm.Dialect, alias string, wheres *[]string, whereValues *[]interface{}, havings *[]string, havingValues *[]interface{}, joins *[]string) error {
-	if f == nil {
-		return nil
-	}
-	aliasPrefix := dialect.Quote(alias) + "."
-
-	_where, _whereValues := f.WhereContent(dialect, aliasPrefix)
-	_having, _havingValues := f.HavingContent(dialect, aliasPrefix)
-	*wheres = append(*wheres, _where...)
-	*havings = append(*havings, _having...)
-	*whereValues = append(*whereValues, _whereValues...)
-	*havingValues = append(*havingValues, _havingValues...)
-
-	if f.Or != nil {
-		ws := []string{}
-		hs := []string{}
-		wvs := []interface{}{}
-		hvs := []interface{}{}
-		js := []string{}
-		for _, or := range f.Or {
-			_ws := []string{}
-			_hs := []string{}
-			err := or.ApplyWithAlias(ctx, dialect, alias, &_ws, &wvs, &_hs, &hvs, &js)
-			if err != nil {
-				return err
-			}
-			if len(_ws) > 0 {
-				ws = append(ws, strings.Join(_ws, " AND "))
-			}
-			if len(_hs) > 0 {
-				hs = append(hs, strings.Join(_hs, " AND "))
-			}
-		}
-		if len(ws) > 0 {
-			*wheres = append(*wheres, "("+strings.Join(ws, " OR ")+")")
-		}
-		if len(hs) > 0 {
-			*havings = append(*havings, "("+strings.Join(hs, " OR ")+")")
-		}
-		*whereValues = append(*whereValues, wvs...)
-		*havingValues = append(*havingValues, hvs...)
-		*joins = append(*joins, js...)
-	}
-	if f.And != nil {
-		ws := []string{}
-		hs := []string{}
-		wvs := []interface{}{}
-		hvs := []interface{}{}
-		js := []string{}
-		for _, and := range f.And {
-			err := and.ApplyWithAlias(ctx, dialect, alias, &ws, &wvs, &hs, &hvs, &js)
-			if err != nil {
-				return err
-			}
-		}
-		if len(ws) > 0 {
-			*wheres = append(*wheres, strings.Join(ws, " AND "))
-		}
-		if len(hs) > 0 {
-			*havings = append(*havings, strings.Join(hs, " AND "))
-		}
-		*whereValues = append(*whereValues, wvs...)
-		*havingValues = append(*havingValues, hvs...)
-		*joins = append(*joins, js...)
-	}
-
-	if f.Person != nil {
-		_alias := alias + "_person"
-		*joins = append(*joins, "LEFT JOIN "+dialect.Quote(TableName("people"))+" "+dialect.Quote(_alias)+" ON "+dialect.Quote(_alias)+".id = "+alias+"."+dialect.Quote("personId"))
-		err := f.Person.ApplyWithAlias(ctx, dialect, _alias, wheres, whereValues, havings, havingValues, joins)
-		if err != nil {
-			return err
-		}
-	}
-
-	return nil
-}
-
-// WhereContent ...
-func (f *PaymentHistoryFilterType) WhereContent(dialect gorm.Dialect, aliasPrefix string) (conditions []string, values []interface{}) {
-	conditions = []string{}
-	values = []interface{}{}
-
-	if f.ID != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("id")+" = ?")
-		values = append(values, f.ID)
-	}
-
-	if f.IDNe != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("id")+" != ?")
-		values = append(values, f.IDNe)
-	}
-
-	if f.IDGt != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("id")+" > ?")
-		values = append(values, f.IDGt)
-	}
-
-	if f.IDLt != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("id")+" < ?")
-		values = append(values, f.IDLt)
-	}
-
-	if f.IDGte != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("id")+" >= ?")
-		values = append(values, f.IDGte)
-	}
-
-	if f.IDLte != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("id")+" <= ?")
-		values = append(values, f.IDLte)
-	}
-
-	if f.IDIn != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("id")+" IN (?)")
-		values = append(values, f.IDIn)
-	}
-
-	if f.IDNull != nil {
-		if *f.IDNull {
-			conditions = append(conditions, aliasPrefix+dialect.Quote("id")+" IS NULL")
-		} else {
-			conditions = append(conditions, aliasPrefix+dialect.Quote("id")+" IS NOT NULL")
-		}
-	}
-
-	if f.Type != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("type")+" = ?")
-		values = append(values, f.Type)
-	}
-
-	if f.TypeNe != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("type")+" != ?")
-		values = append(values, f.TypeNe)
-	}
-
-	if f.TypeGt != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("type")+" > ?")
-		values = append(values, f.TypeGt)
-	}
-
-	if f.TypeLt != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("type")+" < ?")
-		values = append(values, f.TypeLt)
-	}
-
-	if f.TypeGte != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("type")+" >= ?")
-		values = append(values, f.TypeGte)
-	}
-
-	if f.TypeLte != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("type")+" <= ?")
-		values = append(values, f.TypeLte)
-	}
-
-	if f.TypeIn != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("type")+" IN (?)")
-		values = append(values, f.TypeIn)
-	}
-
-	if f.TypeNull != nil {
-		if *f.TypeNull {
-			conditions = append(conditions, aliasPrefix+dialect.Quote("type")+" IS NULL")
-		} else {
-			conditions = append(conditions, aliasPrefix+dialect.Quote("type")+" IS NOT NULL")
-		}
-	}
-
-	if f.Amount != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("amount")+" = ?")
-		values = append(values, f.Amount)
-	}
-
-	if f.AmountNe != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("amount")+" != ?")
-		values = append(values, f.AmountNe)
-	}
-
-	if f.AmountGt != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("amount")+" > ?")
-		values = append(values, f.AmountGt)
-	}
-
-	if f.AmountLt != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("amount")+" < ?")
-		values = append(values, f.AmountLt)
-	}
-
-	if f.AmountGte != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("amount")+" >= ?")
-		values = append(values, f.AmountGte)
-	}
-
-	if f.AmountLte != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("amount")+" <= ?")
-		values = append(values, f.AmountLte)
-	}
-
-	if f.AmountIn != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("amount")+" IN (?)")
-		values = append(values, f.AmountIn)
-	}
-
-	if f.AmountNull != nil {
-		if *f.AmountNull {
-			conditions = append(conditions, aliasPrefix+dialect.Quote("amount")+" IS NULL")
-		} else {
-			conditions = append(conditions, aliasPrefix+dialect.Quote("amount")+" IS NOT NULL")
-		}
-	}
-
-	if f.Concept != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("concept")+" = ?")
-		values = append(values, f.Concept)
-	}
-
-	if f.ConceptNe != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("concept")+" != ?")
-		values = append(values, f.ConceptNe)
-	}
-
-	if f.ConceptGt != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("concept")+" > ?")
-		values = append(values, f.ConceptGt)
-	}
-
-	if f.ConceptLt != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("concept")+" < ?")
-		values = append(values, f.ConceptLt)
-	}
-
-	if f.ConceptGte != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("concept")+" >= ?")
-		values = append(values, f.ConceptGte)
-	}
-
-	if f.ConceptLte != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("concept")+" <= ?")
-		values = append(values, f.ConceptLte)
-	}
-
-	if f.ConceptIn != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("concept")+" IN (?)")
-		values = append(values, f.ConceptIn)
-	}
-
-	if f.ConceptLike != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("concept")+" LIKE ?")
-		values = append(values, strings.Replace(strings.Replace(*f.ConceptLike, "?", "_", -1), "*", "%", -1))
-	}
-
-	if f.ConceptPrefix != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("concept")+" LIKE ?")
-		values = append(values, fmt.Sprintf("%s%%", *f.ConceptPrefix))
-	}
-
-	if f.ConceptSuffix != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("concept")+" LIKE ?")
-		values = append(values, fmt.Sprintf("%%%s", *f.ConceptSuffix))
-	}
-
-	if f.ConceptNull != nil {
-		if *f.ConceptNull {
-			conditions = append(conditions, aliasPrefix+dialect.Quote("concept")+" IS NULL")
-		} else {
-			conditions = append(conditions, aliasPrefix+dialect.Quote("concept")+" IS NOT NULL")
-		}
-	}
-
-	if f.PersonID != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("personId")+" = ?")
-		values = append(values, f.PersonID)
-	}
-
-	if f.PersonIDNe != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("personId")+" != ?")
-		values = append(values, f.PersonIDNe)
-	}
-
-	if f.PersonIDGt != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("personId")+" > ?")
-		values = append(values, f.PersonIDGt)
-	}
-
-	if f.PersonIDLt != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("personId")+" < ?")
-		values = append(values, f.PersonIDLt)
-	}
-
-	if f.PersonIDGte != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("personId")+" >= ?")
-		values = append(values, f.PersonIDGte)
-	}
-
-	if f.PersonIDLte != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("personId")+" <= ?")
-		values = append(values, f.PersonIDLte)
-	}
-
-	if f.PersonIDIn != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("personId")+" IN (?)")
-		values = append(values, f.PersonIDIn)
-	}
-
-	if f.PersonIDNull != nil {
-		if *f.PersonIDNull {
-			conditions = append(conditions, aliasPrefix+dialect.Quote("personId")+" IS NULL")
-		} else {
-			conditions = append(conditions, aliasPrefix+dialect.Quote("personId")+" IS NOT NULL")
-		}
-	}
-
-	if f.UpdatedAt != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("updatedAt")+" = ?")
-		values = append(values, f.UpdatedAt)
-	}
-
-	if f.UpdatedAtNe != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("updatedAt")+" != ?")
-		values = append(values, f.UpdatedAtNe)
-	}
-
-	if f.UpdatedAtGt != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("updatedAt")+" > ?")
-		values = append(values, f.UpdatedAtGt)
-	}
-
-	if f.UpdatedAtLt != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("updatedAt")+" < ?")
-		values = append(values, f.UpdatedAtLt)
-	}
-
-	if f.UpdatedAtGte != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("updatedAt")+" >= ?")
-		values = append(values, f.UpdatedAtGte)
-	}
-
-	if f.UpdatedAtLte != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("updatedAt")+" <= ?")
-		values = append(values, f.UpdatedAtLte)
-	}
-
-	if f.UpdatedAtIn != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("updatedAt")+" IN (?)")
-		values = append(values, f.UpdatedAtIn)
-	}
-
-	if f.UpdatedAtNull != nil {
-		if *f.UpdatedAtNull {
-			conditions = append(conditions, aliasPrefix+dialect.Quote("updatedAt")+" IS NULL")
-		} else {
-			conditions = append(conditions, aliasPrefix+dialect.Quote("updatedAt")+" IS NOT NULL")
-		}
-	}
-
-	if f.CreatedAt != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("createdAt")+" = ?")
-		values = append(values, f.CreatedAt)
-	}
-
-	if f.CreatedAtNe != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("createdAt")+" != ?")
-		values = append(values, f.CreatedAtNe)
-	}
-
-	if f.CreatedAtGt != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("createdAt")+" > ?")
-		values = append(values, f.CreatedAtGt)
-	}
-
-	if f.CreatedAtLt != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("createdAt")+" < ?")
-		values = append(values, f.CreatedAtLt)
-	}
-
-	if f.CreatedAtGte != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("createdAt")+" >= ?")
-		values = append(values, f.CreatedAtGte)
-	}
-
-	if f.CreatedAtLte != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("createdAt")+" <= ?")
-		values = append(values, f.CreatedAtLte)
-	}
-
-	if f.CreatedAtIn != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("createdAt")+" IN (?)")
-		values = append(values, f.CreatedAtIn)
-	}
-
-	if f.CreatedAtNull != nil {
-		if *f.CreatedAtNull {
-			conditions = append(conditions, aliasPrefix+dialect.Quote("createdAt")+" IS NULL")
-		} else {
-			conditions = append(conditions, aliasPrefix+dialect.Quote("createdAt")+" IS NOT NULL")
-		}
-	}
-
-	if f.UpdatedBy != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("updatedBy")+" = ?")
-		values = append(values, f.UpdatedBy)
-	}
-
-	if f.UpdatedByNe != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("updatedBy")+" != ?")
-		values = append(values, f.UpdatedByNe)
-	}
-
-	if f.UpdatedByGt != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("updatedBy")+" > ?")
-		values = append(values, f.UpdatedByGt)
-	}
-
-	if f.UpdatedByLt != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("updatedBy")+" < ?")
-		values = append(values, f.UpdatedByLt)
-	}
-
-	if f.UpdatedByGte != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("updatedBy")+" >= ?")
-		values = append(values, f.UpdatedByGte)
-	}
-
-	if f.UpdatedByLte != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("updatedBy")+" <= ?")
-		values = append(values, f.UpdatedByLte)
-	}
-
-	if f.UpdatedByIn != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("updatedBy")+" IN (?)")
-		values = append(values, f.UpdatedByIn)
-	}
-
-	if f.UpdatedByNull != nil {
-		if *f.UpdatedByNull {
-			conditions = append(conditions, aliasPrefix+dialect.Quote("updatedBy")+" IS NULL")
-		} else {
-			conditions = append(conditions, aliasPrefix+dialect.Quote("updatedBy")+" IS NOT NULL")
-		}
-	}
-
-	if f.CreatedBy != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("createdBy")+" = ?")
-		values = append(values, f.CreatedBy)
-	}
-
-	if f.CreatedByNe != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("createdBy")+" != ?")
-		values = append(values, f.CreatedByNe)
-	}
-
-	if f.CreatedByGt != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("createdBy")+" > ?")
-		values = append(values, f.CreatedByGt)
-	}
-
-	if f.CreatedByLt != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("createdBy")+" < ?")
-		values = append(values, f.CreatedByLt)
-	}
-
-	if f.CreatedByGte != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("createdBy")+" >= ?")
-		values = append(values, f.CreatedByGte)
-	}
-
-	if f.CreatedByLte != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("createdBy")+" <= ?")
-		values = append(values, f.CreatedByLte)
-	}
-
-	if f.CreatedByIn != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("createdBy")+" IN (?)")
-		values = append(values, f.CreatedByIn)
-	}
-
-	if f.CreatedByNull != nil {
-		if *f.CreatedByNull {
-			conditions = append(conditions, aliasPrefix+dialect.Quote("createdBy")+" IS NULL")
-		} else {
-			conditions = append(conditions, aliasPrefix+dialect.Quote("createdBy")+" IS NOT NULL")
-		}
-	}
-
-	return
-}
-
-// HavingContent method
-func (f *PaymentHistoryFilterType) HavingContent(dialect gorm.Dialect, aliasPrefix string) (conditions []string, values []interface{}) {
-	conditions = []string{}
-	values = []interface{}{}
-
-	if f.IDMin != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("id")+") = ?")
-		values = append(values, f.IDMin)
-	}
-
-	if f.IDMax != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("id")+") = ?")
-		values = append(values, f.IDMax)
-	}
-
-	if f.IDMinNe != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("id")+") != ?")
-		values = append(values, f.IDMinNe)
-	}
-
-	if f.IDMaxNe != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("id")+") != ?")
-		values = append(values, f.IDMaxNe)
-	}
-
-	if f.IDMinGt != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("id")+") > ?")
-		values = append(values, f.IDMinGt)
-	}
-
-	if f.IDMaxGt != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("id")+") > ?")
-		values = append(values, f.IDMaxGt)
-	}
-
-	if f.IDMinLt != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("id")+") < ?")
-		values = append(values, f.IDMinLt)
-	}
-
-	if f.IDMaxLt != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("id")+") < ?")
-		values = append(values, f.IDMaxLt)
-	}
-
-	if f.IDMinGte != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("id")+") >= ?")
-		values = append(values, f.IDMinGte)
-	}
-
-	if f.IDMaxGte != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("id")+") >= ?")
-		values = append(values, f.IDMaxGte)
-	}
-
-	if f.IDMinLte != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("id")+") <= ?")
-		values = append(values, f.IDMinLte)
-	}
-
-	if f.IDMaxLte != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("id")+") <= ?")
-		values = append(values, f.IDMaxLte)
-	}
-
-	if f.IDMinIn != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("id")+") IN (?)")
-		values = append(values, f.IDMinIn)
-	}
-
-	if f.IDMaxIn != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("id")+") IN (?)")
-		values = append(values, f.IDMaxIn)
-	}
-
-	if f.TypeMin != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("type")+") = ?")
-		values = append(values, f.TypeMin)
-	}
-
-	if f.TypeMax != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("type")+") = ?")
-		values = append(values, f.TypeMax)
-	}
-
-	if f.TypeMinNe != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("type")+") != ?")
-		values = append(values, f.TypeMinNe)
-	}
-
-	if f.TypeMaxNe != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("type")+") != ?")
-		values = append(values, f.TypeMaxNe)
-	}
-
-	if f.TypeMinGt != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("type")+") > ?")
-		values = append(values, f.TypeMinGt)
-	}
-
-	if f.TypeMaxGt != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("type")+") > ?")
-		values = append(values, f.TypeMaxGt)
-	}
-
-	if f.TypeMinLt != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("type")+") < ?")
-		values = append(values, f.TypeMinLt)
-	}
-
-	if f.TypeMaxLt != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("type")+") < ?")
-		values = append(values, f.TypeMaxLt)
-	}
-
-	if f.TypeMinGte != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("type")+") >= ?")
-		values = append(values, f.TypeMinGte)
-	}
-
-	if f.TypeMaxGte != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("type")+") >= ?")
-		values = append(values, f.TypeMaxGte)
-	}
-
-	if f.TypeMinLte != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("type")+") <= ?")
-		values = append(values, f.TypeMinLte)
-	}
-
-	if f.TypeMaxLte != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("type")+") <= ?")
-		values = append(values, f.TypeMaxLte)
-	}
-
-	if f.TypeMinIn != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("type")+") IN (?)")
-		values = append(values, f.TypeMinIn)
-	}
-
-	if f.TypeMaxIn != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("type")+") IN (?)")
-		values = append(values, f.TypeMaxIn)
-	}
-
-	if f.AmountMin != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("amount")+") = ?")
-		values = append(values, f.AmountMin)
-	}
-
-	if f.AmountMax != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("amount")+") = ?")
-		values = append(values, f.AmountMax)
-	}
-
-	if f.AmountAvg != nil {
-		conditions = append(conditions, "Avg("+aliasPrefix+dialect.Quote("amount")+") = ?")
-		values = append(values, f.AmountAvg)
-	}
-
-	if f.AmountMinNe != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("amount")+") != ?")
-		values = append(values, f.AmountMinNe)
-	}
-
-	if f.AmountMaxNe != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("amount")+") != ?")
-		values = append(values, f.AmountMaxNe)
-	}
-
-	if f.AmountAvgNe != nil {
-		conditions = append(conditions, "Avg("+aliasPrefix+dialect.Quote("amount")+") != ?")
-		values = append(values, f.AmountAvgNe)
-	}
-
-	if f.AmountMinGt != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("amount")+") > ?")
-		values = append(values, f.AmountMinGt)
-	}
-
-	if f.AmountMaxGt != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("amount")+") > ?")
-		values = append(values, f.AmountMaxGt)
-	}
-
-	if f.AmountAvgGt != nil {
-		conditions = append(conditions, "Avg("+aliasPrefix+dialect.Quote("amount")+") > ?")
-		values = append(values, f.AmountAvgGt)
-	}
-
-	if f.AmountMinLt != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("amount")+") < ?")
-		values = append(values, f.AmountMinLt)
-	}
-
-	if f.AmountMaxLt != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("amount")+") < ?")
-		values = append(values, f.AmountMaxLt)
-	}
-
-	if f.AmountAvgLt != nil {
-		conditions = append(conditions, "Avg("+aliasPrefix+dialect.Quote("amount")+") < ?")
-		values = append(values, f.AmountAvgLt)
-	}
-
-	if f.AmountMinGte != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("amount")+") >= ?")
-		values = append(values, f.AmountMinGte)
-	}
-
-	if f.AmountMaxGte != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("amount")+") >= ?")
-		values = append(values, f.AmountMaxGte)
-	}
-
-	if f.AmountAvgGte != nil {
-		conditions = append(conditions, "Avg("+aliasPrefix+dialect.Quote("amount")+") >= ?")
-		values = append(values, f.AmountAvgGte)
-	}
-
-	if f.AmountMinLte != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("amount")+") <= ?")
-		values = append(values, f.AmountMinLte)
-	}
-
-	if f.AmountMaxLte != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("amount")+") <= ?")
-		values = append(values, f.AmountMaxLte)
-	}
-
-	if f.AmountAvgLte != nil {
-		conditions = append(conditions, "Avg("+aliasPrefix+dialect.Quote("amount")+") <= ?")
-		values = append(values, f.AmountAvgLte)
-	}
-
-	if f.AmountMinIn != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("amount")+") IN (?)")
-		values = append(values, f.AmountMinIn)
-	}
-
-	if f.AmountMaxIn != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("amount")+") IN (?)")
-		values = append(values, f.AmountMaxIn)
-	}
-
-	if f.AmountAvgIn != nil {
-		conditions = append(conditions, "Avg("+aliasPrefix+dialect.Quote("amount")+") IN (?)")
-		values = append(values, f.AmountAvgIn)
-	}
-
-	if f.ConceptMin != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("concept")+") = ?")
-		values = append(values, f.ConceptMin)
-	}
-
-	if f.ConceptMax != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("concept")+") = ?")
-		values = append(values, f.ConceptMax)
-	}
-
-	if f.ConceptMinNe != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("concept")+") != ?")
-		values = append(values, f.ConceptMinNe)
-	}
-
-	if f.ConceptMaxNe != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("concept")+") != ?")
-		values = append(values, f.ConceptMaxNe)
-	}
-
-	if f.ConceptMinGt != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("concept")+") > ?")
-		values = append(values, f.ConceptMinGt)
-	}
-
-	if f.ConceptMaxGt != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("concept")+") > ?")
-		values = append(values, f.ConceptMaxGt)
-	}
-
-	if f.ConceptMinLt != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("concept")+") < ?")
-		values = append(values, f.ConceptMinLt)
-	}
-
-	if f.ConceptMaxLt != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("concept")+") < ?")
-		values = append(values, f.ConceptMaxLt)
-	}
-
-	if f.ConceptMinGte != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("concept")+") >= ?")
-		values = append(values, f.ConceptMinGte)
-	}
-
-	if f.ConceptMaxGte != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("concept")+") >= ?")
-		values = append(values, f.ConceptMaxGte)
-	}
-
-	if f.ConceptMinLte != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("concept")+") <= ?")
-		values = append(values, f.ConceptMinLte)
-	}
-
-	if f.ConceptMaxLte != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("concept")+") <= ?")
-		values = append(values, f.ConceptMaxLte)
-	}
-
-	if f.ConceptMinIn != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("concept")+") IN (?)")
-		values = append(values, f.ConceptMinIn)
-	}
-
-	if f.ConceptMaxIn != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("concept")+") IN (?)")
-		values = append(values, f.ConceptMaxIn)
-	}
-
-	if f.ConceptMinLike != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("concept")+") LIKE ?")
-		values = append(values, strings.Replace(strings.Replace(*f.ConceptMinLike, "?", "_", -1), "*", "%", -1))
-	}
-
-	if f.ConceptMaxLike != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("concept")+") LIKE ?")
-		values = append(values, strings.Replace(strings.Replace(*f.ConceptMaxLike, "?", "_", -1), "*", "%", -1))
-	}
-
-	if f.ConceptMinPrefix != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("concept")+") LIKE ?")
-		values = append(values, fmt.Sprintf("%s%%", *f.ConceptMinPrefix))
-	}
-
-	if f.ConceptMaxPrefix != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("concept")+") LIKE ?")
-		values = append(values, fmt.Sprintf("%s%%", *f.ConceptMaxPrefix))
-	}
-
-	if f.ConceptMinSuffix != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("concept")+") LIKE ?")
-		values = append(values, fmt.Sprintf("%%%s", *f.ConceptMinSuffix))
-	}
-
-	if f.ConceptMaxSuffix != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("concept")+") LIKE ?")
-		values = append(values, fmt.Sprintf("%%%s", *f.ConceptMaxSuffix))
-	}
-
-	if f.PersonIDMin != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("personId")+") = ?")
-		values = append(values, f.PersonIDMin)
-	}
-
-	if f.PersonIDMax != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("personId")+") = ?")
-		values = append(values, f.PersonIDMax)
-	}
-
-	if f.PersonIDMinNe != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("personId")+") != ?")
-		values = append(values, f.PersonIDMinNe)
-	}
-
-	if f.PersonIDMaxNe != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("personId")+") != ?")
-		values = append(values, f.PersonIDMaxNe)
-	}
-
-	if f.PersonIDMinGt != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("personId")+") > ?")
-		values = append(values, f.PersonIDMinGt)
-	}
-
-	if f.PersonIDMaxGt != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("personId")+") > ?")
-		values = append(values, f.PersonIDMaxGt)
-	}
-
-	if f.PersonIDMinLt != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("personId")+") < ?")
-		values = append(values, f.PersonIDMinLt)
-	}
-
-	if f.PersonIDMaxLt != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("personId")+") < ?")
-		values = append(values, f.PersonIDMaxLt)
-	}
-
-	if f.PersonIDMinGte != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("personId")+") >= ?")
-		values = append(values, f.PersonIDMinGte)
-	}
-
-	if f.PersonIDMaxGte != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("personId")+") >= ?")
-		values = append(values, f.PersonIDMaxGte)
-	}
-
-	if f.PersonIDMinLte != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("personId")+") <= ?")
-		values = append(values, f.PersonIDMinLte)
-	}
-
-	if f.PersonIDMaxLte != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("personId")+") <= ?")
-		values = append(values, f.PersonIDMaxLte)
-	}
-
-	if f.PersonIDMinIn != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("personId")+") IN (?)")
-		values = append(values, f.PersonIDMinIn)
-	}
-
-	if f.PersonIDMaxIn != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("personId")+") IN (?)")
-		values = append(values, f.PersonIDMaxIn)
-	}
-
-	if f.UpdatedAtMin != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("updatedAt")+") = ?")
-		values = append(values, f.UpdatedAtMin)
-	}
-
-	if f.UpdatedAtMax != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("updatedAt")+") = ?")
-		values = append(values, f.UpdatedAtMax)
-	}
-
-	if f.UpdatedAtMinNe != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("updatedAt")+") != ?")
-		values = append(values, f.UpdatedAtMinNe)
-	}
-
-	if f.UpdatedAtMaxNe != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("updatedAt")+") != ?")
-		values = append(values, f.UpdatedAtMaxNe)
-	}
-
-	if f.UpdatedAtMinGt != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("updatedAt")+") > ?")
-		values = append(values, f.UpdatedAtMinGt)
-	}
-
-	if f.UpdatedAtMaxGt != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("updatedAt")+") > ?")
-		values = append(values, f.UpdatedAtMaxGt)
-	}
-
-	if f.UpdatedAtMinLt != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("updatedAt")+") < ?")
-		values = append(values, f.UpdatedAtMinLt)
-	}
-
-	if f.UpdatedAtMaxLt != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("updatedAt")+") < ?")
-		values = append(values, f.UpdatedAtMaxLt)
-	}
-
-	if f.UpdatedAtMinGte != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("updatedAt")+") >= ?")
-		values = append(values, f.UpdatedAtMinGte)
-	}
-
-	if f.UpdatedAtMaxGte != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("updatedAt")+") >= ?")
-		values = append(values, f.UpdatedAtMaxGte)
-	}
-
-	if f.UpdatedAtMinLte != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("updatedAt")+") <= ?")
-		values = append(values, f.UpdatedAtMinLte)
-	}
-
-	if f.UpdatedAtMaxLte != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("updatedAt")+") <= ?")
-		values = append(values, f.UpdatedAtMaxLte)
-	}
-
-	if f.UpdatedAtMinIn != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("updatedAt")+") IN (?)")
-		values = append(values, f.UpdatedAtMinIn)
-	}
-
-	if f.UpdatedAtMaxIn != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("updatedAt")+") IN (?)")
-		values = append(values, f.UpdatedAtMaxIn)
-	}
-
-	if f.CreatedAtMin != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("createdAt")+") = ?")
-		values = append(values, f.CreatedAtMin)
-	}
-
-	if f.CreatedAtMax != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("createdAt")+") = ?")
-		values = append(values, f.CreatedAtMax)
-	}
-
-	if f.CreatedAtMinNe != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("createdAt")+") != ?")
-		values = append(values, f.CreatedAtMinNe)
-	}
-
-	if f.CreatedAtMaxNe != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("createdAt")+") != ?")
-		values = append(values, f.CreatedAtMaxNe)
-	}
-
-	if f.CreatedAtMinGt != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("createdAt")+") > ?")
-		values = append(values, f.CreatedAtMinGt)
-	}
-
-	if f.CreatedAtMaxGt != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("createdAt")+") > ?")
-		values = append(values, f.CreatedAtMaxGt)
-	}
-
-	if f.CreatedAtMinLt != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("createdAt")+") < ?")
-		values = append(values, f.CreatedAtMinLt)
-	}
-
-	if f.CreatedAtMaxLt != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("createdAt")+") < ?")
-		values = append(values, f.CreatedAtMaxLt)
-	}
-
-	if f.CreatedAtMinGte != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("createdAt")+") >= ?")
-		values = append(values, f.CreatedAtMinGte)
-	}
-
-	if f.CreatedAtMaxGte != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("createdAt")+") >= ?")
-		values = append(values, f.CreatedAtMaxGte)
-	}
-
-	if f.CreatedAtMinLte != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("createdAt")+") <= ?")
-		values = append(values, f.CreatedAtMinLte)
-	}
-
-	if f.CreatedAtMaxLte != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("createdAt")+") <= ?")
-		values = append(values, f.CreatedAtMaxLte)
-	}
-
-	if f.CreatedAtMinIn != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("createdAt")+") IN (?)")
-		values = append(values, f.CreatedAtMinIn)
-	}
-
-	if f.CreatedAtMaxIn != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("createdAt")+") IN (?)")
-		values = append(values, f.CreatedAtMaxIn)
-	}
-
-	if f.UpdatedByMin != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("updatedBy")+") = ?")
-		values = append(values, f.UpdatedByMin)
-	}
-
-	if f.UpdatedByMax != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("updatedBy")+") = ?")
-		values = append(values, f.UpdatedByMax)
-	}
-
-	if f.UpdatedByMinNe != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("updatedBy")+") != ?")
-		values = append(values, f.UpdatedByMinNe)
-	}
-
-	if f.UpdatedByMaxNe != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("updatedBy")+") != ?")
-		values = append(values, f.UpdatedByMaxNe)
-	}
-
-	if f.UpdatedByMinGt != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("updatedBy")+") > ?")
-		values = append(values, f.UpdatedByMinGt)
-	}
-
-	if f.UpdatedByMaxGt != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("updatedBy")+") > ?")
-		values = append(values, f.UpdatedByMaxGt)
-	}
-
-	if f.UpdatedByMinLt != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("updatedBy")+") < ?")
-		values = append(values, f.UpdatedByMinLt)
-	}
-
-	if f.UpdatedByMaxLt != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("updatedBy")+") < ?")
-		values = append(values, f.UpdatedByMaxLt)
-	}
-
-	if f.UpdatedByMinGte != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("updatedBy")+") >= ?")
-		values = append(values, f.UpdatedByMinGte)
-	}
-
-	if f.UpdatedByMaxGte != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("updatedBy")+") >= ?")
-		values = append(values, f.UpdatedByMaxGte)
-	}
-
-	if f.UpdatedByMinLte != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("updatedBy")+") <= ?")
-		values = append(values, f.UpdatedByMinLte)
-	}
-
-	if f.UpdatedByMaxLte != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("updatedBy")+") <= ?")
-		values = append(values, f.UpdatedByMaxLte)
-	}
-
-	if f.UpdatedByMinIn != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("updatedBy")+") IN (?)")
-		values = append(values, f.UpdatedByMinIn)
-	}
-
-	if f.UpdatedByMaxIn != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("updatedBy")+") IN (?)")
-		values = append(values, f.UpdatedByMaxIn)
-	}
-
-	if f.CreatedByMin != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("createdBy")+") = ?")
-		values = append(values, f.CreatedByMin)
-	}
-
-	if f.CreatedByMax != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("createdBy")+") = ?")
-		values = append(values, f.CreatedByMax)
-	}
-
-	if f.CreatedByMinNe != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("createdBy")+") != ?")
-		values = append(values, f.CreatedByMinNe)
-	}
-
-	if f.CreatedByMaxNe != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("createdBy")+") != ?")
-		values = append(values, f.CreatedByMaxNe)
-	}
-
-	if f.CreatedByMinGt != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("createdBy")+") > ?")
-		values = append(values, f.CreatedByMinGt)
-	}
-
-	if f.CreatedByMaxGt != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("createdBy")+") > ?")
-		values = append(values, f.CreatedByMaxGt)
-	}
-
-	if f.CreatedByMinLt != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("createdBy")+") < ?")
-		values = append(values, f.CreatedByMinLt)
-	}
-
-	if f.CreatedByMaxLt != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("createdBy")+") < ?")
-		values = append(values, f.CreatedByMaxLt)
-	}
-
-	if f.CreatedByMinGte != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("createdBy")+") >= ?")
-		values = append(values, f.CreatedByMinGte)
-	}
-
-	if f.CreatedByMaxGte != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("createdBy")+") >= ?")
-		values = append(values, f.CreatedByMaxGte)
-	}
-
-	if f.CreatedByMinLte != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("createdBy")+") <= ?")
-		values = append(values, f.CreatedByMinLte)
-	}
-
-	if f.CreatedByMaxLte != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("createdBy")+") <= ?")
-		values = append(values, f.CreatedByMaxLte)
-	}
-
-	if f.CreatedByMinIn != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("createdBy")+") IN (?)")
-		values = append(values, f.CreatedByMinIn)
-	}
-
-	if f.CreatedByMaxIn != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("createdBy")+") IN (?)")
-		values = append(values, f.CreatedByMaxIn)
-	}
-
-	return
-}
-
-// AndWith convenience method for combining two or more filters with AND statement
-func (f *PaymentHistoryFilterType) AndWith(f2 ...*PaymentHistoryFilterType) *PaymentHistoryFilterType {
-	_f2 := f2[:0]
-	for _, x := range f2 {
-		if x != nil {
-			_f2 = append(_f2, x)
-		}
-	}
-	if len(_f2) == 0 {
-		return f
-	}
-	return &PaymentHistoryFilterType{
-		And: append(_f2, f),
-	}
-}
-
-// OrWith convenience method for combining two or more filters with OR statement
-func (f *PaymentHistoryFilterType) OrWith(f2 ...*PaymentHistoryFilterType) *PaymentHistoryFilterType {
-	_f2 := f2[:0]
-	for _, x := range f2 {
-		if x != nil {
-			_f2 = append(_f2, x)
-		}
-	}
-	if len(_f2) == 0 {
-		return f
-	}
-	return &PaymentHistoryFilterType{
 		Or: append(_f2, f),
 	}
 }

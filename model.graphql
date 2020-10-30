@@ -3,11 +3,11 @@ type Delivery @entity {
   receiver: Person! @relationship(inverse: "deliveriesReceived", preload: true)
   deliver: Person! @relationship(inverse: "deliveries", preload: true)
   vehicleType: VehicleType
-  paymentChannelId: String! @column(index: "pcidx") #PaymentChannel
+  paymentId: ID @column(index: "pidx") #Payment id, comes from payment-api
   paymentTotal: Float @column
   paymentOnDeliver: Boolean @column
-  deliveryType: DeliveryType
-  deliveryChannel: DeliveryChannel
+  deliveryType: DeliveryType! @relationship(inverse: "delivery")
+  deliveryChannel: DeliveryChannel @relationship(inverse: "delivery")
   collectDateTime: Time @column
   collectAddress: String @column
   collectPoint: String @column
@@ -25,31 +25,31 @@ type Delivery @entity {
 type Person @entity {
   deliver: Boolean @column(default: false)
   email: String! @column(unique: true)
-  phone: String @column
-  documentNo: String @column
+  phone: String @column(type: "varchar(36)")
+  documentNo: String @column(type: "varchar(255)")
   avatarURL: String @column(type: "text")
-  displayName: String @column
-  firstName: String @column
-  lastName: String @column
-  nickName: String @column
-  description: String @column(type: "text")
+  displayName: String @column(type: "varchar(255)")
+  firstName: String @column(type: "varchar(255)")
+  lastName: String @column(type: "varchar(255)")
+  nickName: String @column(type: "varchar(255)")
+  description: String @column
   location: String @column
   deliveries: [Delivery!]! @relationship(inverse: "deliver")
   deliveriesSent: [Delivery!]! @relationship(inverse: "sender")
   deliveriesReceived: [Delivery!]! @relationship(inverse: "receiver")
   userId: String @column(index: "useridx") #Comes from auth-api
-  paymentStatus: PaymentStatus! @relationship(inverse: "person")
-  paymentHistory: PaymentHistory! @relationship(inverse: "person")
 }
 
 type DeliveryType @entity {
   name: String @column
   description: String @column(type: "text")
+  delivery: Delivery @relationship(inverse: "deliveryType")
 }
 
 type DeliveryChannel @entity {
   name: String @column
   description: String @column(type: "text")
+  delivery: Delivery @relationship(inverse: "deliveryChannel")
 }
 
 type VehicleType @entity {

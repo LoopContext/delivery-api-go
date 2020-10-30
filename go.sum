@@ -167,6 +167,8 @@ github.com/loopcontext/anycase v0.0.1 h1:cElJI7ka69S7eaZIIMZfxw/OWjcFY4I6QnzszrP
 github.com/loopcontext/anycase v0.0.1/go.mod h1:JDlqMey8rSGXmKKmhGecPNsFxeW/6dz6iunsGO0tV74=
 github.com/loopcontext/cloudevents-aws-transport v1.0.9 h1:Vm3ixEI4xsOtueOqnD+LhoTqPmzYbkX3ewwGSKxoWTM=
 github.com/loopcontext/cloudevents-aws-transport v1.0.9/go.mod h1:dLPdMmo+PpyLAdLsHG1Sfy+S+mWubcKnbcD73fJgSOQ=
+github.com/loopcontext/go-graphql-orm v0.0.0-20201030160604-1815583bad5d h1:w6PLwrcE6QVOOf81/xKoaerZfwO3EL1WLiOV6Pn5rkk=
+github.com/loopcontext/go-graphql-orm v0.0.0-20201030160604-1815583bad5d/go.mod h1:x8MrPUnVxDmz4lGnlqi1ep1QmxM7T7aE5Iavmy+Gd+g=
 github.com/matryer/moq v0.0.0-20200106131100-75d0ddfc0007/go.mod h1:9ELz6aaclSIGnZBoaSLZ3NAl1VTufbOrXBPvtcy6WiQ=
 github.com/mattn/go-colorable v0.1.2/go.mod h1:U0ppj6V5qS13XJ6of8GYAs25YV2eR4EVcfRqFIhoBtE=
 github.com/mattn/go-colorable v0.1.4 h1:snbPLB8fVfU9iwbbo30TPtbLRzwWu6aJS6Xh4eaaviA=

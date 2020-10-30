@@ -188,45 +188,6 @@ func DeliveryVehicleTypeHandler(ctx context.Context, r *GeneratedResolver, obj *
 	return
 }
 
-// PaymentChannel ...
-func (r *GeneratedDeliveryResolver) PaymentChannel(ctx context.Context, obj *Delivery) (res *PaymentChannel, err error) {
-	return r.Handlers.DeliveryPaymentChannel(ctx, r.GeneratedResolver, obj)
-}
-
-// DeliveryPaymentChannelHandler handler
-func DeliveryPaymentChannelHandler(ctx context.Context, r *GeneratedResolver, obj *Delivery) (res *PaymentChannel, err error) {
-
-	err = fmt.Errorf("Resolver handler for DeliveryPaymentChannel not implemented")
-
-	return
-}
-
-// DeliveryType ...
-func (r *GeneratedDeliveryResolver) DeliveryType(ctx context.Context, obj *Delivery) (res *DeliveryType, err error) {
-	return r.Handlers.DeliveryDeliveryType(ctx, r.GeneratedResolver, obj)
-}
-
-// DeliveryDeliveryTypeHandler handler
-func DeliveryDeliveryTypeHandler(ctx context.Context, r *GeneratedResolver, obj *Delivery) (res *DeliveryType, err error) {
-
-	err = fmt.Errorf("Resolver handler for DeliveryDeliveryType not implemented")
-
-	return
-}
-
-// DeliveryChannel ...
-func (r *GeneratedDeliveryResolver) DeliveryChannel(ctx context.Context, obj *Delivery) (res *DeliveryChannel, err error) {
-	return r.Handlers.DeliveryDeliveryChannel(ctx, r.GeneratedResolver, obj)
-}
-
-// DeliveryDeliveryChannelHandler handler
-func DeliveryDeliveryChannelHandler(ctx context.Context, r *GeneratedResolver, obj *Delivery) (res *DeliveryChannel, err error) {
-
-	err = fmt.Errorf("Resolver handler for DeliveryDeliveryChannel not implemented")
-
-	return
-}
-
 // Sender ...
 func (r *GeneratedDeliveryResolver) Sender(ctx context.Context, obj *Delivery) (res *Person, err error) {
 	return r.Handlers.DeliverySender(ctx, r.GeneratedResolver, obj)
@@ -306,6 +267,47 @@ func DeliveryDeliverHandler(ctx context.Context, r *GeneratedResolver, obj *Deli
 			err = _err
 		}
 
+	}
+
+	return
+}
+
+// DeliveryType ...
+func (r *GeneratedDeliveryResolver) DeliveryType(ctx context.Context, obj *Delivery) (res *DeliveryType, err error) {
+	return r.Handlers.DeliveryDeliveryType(ctx, r.GeneratedResolver, obj)
+}
+
+// DeliveryDeliveryTypeHandler handler
+func DeliveryDeliveryTypeHandler(ctx context.Context, r *GeneratedResolver, obj *Delivery) (res *DeliveryType, err error) {
+
+	loaders := ctx.Value(KeyLoaders).(map[string]*dataloader.Loader)
+	if obj.DeliveryTypeID != nil {
+		item, _err := loaders["DeliveryType"].Load(ctx, dataloader.StringKey(*obj.DeliveryTypeID))()
+		res, _ = item.(*DeliveryType)
+
+		if res == nil {
+			_err = fmt.Errorf("DeliveryType with id '%s' not found", *obj.DeliveryTypeID)
+		}
+		err = _err
+	}
+
+	return
+}
+
+// DeliveryChannel ...
+func (r *GeneratedDeliveryResolver) DeliveryChannel(ctx context.Context, obj *Delivery) (res *DeliveryChannel, err error) {
+	return r.Handlers.DeliveryDeliveryChannel(ctx, r.GeneratedResolver, obj)
+}
+
+// DeliveryDeliveryChannelHandler handler
+func DeliveryDeliveryChannelHandler(ctx context.Context, r *GeneratedResolver, obj *Delivery) (res *DeliveryChannel, err error) {
+
+	loaders := ctx.Value(KeyLoaders).(map[string]*dataloader.Loader)
+	if obj.DeliveryChannelID != nil {
+		item, _err := loaders["DeliveryChannel"].Load(ctx, dataloader.StringKey(*obj.DeliveryChannelID))()
+		res, _ = item.(*DeliveryChannel)
+
+		err = _err
 	}
 
 	return
@@ -647,50 +649,6 @@ func (r *GeneratedPersonResolver) DeliveriesReceivedConnection(ctx context.Conte
 	return r.Handlers.QueryDeliveries(ctx, r.GeneratedResolver, opts)
 }
 
-// PaymentStatus ...
-func (r *GeneratedPersonResolver) PaymentStatus(ctx context.Context, obj *Person) (res *PaymentStatus, err error) {
-	return r.Handlers.PersonPaymentStatus(ctx, r.GeneratedResolver, obj)
-}
-
-// PersonPaymentStatusHandler handler
-func PersonPaymentStatusHandler(ctx context.Context, r *GeneratedResolver, obj *Person) (res *PaymentStatus, err error) {
-
-	loaders := ctx.Value(KeyLoaders).(map[string]*dataloader.Loader)
-	if obj.PaymentStatusID != nil {
-		item, _err := loaders["PaymentStatus"].Load(ctx, dataloader.StringKey(*obj.PaymentStatusID))()
-		res, _ = item.(*PaymentStatus)
-
-		if res == nil {
-			_err = fmt.Errorf("PaymentStatus with id '%s' not found", *obj.PaymentStatusID)
-		}
-		err = _err
-	}
-
-	return
-}
-
-// PaymentHistory ...
-func (r *GeneratedPersonResolver) PaymentHistory(ctx context.Context, obj *Person) (res *PaymentHistory, err error) {
-	return r.Handlers.PersonPaymentHistory(ctx, r.GeneratedResolver, obj)
-}
-
-// PersonPaymentHistoryHandler handler
-func PersonPaymentHistoryHandler(ctx context.Context, r *GeneratedResolver, obj *Person) (res *PaymentHistory, err error) {
-
-	loaders := ctx.Value(KeyLoaders).(map[string]*dataloader.Loader)
-	if obj.PaymentHistoryID != nil {
-		item, _err := loaders["PaymentHistory"].Load(ctx, dataloader.StringKey(*obj.PaymentHistoryID))()
-		res, _ = item.(*PaymentHistory)
-
-		if res == nil {
-			_err = fmt.Errorf("PaymentHistory with id '%s' not found", *obj.PaymentHistoryID)
-		}
-		err = _err
-	}
-
-	return
-}
-
 // QueryDeliveryTypeHandlerOptions struct
 type QueryDeliveryTypeHandlerOptions struct {
 	ID     *string
@@ -830,6 +788,28 @@ func (r *GeneratedDeliveryTypeResultTypeResolver) Count(ctx context.Context, obj
 		Preloaders: []string{},
 	}
 	return obj.GetCount(ctx, r.DB.db, opts, &DeliveryType{})
+}
+
+// GeneratedDeliveryTypeResolver struct
+type GeneratedDeliveryTypeResolver struct{ *GeneratedResolver }
+
+// Delivery ...
+func (r *GeneratedDeliveryTypeResolver) Delivery(ctx context.Context, obj *DeliveryType) (res *Delivery, err error) {
+	return r.Handlers.DeliveryTypeDelivery(ctx, r.GeneratedResolver, obj)
+}
+
+// DeliveryTypeDeliveryHandler handler
+func DeliveryTypeDeliveryHandler(ctx context.Context, r *GeneratedResolver, obj *DeliveryType) (res *Delivery, err error) {
+
+	loaders := ctx.Value(KeyLoaders).(map[string]*dataloader.Loader)
+	if obj.DeliveryID != nil {
+		item, _err := loaders["Delivery"].Load(ctx, dataloader.StringKey(*obj.DeliveryID))()
+		res, _ = item.(*Delivery)
+
+		err = _err
+	}
+
+	return
 }
 
 // QueryDeliveryChannelHandlerOptions struct
@@ -973,6 +953,28 @@ func (r *GeneratedDeliveryChannelResultTypeResolver) Count(ctx context.Context, 
 	return obj.GetCount(ctx, r.DB.db, opts, &DeliveryChannel{})
 }
 
+// GeneratedDeliveryChannelResolver struct
+type GeneratedDeliveryChannelResolver struct{ *GeneratedResolver }
+
+// Delivery ...
+func (r *GeneratedDeliveryChannelResolver) Delivery(ctx context.Context, obj *DeliveryChannel) (res *Delivery, err error) {
+	return r.Handlers.DeliveryChannelDelivery(ctx, r.GeneratedResolver, obj)
+}
+
+// DeliveryChannelDeliveryHandler handler
+func DeliveryChannelDeliveryHandler(ctx context.Context, r *GeneratedResolver, obj *DeliveryChannel) (res *Delivery, err error) {
+
+	loaders := ctx.Value(KeyLoaders).(map[string]*dataloader.Loader)
+	if obj.DeliveryID != nil {
+		item, _err := loaders["Delivery"].Load(ctx, dataloader.StringKey(*obj.DeliveryID))()
+		res, _ = item.(*Delivery)
+
+		err = _err
+	}
+
+	return
+}
+
 // QueryVehicleTypeHandlerOptions struct
 type QueryVehicleTypeHandlerOptions struct {
 	ID     *string
@@ -1112,490 +1114,4 @@ func (r *GeneratedVehicleTypeResultTypeResolver) Count(ctx context.Context, obj 
 		Preloaders: []string{},
 	}
 	return obj.GetCount(ctx, r.DB.db, opts, &VehicleType{})
-}
-
-// QueryPaymentChannelHandlerOptions struct
-type QueryPaymentChannelHandlerOptions struct {
-	ID     *string
-	Q      *string
-	Filter *PaymentChannelFilterType
-}
-
-// PaymentChannel ...
-func (r *GeneratedQueryResolver) PaymentChannel(ctx context.Context, id *string, q *string, filter *PaymentChannelFilterType) (*PaymentChannel, error) {
-	opts := QueryPaymentChannelHandlerOptions{
-		ID:     id,
-		Q:      q,
-		Filter: filter,
-	}
-	return r.Handlers.QueryPaymentChannel(ctx, r.GeneratedResolver, opts)
-}
-
-// QueryPaymentChannelHandler handler
-func QueryPaymentChannelHandler(ctx context.Context, r *GeneratedResolver, opts QueryPaymentChannelHandlerOptions) (*PaymentChannel, error) {
-	selection := []ast.Selection{}
-	for _, f := range graphql.CollectFieldsCtx(ctx, nil) {
-		selection = append(selection, f.Field)
-	}
-	selectionSet := ast.SelectionSet(selection)
-
-	query := PaymentChannelQueryFilter{opts.Q}
-	offset := 0
-	limit := 1
-	rt := &PaymentChannelResultType{
-		EntityResultType: EntityResultType{
-			Offset:       &offset,
-			Limit:        &limit,
-			Query:        &query,
-			Filter:       opts.Filter,
-			SelectionSet: &selectionSet,
-		},
-	}
-	qb := r.GetDB(ctx)
-	if qb == nil {
-		qb = r.DB.Query()
-	}
-	if opts.ID != nil {
-		qb = qb.Where(TableName("payment_channels")+".id = ?", *opts.ID)
-	}
-
-	var items []*PaymentChannel
-	giOpts := GetItemsOptions{
-		Alias:      TableName("payment_channels"),
-		Preloaders: []string{},
-	}
-	err := rt.GetItems(ctx, qb, giOpts, &items)
-	if err != nil {
-		return nil, err
-	}
-	if len(items) == 0 {
-		return nil, nil
-	}
-	return items[0], err
-}
-
-// QueryPaymentChannelsHandlerOptions struct
-type QueryPaymentChannelsHandlerOptions struct {
-	Offset *int
-	Limit  *int
-	Q      *string
-	Sort   []*PaymentChannelSortType
-	Filter *PaymentChannelFilterType
-}
-
-// PaymentChannels ...
-func (r *GeneratedQueryResolver) PaymentChannels(ctx context.Context, offset *int, limit *int, q *string, sort []*PaymentChannelSortType, filter *PaymentChannelFilterType) (*PaymentChannelResultType, error) {
-	opts := QueryPaymentChannelsHandlerOptions{
-		Offset: offset,
-		Limit:  limit,
-		Q:      q,
-		Sort:   sort,
-		Filter: filter,
-	}
-	return r.Handlers.QueryPaymentChannels(ctx, r.GeneratedResolver, opts)
-}
-
-// QueryPaymentChannelsHandler handler
-func QueryPaymentChannelsHandler(ctx context.Context, r *GeneratedResolver, opts QueryPaymentChannelsHandlerOptions) (*PaymentChannelResultType, error) {
-	query := PaymentChannelQueryFilter{opts.Q}
-
-	var selectionSet *ast.SelectionSet
-	for _, f := range graphql.CollectFieldsCtx(ctx, nil) {
-		if f.Field.Name == "items" {
-			selectionSet = &f.Field.SelectionSet
-		}
-	}
-
-	_sort := []EntitySort{}
-	for _, sort := range opts.Sort {
-		_sort = append(_sort, sort)
-	}
-
-	return &PaymentChannelResultType{
-		EntityResultType: EntityResultType{
-			Offset:       opts.Offset,
-			Limit:        opts.Limit,
-			Query:        &query,
-			Sort:         _sort,
-			Filter:       opts.Filter,
-			SelectionSet: selectionSet,
-		},
-	}, nil
-}
-
-// GeneratedPaymentChannelResultTypeResolver struct
-type GeneratedPaymentChannelResultTypeResolver struct{ *GeneratedResolver }
-
-// Items ...
-func (r *GeneratedPaymentChannelResultTypeResolver) Items(ctx context.Context, obj *PaymentChannelResultType) (items []*PaymentChannel, err error) {
-	otps := GetItemsOptions{
-		Alias:      TableName("payment_channels"),
-		Preloaders: []string{},
-	}
-	err = obj.GetItems(ctx, r.DB.db, otps, &items)
-
-	uniqueItems := []*PaymentChannel{}
-	idMap := map[string]bool{}
-	for _, item := range items {
-		if _, ok := idMap[item.ID]; !ok {
-			idMap[item.ID] = true
-			uniqueItems = append(uniqueItems, item)
-		}
-	}
-	items = uniqueItems
-	return
-}
-
-// Count ...
-func (r *GeneratedPaymentChannelResultTypeResolver) Count(ctx context.Context, obj *PaymentChannelResultType) (count int, err error) {
-	opts := GetItemsOptions{
-		Alias:      TableName("payment_channels"),
-		Preloaders: []string{},
-	}
-	return obj.GetCount(ctx, r.DB.db, opts, &PaymentChannel{})
-}
-
-// QueryPaymentStatusHandlerOptions struct
-type QueryPaymentStatusHandlerOptions struct {
-	ID     *string
-	Q      *string
-	Filter *PaymentStatusFilterType
-}
-
-// PaymentStatus ...
-func (r *GeneratedQueryResolver) PaymentStatus(ctx context.Context, id *string, q *string, filter *PaymentStatusFilterType) (*PaymentStatus, error) {
-	opts := QueryPaymentStatusHandlerOptions{
-		ID:     id,
-		Q:      q,
-		Filter: filter,
-	}
-	return r.Handlers.QueryPaymentStatus(ctx, r.GeneratedResolver, opts)
-}
-
-// QueryPaymentStatusHandler handler
-func QueryPaymentStatusHandler(ctx context.Context, r *GeneratedResolver, opts QueryPaymentStatusHandlerOptions) (*PaymentStatus, error) {
-	selection := []ast.Selection{}
-	for _, f := range graphql.CollectFieldsCtx(ctx, nil) {
-		selection = append(selection, f.Field)
-	}
-	selectionSet := ast.SelectionSet(selection)
-
-	query := PaymentStatusQueryFilter{opts.Q}
-	offset := 0
-	limit := 1
-	rt := &PaymentStatusResultType{
-		EntityResultType: EntityResultType{
-			Offset:       &offset,
-			Limit:        &limit,
-			Query:        &query,
-			Filter:       opts.Filter,
-			SelectionSet: &selectionSet,
-		},
-	}
-	qb := r.GetDB(ctx)
-	if qb == nil {
-		qb = r.DB.Query()
-	}
-	if opts.ID != nil {
-		qb = qb.Where(TableName("payment_statuses")+".id = ?", *opts.ID)
-	}
-
-	var items []*PaymentStatus
-	giOpts := GetItemsOptions{
-		Alias:      TableName("payment_statuses"),
-		Preloaders: []string{},
-	}
-	err := rt.GetItems(ctx, qb, giOpts, &items)
-	if err != nil {
-		return nil, err
-	}
-	if len(items) == 0 {
-		return nil, nil
-	}
-	return items[0], err
-}
-
-// QueryPaymentStatusesHandlerOptions struct
-type QueryPaymentStatusesHandlerOptions struct {
-	Offset *int
-	Limit  *int
-	Q      *string
-	Sort   []*PaymentStatusSortType
-	Filter *PaymentStatusFilterType
-}
-
-// PaymentStatuses ...
-func (r *GeneratedQueryResolver) PaymentStatuses(ctx context.Context, offset *int, limit *int, q *string, sort []*PaymentStatusSortType, filter *PaymentStatusFilterType) (*PaymentStatusResultType, error) {
-	opts := QueryPaymentStatusesHandlerOptions{
-		Offset: offset,
-		Limit:  limit,
-		Q:      q,
-		Sort:   sort,
-		Filter: filter,
-	}
-	return r.Handlers.QueryPaymentStatuses(ctx, r.GeneratedResolver, opts)
-}
-
-// QueryPaymentStatusesHandler handler
-func QueryPaymentStatusesHandler(ctx context.Context, r *GeneratedResolver, opts QueryPaymentStatusesHandlerOptions) (*PaymentStatusResultType, error) {
-	query := PaymentStatusQueryFilter{opts.Q}
-
-	var selectionSet *ast.SelectionSet
-	for _, f := range graphql.CollectFieldsCtx(ctx, nil) {
-		if f.Field.Name == "items" {
-			selectionSet = &f.Field.SelectionSet
-		}
-	}
-
-	_sort := []EntitySort{}
-	for _, sort := range opts.Sort {
-		_sort = append(_sort, sort)
-	}
-
-	return &PaymentStatusResultType{
-		EntityResultType: EntityResultType{
-			Offset:       opts.Offset,
-			Limit:        opts.Limit,
-			Query:        &query,
-			Sort:         _sort,
-			Filter:       opts.Filter,
-			SelectionSet: selectionSet,
-		},
-	}, nil
-}
-
-// GeneratedPaymentStatusResultTypeResolver struct
-type GeneratedPaymentStatusResultTypeResolver struct{ *GeneratedResolver }
-
-// Items ...
-func (r *GeneratedPaymentStatusResultTypeResolver) Items(ctx context.Context, obj *PaymentStatusResultType) (items []*PaymentStatus, err error) {
-	otps := GetItemsOptions{
-		Alias:      TableName("payment_statuses"),
-		Preloaders: []string{},
-	}
-	err = obj.GetItems(ctx, r.DB.db, otps, &items)
-
-	uniqueItems := []*PaymentStatus{}
-	idMap := map[string]bool{}
-	for _, item := range items {
-		if _, ok := idMap[item.ID]; !ok {
-			idMap[item.ID] = true
-			uniqueItems = append(uniqueItems, item)
-		}
-	}
-	items = uniqueItems
-	return
-}
-
-// Count ...
-func (r *GeneratedPaymentStatusResultTypeResolver) Count(ctx context.Context, obj *PaymentStatusResultType) (count int, err error) {
-	opts := GetItemsOptions{
-		Alias:      TableName("payment_statuses"),
-		Preloaders: []string{},
-	}
-	return obj.GetCount(ctx, r.DB.db, opts, &PaymentStatus{})
-}
-
-// GeneratedPaymentStatusResolver struct
-type GeneratedPaymentStatusResolver struct{ *GeneratedResolver }
-
-// Person ...
-func (r *GeneratedPaymentStatusResolver) Person(ctx context.Context, obj *PaymentStatus) (res *Person, err error) {
-	return r.Handlers.PaymentStatusPerson(ctx, r.GeneratedResolver, obj)
-}
-
-// PaymentStatusPersonHandler handler
-func PaymentStatusPersonHandler(ctx context.Context, r *GeneratedResolver, obj *PaymentStatus) (res *Person, err error) {
-
-	loaders := ctx.Value(KeyLoaders).(map[string]*dataloader.Loader)
-	if obj.PersonID != nil {
-		item, _err := loaders["Person"].Load(ctx, dataloader.StringKey(*obj.PersonID))()
-		res, _ = item.(*Person)
-
-		if res == nil {
-			_err = fmt.Errorf("Person with id '%s' not found", *obj.PersonID)
-		}
-		err = _err
-	}
-
-	return
-}
-
-// QueryPaymentHistoryHandlerOptions struct
-type QueryPaymentHistoryHandlerOptions struct {
-	ID     *string
-	Q      *string
-	Filter *PaymentHistoryFilterType
-}
-
-// PaymentHistory ...
-func (r *GeneratedQueryResolver) PaymentHistory(ctx context.Context, id *string, q *string, filter *PaymentHistoryFilterType) (*PaymentHistory, error) {
-	opts := QueryPaymentHistoryHandlerOptions{
-		ID:     id,
-		Q:      q,
-		Filter: filter,
-	}
-	return r.Handlers.QueryPaymentHistory(ctx, r.GeneratedResolver, opts)
-}
-
-// QueryPaymentHistoryHandler handler
-func QueryPaymentHistoryHandler(ctx context.Context, r *GeneratedResolver, opts QueryPaymentHistoryHandlerOptions) (*PaymentHistory, error) {
-	selection := []ast.Selection{}
-	for _, f := range graphql.CollectFieldsCtx(ctx, nil) {
-		selection = append(selection, f.Field)
-	}
-	selectionSet := ast.SelectionSet(selection)
-
-	query := PaymentHistoryQueryFilter{opts.Q}
-	offset := 0
-	limit := 1
-	rt := &PaymentHistoryResultType{
-		EntityResultType: EntityResultType{
-			Offset:       &offset,
-			Limit:        &limit,
-			Query:        &query,
-			Filter:       opts.Filter,
-			SelectionSet: &selectionSet,
-		},
-	}
-	qb := r.GetDB(ctx)
-	if qb == nil {
-		qb = r.DB.Query()
-	}
-	if opts.ID != nil {
-		qb = qb.Where(TableName("payment_histories")+".id = ?", *opts.ID)
-	}
-
-	var items []*PaymentHistory
-	giOpts := GetItemsOptions{
-		Alias:      TableName("payment_histories"),
-		Preloaders: []string{},
-	}
-	err := rt.GetItems(ctx, qb, giOpts, &items)
-	if err != nil {
-		return nil, err
-	}
-	if len(items) == 0 {
-		return nil, nil
-	}
-	return items[0], err
-}
-
-// QueryPaymentHistoriesHandlerOptions struct
-type QueryPaymentHistoriesHandlerOptions struct {
-	Offset *int
-	Limit  *int
-	Q      *string
-	Sort   []*PaymentHistorySortType
-	Filter *PaymentHistoryFilterType
-}
-
-// PaymentHistories ...
-func (r *GeneratedQueryResolver) PaymentHistories(ctx context.Context, offset *int, limit *int, q *string, sort []*PaymentHistorySortType, filter *PaymentHistoryFilterType) (*PaymentHistoryResultType, error) {
-	opts := QueryPaymentHistoriesHandlerOptions{
-		Offset: offset,
-		Limit:  limit,
-		Q:      q,
-		Sort:   sort,
-		Filter: filter,
-	}
-	return r.Handlers.QueryPaymentHistories(ctx, r.GeneratedResolver, opts)
-}
-
-// QueryPaymentHistoriesHandler handler
-func QueryPaymentHistoriesHandler(ctx context.Context, r *GeneratedResolver, opts QueryPaymentHistoriesHandlerOptions) (*PaymentHistoryResultType, error) {
-	query := PaymentHistoryQueryFilter{opts.Q}
-
-	var selectionSet *ast.SelectionSet
-	for _, f := range graphql.CollectFieldsCtx(ctx, nil) {
-		if f.Field.Name == "items" {
-			selectionSet = &f.Field.SelectionSet
-		}
-	}
-
-	_sort := []EntitySort{}
-	for _, sort := range opts.Sort {
-		_sort = append(_sort, sort)
-	}
-
-	return &PaymentHistoryResultType{
-		EntityResultType: EntityResultType{
-			Offset:       opts.Offset,
-			Limit:        opts.Limit,
-			Query:        &query,
-			Sort:         _sort,
-			Filter:       opts.Filter,
-			SelectionSet: selectionSet,
-		},
-	}, nil
-}
-
-// GeneratedPaymentHistoryResultTypeResolver struct
-type GeneratedPaymentHistoryResultTypeResolver struct{ *GeneratedResolver }
-
-// Items ...
-func (r *GeneratedPaymentHistoryResultTypeResolver) Items(ctx context.Context, obj *PaymentHistoryResultType) (items []*PaymentHistory, err error) {
-	otps := GetItemsOptions{
-		Alias:      TableName("payment_histories"),
-		Preloaders: []string{},
-	}
-	err = obj.GetItems(ctx, r.DB.db, otps, &items)
-
-	uniqueItems := []*PaymentHistory{}
-	idMap := map[string]bool{}
-	for _, item := range items {
-		if _, ok := idMap[item.ID]; !ok {
-			idMap[item.ID] = true
-			uniqueItems = append(uniqueItems, item)
-		}
-	}
-	items = uniqueItems
-	return
-}
-
-// Count ...
-func (r *GeneratedPaymentHistoryResultTypeResolver) Count(ctx context.Context, obj *PaymentHistoryResultType) (count int, err error) {
-	opts := GetItemsOptions{
-		Alias:      TableName("payment_histories"),
-		Preloaders: []string{},
-	}
-	return obj.GetCount(ctx, r.DB.db, opts, &PaymentHistory{})
-}
-
-// GeneratedPaymentHistoryResolver struct
-type GeneratedPaymentHistoryResolver struct{ *GeneratedResolver }
-
-// PaymentChannel ...
-func (r *GeneratedPaymentHistoryResolver) PaymentChannel(ctx context.Context, obj *PaymentHistory) (res *PaymentChannel, err error) {
-	return r.Handlers.PaymentHistoryPaymentChannel(ctx, r.GeneratedResolver, obj)
-}
-
-// PaymentHistoryPaymentChannelHandler handler
-func PaymentHistoryPaymentChannelHandler(ctx context.Context, r *GeneratedResolver, obj *PaymentHistory) (res *PaymentChannel, err error) {
-
-	err = fmt.Errorf("Resolver handler for PaymentHistoryPaymentChannel not implemented")
-
-	return
-}
-
-// Person ...
-func (r *GeneratedPaymentHistoryResolver) Person(ctx context.Context, obj *PaymentHistory) (res *Person, err error) {
-	return r.Handlers.PaymentHistoryPerson(ctx, r.GeneratedResolver, obj)
-}
-
-// PaymentHistoryPersonHandler handler
-func PaymentHistoryPersonHandler(ctx context.Context, r *GeneratedResolver, obj *PaymentHistory) (res *Person, err error) {
-
-	loaders := ctx.Value(KeyLoaders).(map[string]*dataloader.Loader)
-	if obj.PersonID != nil {
-		item, _err := loaders["Person"].Load(ctx, dataloader.StringKey(*obj.PersonID))()
-		res, _ = item.(*Person)
-
-		if res == nil {
-			_err = fmt.Errorf("Person with id '%s' not found", *obj.PersonID)
-		}
-		err = _err
-	}
-
-	return
 }

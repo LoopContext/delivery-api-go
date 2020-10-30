@@ -105,6 +105,24 @@ func CreateDeliveryHandler(ctx context.Context, r *GeneratedResolver, input map[
 		event.AddNewValue("id", changes.ID)
 	}
 
+	if _, ok := input["paymentId"]; ok && (item.PaymentID != changes.PaymentID) && (item.PaymentID == nil || changes.PaymentID == nil || *item.PaymentID != *changes.PaymentID) {
+		item.PaymentID = changes.PaymentID
+
+		event.AddNewValue("paymentId", changes.PaymentID)
+	}
+
+	if _, ok := input["paymentTotal"]; ok && (item.PaymentTotal != changes.PaymentTotal) && (item.PaymentTotal == nil || changes.PaymentTotal == nil || *item.PaymentTotal != *changes.PaymentTotal) {
+		item.PaymentTotal = changes.PaymentTotal
+
+		event.AddNewValue("paymentTotal", changes.PaymentTotal)
+	}
+
+	if _, ok := input["paymentOnDeliver"]; ok && (item.PaymentOnDeliver != changes.PaymentOnDeliver) && (item.PaymentOnDeliver == nil || changes.PaymentOnDeliver == nil || *item.PaymentOnDeliver != *changes.PaymentOnDeliver) {
+		item.PaymentOnDeliver = changes.PaymentOnDeliver
+
+		event.AddNewValue("paymentOnDeliver", changes.PaymentOnDeliver)
+	}
+
 	if _, ok := input["collectDateTime"]; ok && (item.CollectDateTime != changes.CollectDateTime) && (item.CollectDateTime == nil || changes.CollectDateTime == nil || *item.CollectDateTime != *changes.CollectDateTime) {
 		item.CollectDateTime = changes.CollectDateTime
 
@@ -139,18 +157,6 @@ func CreateDeliveryHandler(ctx context.Context, r *GeneratedResolver, input map[
 		item.DropPoint = changes.DropPoint
 
 		event.AddNewValue("dropPoint", changes.DropPoint)
-	}
-
-	if _, ok := input["paymentTotal"]; ok && (item.PaymentTotal != changes.PaymentTotal) && (item.PaymentTotal == nil || changes.PaymentTotal == nil || *item.PaymentTotal != *changes.PaymentTotal) {
-		item.PaymentTotal = changes.PaymentTotal
-
-		event.AddNewValue("paymentTotal", changes.PaymentTotal)
-	}
-
-	if _, ok := input["paymentOnDeliver"]; ok && (item.PaymentOnDeliver != changes.PaymentOnDeliver) && (item.PaymentOnDeliver == nil || changes.PaymentOnDeliver == nil || *item.PaymentOnDeliver != *changes.PaymentOnDeliver) {
-		item.PaymentOnDeliver = changes.PaymentOnDeliver
-
-		event.AddNewValue("paymentOnDeliver", changes.PaymentOnDeliver)
 	}
 
 	if _, ok := input["expectedDistance"]; ok && (item.ExpectedDistance != changes.ExpectedDistance) && (item.ExpectedDistance == nil || changes.ExpectedDistance == nil || *item.ExpectedDistance != *changes.ExpectedDistance) {
@@ -205,6 +211,18 @@ func CreateDeliveryHandler(ctx context.Context, r *GeneratedResolver, input map[
 		item.DeliverID = changes.DeliverID
 
 		event.AddNewValue("deliverId", changes.DeliverID)
+	}
+
+	if _, ok := input["deliveryTypeId"]; ok && (item.DeliveryTypeID != changes.DeliveryTypeID) && (item.DeliveryTypeID == nil || changes.DeliveryTypeID == nil || *item.DeliveryTypeID != *changes.DeliveryTypeID) {
+		item.DeliveryTypeID = changes.DeliveryTypeID
+
+		event.AddNewValue("deliveryTypeId", changes.DeliveryTypeID)
+	}
+
+	if _, ok := input["deliveryChannelId"]; ok && (item.DeliveryChannelID != changes.DeliveryChannelID) && (item.DeliveryChannelID == nil || changes.DeliveryChannelID == nil || *item.DeliveryChannelID != *changes.DeliveryChannelID) {
+		item.DeliveryChannelID = changes.DeliveryChannelID
+
+		event.AddNewValue("deliveryChannelId", changes.DeliveryChannelID)
 	}
 
 	err = tx.Create(item).Error
@@ -263,6 +281,24 @@ func UpdateDeliveryHandler(ctx context.Context, r *GeneratedResolver, id string,
 
 	item.UpdatedBy = principalID
 
+	if _, ok := input["paymentId"]; ok && (item.PaymentID != changes.PaymentID) && (item.PaymentID == nil || changes.PaymentID == nil || *item.PaymentID != *changes.PaymentID) {
+		event.AddOldValue("paymentId", item.PaymentID)
+		event.AddNewValue("paymentId", changes.PaymentID)
+		item.PaymentID = changes.PaymentID
+	}
+
+	if _, ok := input["paymentTotal"]; ok && (item.PaymentTotal != changes.PaymentTotal) && (item.PaymentTotal == nil || changes.PaymentTotal == nil || *item.PaymentTotal != *changes.PaymentTotal) {
+		event.AddOldValue("paymentTotal", item.PaymentTotal)
+		event.AddNewValue("paymentTotal", changes.PaymentTotal)
+		item.PaymentTotal = changes.PaymentTotal
+	}
+
+	if _, ok := input["paymentOnDeliver"]; ok && (item.PaymentOnDeliver != changes.PaymentOnDeliver) && (item.PaymentOnDeliver == nil || changes.PaymentOnDeliver == nil || *item.PaymentOnDeliver != *changes.PaymentOnDeliver) {
+		event.AddOldValue("paymentOnDeliver", item.PaymentOnDeliver)
+		event.AddNewValue("paymentOnDeliver", changes.PaymentOnDeliver)
+		item.PaymentOnDeliver = changes.PaymentOnDeliver
+	}
+
 	if _, ok := input["collectDateTime"]; ok && (item.CollectDateTime != changes.CollectDateTime) && (item.CollectDateTime == nil || changes.CollectDateTime == nil || *item.CollectDateTime != *changes.CollectDateTime) {
 		event.AddOldValue("collectDateTime", item.CollectDateTime)
 		event.AddNewValue("collectDateTime", changes.CollectDateTime)
@@ -297,18 +333,6 @@ func UpdateDeliveryHandler(ctx context.Context, r *GeneratedResolver, id string,
 		event.AddOldValue("dropPoint", item.DropPoint)
 		event.AddNewValue("dropPoint", changes.DropPoint)
 		item.DropPoint = changes.DropPoint
-	}
-
-	if _, ok := input["paymentTotal"]; ok && (item.PaymentTotal != changes.PaymentTotal) && (item.PaymentTotal == nil || changes.PaymentTotal == nil || *item.PaymentTotal != *changes.PaymentTotal) {
-		event.AddOldValue("paymentTotal", item.PaymentTotal)
-		event.AddNewValue("paymentTotal", changes.PaymentTotal)
-		item.PaymentTotal = changes.PaymentTotal
-	}
-
-	if _, ok := input["paymentOnDeliver"]; ok && (item.PaymentOnDeliver != changes.PaymentOnDeliver) && (item.PaymentOnDeliver == nil || changes.PaymentOnDeliver == nil || *item.PaymentOnDeliver != *changes.PaymentOnDeliver) {
-		event.AddOldValue("paymentOnDeliver", item.PaymentOnDeliver)
-		event.AddNewValue("paymentOnDeliver", changes.PaymentOnDeliver)
-		item.PaymentOnDeliver = changes.PaymentOnDeliver
 	}
 
 	if _, ok := input["expectedDistance"]; ok && (item.ExpectedDistance != changes.ExpectedDistance) && (item.ExpectedDistance == nil || changes.ExpectedDistance == nil || *item.ExpectedDistance != *changes.ExpectedDistance) {
@@ -363,6 +387,18 @@ func UpdateDeliveryHandler(ctx context.Context, r *GeneratedResolver, id string,
 		event.AddOldValue("deliverId", item.DeliverID)
 		event.AddNewValue("deliverId", changes.DeliverID)
 		item.DeliverID = changes.DeliverID
+	}
+
+	if _, ok := input["deliveryTypeId"]; ok && (item.DeliveryTypeID != changes.DeliveryTypeID) && (item.DeliveryTypeID == nil || changes.DeliveryTypeID == nil || *item.DeliveryTypeID != *changes.DeliveryTypeID) {
+		event.AddOldValue("deliveryTypeId", item.DeliveryTypeID)
+		event.AddNewValue("deliveryTypeId", changes.DeliveryTypeID)
+		item.DeliveryTypeID = changes.DeliveryTypeID
+	}
+
+	if _, ok := input["deliveryChannelId"]; ok && (item.DeliveryChannelID != changes.DeliveryChannelID) && (item.DeliveryChannelID == nil || changes.DeliveryChannelID == nil || *item.DeliveryChannelID != *changes.DeliveryChannelID) {
+		event.AddOldValue("deliveryChannelId", item.DeliveryChannelID)
+		event.AddNewValue("deliveryChannelId", changes.DeliveryChannelID)
+		item.DeliveryChannelID = changes.DeliveryChannelID
 	}
 
 	err = tx.Save(item).Error
@@ -562,18 +598,6 @@ func CreatePersonHandler(ctx context.Context, r *GeneratedResolver, input map[st
 		event.AddNewValue("userId", changes.UserID)
 	}
 
-	if _, ok := input["paymentStatusId"]; ok && (item.PaymentStatusID != changes.PaymentStatusID) && (item.PaymentStatusID == nil || changes.PaymentStatusID == nil || *item.PaymentStatusID != *changes.PaymentStatusID) {
-		item.PaymentStatusID = changes.PaymentStatusID
-
-		event.AddNewValue("paymentStatusId", changes.PaymentStatusID)
-	}
-
-	if _, ok := input["paymentHistoryId"]; ok && (item.PaymentHistoryID != changes.PaymentHistoryID) && (item.PaymentHistoryID == nil || changes.PaymentHistoryID == nil || *item.PaymentHistoryID != *changes.PaymentHistoryID) {
-		item.PaymentHistoryID = changes.PaymentHistoryID
-
-		event.AddNewValue("paymentHistoryId", changes.PaymentHistoryID)
-	}
-
 	err = tx.Create(item).Error
 	if err != nil {
 		tx.Rollback()
@@ -721,18 +745,6 @@ func UpdatePersonHandler(ctx context.Context, r *GeneratedResolver, id string, i
 		event.AddOldValue("userId", item.UserID)
 		event.AddNewValue("userId", changes.UserID)
 		item.UserID = changes.UserID
-	}
-
-	if _, ok := input["paymentStatusId"]; ok && (item.PaymentStatusID != changes.PaymentStatusID) && (item.PaymentStatusID == nil || changes.PaymentStatusID == nil || *item.PaymentStatusID != *changes.PaymentStatusID) {
-		event.AddOldValue("paymentStatusId", item.PaymentStatusID)
-		event.AddNewValue("paymentStatusId", changes.PaymentStatusID)
-		item.PaymentStatusID = changes.PaymentStatusID
-	}
-
-	if _, ok := input["paymentHistoryId"]; ok && (item.PaymentHistoryID != changes.PaymentHistoryID) && (item.PaymentHistoryID == nil || changes.PaymentHistoryID == nil || *item.PaymentHistoryID != *changes.PaymentHistoryID) {
-		event.AddOldValue("paymentHistoryId", item.PaymentHistoryID)
-		event.AddNewValue("paymentHistoryId", changes.PaymentHistoryID)
-		item.PaymentHistoryID = changes.PaymentHistoryID
 	}
 
 	err = tx.Save(item).Error
@@ -893,6 +905,12 @@ func CreateDeliveryTypeHandler(ctx context.Context, r *GeneratedResolver, input 
 		event.AddNewValue("description", changes.Description)
 	}
 
+	if _, ok := input["deliveryId"]; ok && (item.DeliveryID != changes.DeliveryID) && (item.DeliveryID == nil || changes.DeliveryID == nil || *item.DeliveryID != *changes.DeliveryID) {
+		item.DeliveryID = changes.DeliveryID
+
+		event.AddNewValue("deliveryId", changes.DeliveryID)
+	}
+
 	err = tx.Create(item).Error
 	if err != nil {
 		tx.Rollback()
@@ -959,6 +977,12 @@ func UpdateDeliveryTypeHandler(ctx context.Context, r *GeneratedResolver, id str
 		event.AddOldValue("description", item.Description)
 		event.AddNewValue("description", changes.Description)
 		item.Description = changes.Description
+	}
+
+	if _, ok := input["deliveryId"]; ok && (item.DeliveryID != changes.DeliveryID) && (item.DeliveryID == nil || changes.DeliveryID == nil || *item.DeliveryID != *changes.DeliveryID) {
+		event.AddOldValue("deliveryId", item.DeliveryID)
+		event.AddNewValue("deliveryId", changes.DeliveryID)
+		item.DeliveryID = changes.DeliveryID
 	}
 
 	err = tx.Save(item).Error
@@ -1098,6 +1122,12 @@ func CreateDeliveryChannelHandler(ctx context.Context, r *GeneratedResolver, inp
 		event.AddNewValue("description", changes.Description)
 	}
 
+	if _, ok := input["deliveryId"]; ok && (item.DeliveryID != changes.DeliveryID) && (item.DeliveryID == nil || changes.DeliveryID == nil || *item.DeliveryID != *changes.DeliveryID) {
+		item.DeliveryID = changes.DeliveryID
+
+		event.AddNewValue("deliveryId", changes.DeliveryID)
+	}
+
 	err = tx.Create(item).Error
 	if err != nil {
 		tx.Rollback()
@@ -1164,6 +1194,12 @@ func UpdateDeliveryChannelHandler(ctx context.Context, r *GeneratedResolver, id 
 		event.AddOldValue("description", item.Description)
 		event.AddNewValue("description", changes.Description)
 		item.Description = changes.Description
+	}
+
+	if _, ok := input["deliveryId"]; ok && (item.DeliveryID != changes.DeliveryID) && (item.DeliveryID == nil || changes.DeliveryID == nil || *item.DeliveryID != *changes.DeliveryID) {
+		event.AddOldValue("deliveryId", item.DeliveryID)
+		event.AddNewValue("deliveryId", changes.DeliveryID)
+		item.DeliveryID = changes.DeliveryID
 	}
 
 	err = tx.Save(item).Error
@@ -1450,657 +1486,6 @@ func (r *GeneratedMutationResolver) DeleteAllVehicleTypes(ctx context.Context) (
 func DeleteAllVehicleTypesHandler(ctx context.Context, r *GeneratedResolver) (bool, error) {
 	tx := r.GetDB(ctx)
 	err := tx.Delete(&VehicleType{}).Error
-	if err != nil {
-		tx.Rollback()
-		return false, err
-	}
-	return true, err
-}
-
-// CreatePaymentChannel method
-func (r *GeneratedMutationResolver) CreatePaymentChannel(ctx context.Context, input map[string]interface{}) (item *PaymentChannel, err error) {
-	ctx = EnrichContextWithMutations(ctx, r.GeneratedResolver)
-	item, err = r.Handlers.CreatePaymentChannel(ctx, r.GeneratedResolver, input)
-	if err != nil {
-		return
-	}
-	err = FinishMutationContext(ctx, r.GeneratedResolver)
-	return
-}
-
-// CreatePaymentChannelHandler handler
-func CreatePaymentChannelHandler(ctx context.Context, r *GeneratedResolver, input map[string]interface{}) (item *PaymentChannel, err error) {
-	principalID := GetPrincipalIDFromContext(ctx)
-	now := time.Now()
-	item = &PaymentChannel{ID: uuid.Must(uuid.NewV4()).String(), CreatedAt: now, CreatedBy: principalID}
-	tx := r.GetDB(ctx)
-
-	event := events.NewEvent(events.EventMetadata{
-		Type:        events.EventTypeCreated,
-		Entity:      "PaymentChannel",
-		EntityID:    item.ID,
-		Date:        now,
-		PrincipalID: principalID,
-	})
-
-	var changes PaymentChannelChanges
-	err = ApplyChanges(input, &changes)
-	if err != nil {
-		tx.Rollback()
-		return
-	}
-
-	if _, ok := input["id"]; ok && (item.ID != changes.ID) {
-		item.ID = changes.ID
-		event.EntityID = item.ID
-		event.AddNewValue("id", changes.ID)
-	}
-
-	if _, ok := input["name"]; ok && (item.Name != changes.Name) && (item.Name == nil || changes.Name == nil || *item.Name != *changes.Name) {
-		item.Name = changes.Name
-
-		event.AddNewValue("name", changes.Name)
-	}
-
-	if _, ok := input["description"]; ok && (item.Description != changes.Description) && (item.Description == nil || changes.Description == nil || *item.Description != *changes.Description) {
-		item.Description = changes.Description
-
-		event.AddNewValue("description", changes.Description)
-	}
-
-	err = tx.Create(item).Error
-	if err != nil {
-		tx.Rollback()
-		return
-	}
-
-	AddMutationEvent(ctx, event)
-
-	return
-}
-
-// UpdatePaymentChannel method
-func (r *GeneratedMutationResolver) UpdatePaymentChannel(ctx context.Context, id string, input map[string]interface{}) (item *PaymentChannel, err error) {
-	ctx = EnrichContextWithMutations(ctx, r.GeneratedResolver)
-	item, err = r.Handlers.UpdatePaymentChannel(ctx, r.GeneratedResolver, id, input)
-	if err != nil {
-		errRMC := RollbackMutationContext(ctx, r.GeneratedResolver)
-		if errRMC != nil {
-			err = fmt.Errorf("[Wrapped]: RollbackMutationContext error: %w\n[Original]: %q", errRMC, err)
-		}
-		return
-	}
-	err = FinishMutationContext(ctx, r.GeneratedResolver)
-	return
-}
-
-// UpdatePaymentChannelHandler handler
-func UpdatePaymentChannelHandler(ctx context.Context, r *GeneratedResolver, id string, input map[string]interface{}) (item *PaymentChannel, err error) {
-	principalID := GetPrincipalIDFromContext(ctx)
-	item = &PaymentChannel{}
-	now := time.Now()
-	tx := r.GetDB(ctx)
-
-	event := events.NewEvent(events.EventMetadata{
-		Type:        events.EventTypeUpdated,
-		Entity:      "PaymentChannel",
-		EntityID:    id,
-		Date:        now,
-		PrincipalID: principalID,
-	})
-
-	var changes PaymentChannelChanges
-	err = ApplyChanges(input, &changes)
-	if err != nil {
-		tx.Rollback()
-		return
-	}
-
-	err = GetItem(ctx, tx, item, &id)
-	if err != nil {
-		tx.Rollback()
-		return
-	}
-
-	item.UpdatedBy = principalID
-
-	if _, ok := input["name"]; ok && (item.Name != changes.Name) && (item.Name == nil || changes.Name == nil || *item.Name != *changes.Name) {
-		event.AddOldValue("name", item.Name)
-		event.AddNewValue("name", changes.Name)
-		item.Name = changes.Name
-	}
-
-	if _, ok := input["description"]; ok && (item.Description != changes.Description) && (item.Description == nil || changes.Description == nil || *item.Description != *changes.Description) {
-		event.AddOldValue("description", item.Description)
-		event.AddNewValue("description", changes.Description)
-		item.Description = changes.Description
-	}
-
-	err = tx.Save(item).Error
-	if err != nil {
-		tx.Rollback()
-		return
-	}
-
-	if len(event.Changes) > 0 {
-		AddMutationEvent(ctx, event)
-	}
-
-	return
-}
-
-// DeletePaymentChannel method
-func (r *GeneratedMutationResolver) DeletePaymentChannel(ctx context.Context, id string) (item *PaymentChannel, err error) {
-	ctx = EnrichContextWithMutations(ctx, r.GeneratedResolver)
-	item, err = r.Handlers.DeletePaymentChannel(ctx, r.GeneratedResolver, id)
-	if err != nil {
-		errRMC := RollbackMutationContext(ctx, r.GeneratedResolver)
-		if errRMC != nil {
-			err = fmt.Errorf("[Wrapped]: RollbackMutationContext error: %w\n[Original]: %q", errRMC, err)
-		}
-		return
-	}
-	err = FinishMutationContext(ctx, r.GeneratedResolver)
-	return
-}
-
-// DeletePaymentChannelHandler handler
-func DeletePaymentChannelHandler(ctx context.Context, r *GeneratedResolver, id string) (item *PaymentChannel, err error) {
-	principalID := GetPrincipalIDFromContext(ctx)
-	item = &PaymentChannel{}
-	now := time.Now()
-	tx := r.GetDB(ctx)
-
-	err = GetItem(ctx, tx, item, &id)
-	if err != nil {
-		tx.Rollback()
-		return
-	}
-
-	event := events.NewEvent(events.EventMetadata{
-		Type:        events.EventTypeDeleted,
-		Entity:      "PaymentChannel",
-		EntityID:    id,
-		Date:        now,
-		PrincipalID: principalID,
-	})
-
-	err = tx.Delete(item, TableName("payment_channels")+".id = ?", id).Error
-	if err != nil {
-		tx.Rollback()
-		return
-	}
-
-	AddMutationEvent(ctx, event)
-
-	return
-}
-
-// DeleteAllPaymentChannels method
-func (r *GeneratedMutationResolver) DeleteAllPaymentChannels(ctx context.Context) (bool, error) {
-	ctx = EnrichContextWithMutations(ctx, r.GeneratedResolver)
-	done, err := r.Handlers.DeleteAllPaymentChannels(ctx, r.GeneratedResolver)
-	if err != nil {
-		errRMC := RollbackMutationContext(ctx, r.GeneratedResolver)
-		if errRMC != nil {
-			err = fmt.Errorf("[Wrapped]: RollbackMutationContext error: %w\n[Original]: %q", errRMC, err)
-		}
-		return done, err
-	}
-	err = FinishMutationContext(ctx, r.GeneratedResolver)
-	return done, err
-}
-
-// DeleteAllPaymentChannelsHandler handler
-func DeleteAllPaymentChannelsHandler(ctx context.Context, r *GeneratedResolver) (bool, error) {
-	tx := r.GetDB(ctx)
-	err := tx.Delete(&PaymentChannel{}).Error
-	if err != nil {
-		tx.Rollback()
-		return false, err
-	}
-	return true, err
-}
-
-// CreatePaymentStatus method
-func (r *GeneratedMutationResolver) CreatePaymentStatus(ctx context.Context, input map[string]interface{}) (item *PaymentStatus, err error) {
-	ctx = EnrichContextWithMutations(ctx, r.GeneratedResolver)
-	item, err = r.Handlers.CreatePaymentStatus(ctx, r.GeneratedResolver, input)
-	if err != nil {
-		return
-	}
-	err = FinishMutationContext(ctx, r.GeneratedResolver)
-	return
-}
-
-// CreatePaymentStatusHandler handler
-func CreatePaymentStatusHandler(ctx context.Context, r *GeneratedResolver, input map[string]interface{}) (item *PaymentStatus, err error) {
-	principalID := GetPrincipalIDFromContext(ctx)
-	now := time.Now()
-	item = &PaymentStatus{ID: uuid.Must(uuid.NewV4()).String(), CreatedAt: now, CreatedBy: principalID}
-	tx := r.GetDB(ctx)
-
-	event := events.NewEvent(events.EventMetadata{
-		Type:        events.EventTypeCreated,
-		Entity:      "PaymentStatus",
-		EntityID:    item.ID,
-		Date:        now,
-		PrincipalID: principalID,
-	})
-
-	var changes PaymentStatusChanges
-	err = ApplyChanges(input, &changes)
-	if err != nil {
-		tx.Rollback()
-		return
-	}
-
-	if _, ok := input["id"]; ok && (item.ID != changes.ID) {
-		item.ID = changes.ID
-		event.EntityID = item.ID
-		event.AddNewValue("id", changes.ID)
-	}
-
-	if _, ok := input["type"]; ok && (item.Type != changes.Type) {
-		item.Type = changes.Type
-
-		event.AddNewValue("type", changes.Type)
-	}
-
-	if _, ok := input["amount"]; ok && (item.Amount != changes.Amount) {
-		item.Amount = changes.Amount
-
-		event.AddNewValue("amount", changes.Amount)
-	}
-
-	if _, ok := input["personId"]; ok && (item.PersonID != changes.PersonID) && (item.PersonID == nil || changes.PersonID == nil || *item.PersonID != *changes.PersonID) {
-		item.PersonID = changes.PersonID
-
-		event.AddNewValue("personId", changes.PersonID)
-	}
-
-	err = tx.Create(item).Error
-	if err != nil {
-		tx.Rollback()
-		return
-	}
-
-	AddMutationEvent(ctx, event)
-
-	return
-}
-
-// UpdatePaymentStatus method
-func (r *GeneratedMutationResolver) UpdatePaymentStatus(ctx context.Context, id string, input map[string]interface{}) (item *PaymentStatus, err error) {
-	ctx = EnrichContextWithMutations(ctx, r.GeneratedResolver)
-	item, err = r.Handlers.UpdatePaymentStatus(ctx, r.GeneratedResolver, id, input)
-	if err != nil {
-		errRMC := RollbackMutationContext(ctx, r.GeneratedResolver)
-		if errRMC != nil {
-			err = fmt.Errorf("[Wrapped]: RollbackMutationContext error: %w\n[Original]: %q", errRMC, err)
-		}
-		return
-	}
-	err = FinishMutationContext(ctx, r.GeneratedResolver)
-	return
-}
-
-// UpdatePaymentStatusHandler handler
-func UpdatePaymentStatusHandler(ctx context.Context, r *GeneratedResolver, id string, input map[string]interface{}) (item *PaymentStatus, err error) {
-	principalID := GetPrincipalIDFromContext(ctx)
-	item = &PaymentStatus{}
-	now := time.Now()
-	tx := r.GetDB(ctx)
-
-	event := events.NewEvent(events.EventMetadata{
-		Type:        events.EventTypeUpdated,
-		Entity:      "PaymentStatus",
-		EntityID:    id,
-		Date:        now,
-		PrincipalID: principalID,
-	})
-
-	var changes PaymentStatusChanges
-	err = ApplyChanges(input, &changes)
-	if err != nil {
-		tx.Rollback()
-		return
-	}
-
-	err = GetItem(ctx, tx, item, &id)
-	if err != nil {
-		tx.Rollback()
-		return
-	}
-
-	item.UpdatedBy = principalID
-
-	if _, ok := input["type"]; ok && (item.Type != changes.Type) {
-		event.AddOldValue("type", item.Type)
-		event.AddNewValue("type", changes.Type)
-		item.Type = changes.Type
-	}
-
-	if _, ok := input["amount"]; ok && (item.Amount != changes.Amount) {
-		event.AddOldValue("amount", item.Amount)
-		event.AddNewValue("amount", changes.Amount)
-		item.Amount = changes.Amount
-	}
-
-	if _, ok := input["personId"]; ok && (item.PersonID != changes.PersonID) && (item.PersonID == nil || changes.PersonID == nil || *item.PersonID != *changes.PersonID) {
-		event.AddOldValue("personId", item.PersonID)
-		event.AddNewValue("personId", changes.PersonID)
-		item.PersonID = changes.PersonID
-	}
-
-	err = tx.Save(item).Error
-	if err != nil {
-		tx.Rollback()
-		return
-	}
-
-	if len(event.Changes) > 0 {
-		AddMutationEvent(ctx, event)
-	}
-
-	return
-}
-
-// DeletePaymentStatus method
-func (r *GeneratedMutationResolver) DeletePaymentStatus(ctx context.Context, id string) (item *PaymentStatus, err error) {
-	ctx = EnrichContextWithMutations(ctx, r.GeneratedResolver)
-	item, err = r.Handlers.DeletePaymentStatus(ctx, r.GeneratedResolver, id)
-	if err != nil {
-		errRMC := RollbackMutationContext(ctx, r.GeneratedResolver)
-		if errRMC != nil {
-			err = fmt.Errorf("[Wrapped]: RollbackMutationContext error: %w\n[Original]: %q", errRMC, err)
-		}
-		return
-	}
-	err = FinishMutationContext(ctx, r.GeneratedResolver)
-	return
-}
-
-// DeletePaymentStatusHandler handler
-func DeletePaymentStatusHandler(ctx context.Context, r *GeneratedResolver, id string) (item *PaymentStatus, err error) {
-	principalID := GetPrincipalIDFromContext(ctx)
-	item = &PaymentStatus{}
-	now := time.Now()
-	tx := r.GetDB(ctx)
-
-	err = GetItem(ctx, tx, item, &id)
-	if err != nil {
-		tx.Rollback()
-		return
-	}
-
-	event := events.NewEvent(events.EventMetadata{
-		Type:        events.EventTypeDeleted,
-		Entity:      "PaymentStatus",
-		EntityID:    id,
-		Date:        now,
-		PrincipalID: principalID,
-	})
-
-	err = tx.Delete(item, TableName("payment_statuses")+".id = ?", id).Error
-	if err != nil {
-		tx.Rollback()
-		return
-	}
-
-	AddMutationEvent(ctx, event)
-
-	return
-}
-
-// DeleteAllPaymentStatuses method
-func (r *GeneratedMutationResolver) DeleteAllPaymentStatuses(ctx context.Context) (bool, error) {
-	ctx = EnrichContextWithMutations(ctx, r.GeneratedResolver)
-	done, err := r.Handlers.DeleteAllPaymentStatuses(ctx, r.GeneratedResolver)
-	if err != nil {
-		errRMC := RollbackMutationContext(ctx, r.GeneratedResolver)
-		if errRMC != nil {
-			err = fmt.Errorf("[Wrapped]: RollbackMutationContext error: %w\n[Original]: %q", errRMC, err)
-		}
-		return done, err
-	}
-	err = FinishMutationContext(ctx, r.GeneratedResolver)
-	return done, err
-}
-
-// DeleteAllPaymentStatusesHandler handler
-func DeleteAllPaymentStatusesHandler(ctx context.Context, r *GeneratedResolver) (bool, error) {
-	tx := r.GetDB(ctx)
-	err := tx.Delete(&PaymentStatus{}).Error
-	if err != nil {
-		tx.Rollback()
-		return false, err
-	}
-	return true, err
-}
-
-// CreatePaymentHistory method
-func (r *GeneratedMutationResolver) CreatePaymentHistory(ctx context.Context, input map[string]interface{}) (item *PaymentHistory, err error) {
-	ctx = EnrichContextWithMutations(ctx, r.GeneratedResolver)
-	item, err = r.Handlers.CreatePaymentHistory(ctx, r.GeneratedResolver, input)
-	if err != nil {
-		return
-	}
-	err = FinishMutationContext(ctx, r.GeneratedResolver)
-	return
-}
-
-// CreatePaymentHistoryHandler handler
-func CreatePaymentHistoryHandler(ctx context.Context, r *GeneratedResolver, input map[string]interface{}) (item *PaymentHistory, err error) {
-	principalID := GetPrincipalIDFromContext(ctx)
-	now := time.Now()
-	item = &PaymentHistory{ID: uuid.Must(uuid.NewV4()).String(), CreatedAt: now, CreatedBy: principalID}
-	tx := r.GetDB(ctx)
-
-	event := events.NewEvent(events.EventMetadata{
-		Type:        events.EventTypeCreated,
-		Entity:      "PaymentHistory",
-		EntityID:    item.ID,
-		Date:        now,
-		PrincipalID: principalID,
-	})
-
-	var changes PaymentHistoryChanges
-	err = ApplyChanges(input, &changes)
-	if err != nil {
-		tx.Rollback()
-		return
-	}
-
-	if _, ok := input["id"]; ok && (item.ID != changes.ID) {
-		item.ID = changes.ID
-		event.EntityID = item.ID
-		event.AddNewValue("id", changes.ID)
-	}
-
-	if _, ok := input["type"]; ok && (item.Type != changes.Type) {
-		item.Type = changes.Type
-
-		event.AddNewValue("type", changes.Type)
-	}
-
-	if _, ok := input["amount"]; ok && (item.Amount != changes.Amount) {
-		item.Amount = changes.Amount
-
-		event.AddNewValue("amount", changes.Amount)
-	}
-
-	if _, ok := input["concept"]; ok && (item.Concept != changes.Concept) && (item.Concept == nil || changes.Concept == nil || *item.Concept != *changes.Concept) {
-		item.Concept = changes.Concept
-
-		event.AddNewValue("concept", changes.Concept)
-	}
-
-	if _, ok := input["personId"]; ok && (item.PersonID != changes.PersonID) && (item.PersonID == nil || changes.PersonID == nil || *item.PersonID != *changes.PersonID) {
-		item.PersonID = changes.PersonID
-
-		event.AddNewValue("personId", changes.PersonID)
-	}
-
-	err = tx.Create(item).Error
-	if err != nil {
-		tx.Rollback()
-		return
-	}
-
-	AddMutationEvent(ctx, event)
-
-	return
-}
-
-// UpdatePaymentHistory method
-func (r *GeneratedMutationResolver) UpdatePaymentHistory(ctx context.Context, id string, input map[string]interface{}) (item *PaymentHistory, err error) {
-	ctx = EnrichContextWithMutations(ctx, r.GeneratedResolver)
-	item, err = r.Handlers.UpdatePaymentHistory(ctx, r.GeneratedResolver, id, input)
-	if err != nil {
-		errRMC := RollbackMutationContext(ctx, r.GeneratedResolver)
-		if errRMC != nil {
-			err = fmt.Errorf("[Wrapped]: RollbackMutationContext error: %w\n[Original]: %q", errRMC, err)
-		}
-		return
-	}
-	err = FinishMutationContext(ctx, r.GeneratedResolver)
-	return
-}
-
-// UpdatePaymentHistoryHandler handler
-func UpdatePaymentHistoryHandler(ctx context.Context, r *GeneratedResolver, id string, input map[string]interface{}) (item *PaymentHistory, err error) {
-	principalID := GetPrincipalIDFromContext(ctx)
-	item = &PaymentHistory{}
-	now := time.Now()
-	tx := r.GetDB(ctx)
-
-	event := events.NewEvent(events.EventMetadata{
-		Type:        events.EventTypeUpdated,
-		Entity:      "PaymentHistory",
-		EntityID:    id,
-		Date:        now,
-		PrincipalID: principalID,
-	})
-
-	var changes PaymentHistoryChanges
-	err = ApplyChanges(input, &changes)
-	if err != nil {
-		tx.Rollback()
-		return
-	}
-
-	err = GetItem(ctx, tx, item, &id)
-	if err != nil {
-		tx.Rollback()
-		return
-	}
-
-	item.UpdatedBy = principalID
-
-	if _, ok := input["type"]; ok && (item.Type != changes.Type) {
-		event.AddOldValue("type", item.Type)
-		event.AddNewValue("type", changes.Type)
-		item.Type = changes.Type
-	}
-
-	if _, ok := input["amount"]; ok && (item.Amount != changes.Amount) {
-		event.AddOldValue("amount", item.Amount)
-		event.AddNewValue("amount", changes.Amount)
-		item.Amount = changes.Amount
-	}
-
-	if _, ok := input["concept"]; ok && (item.Concept != changes.Concept) && (item.Concept == nil || changes.Concept == nil || *item.Concept != *changes.Concept) {
-		event.AddOldValue("concept", item.Concept)
-		event.AddNewValue("concept", changes.Concept)
-		item.Concept = changes.Concept
-	}
-
-	if _, ok := input["personId"]; ok && (item.PersonID != changes.PersonID) && (item.PersonID == nil || changes.PersonID == nil || *item.PersonID != *changes.PersonID) {
-		event.AddOldValue("personId", item.PersonID)
-		event.AddNewValue("personId", changes.PersonID)
-		item.PersonID = changes.PersonID
-	}
-
-	err = tx.Save(item).Error
-	if err != nil {
-		tx.Rollback()
-		return
-	}
-
-	if len(event.Changes) > 0 {
-		AddMutationEvent(ctx, event)
-	}
-
-	return
-}
-
-// DeletePaymentHistory method
-func (r *GeneratedMutationResolver) DeletePaymentHistory(ctx context.Context, id string) (item *PaymentHistory, err error) {
-	ctx = EnrichContextWithMutations(ctx, r.GeneratedResolver)
-	item, err = r.Handlers.DeletePaymentHistory(ctx, r.GeneratedResolver, id)
-	if err != nil {
-		errRMC := RollbackMutationContext(ctx, r.GeneratedResolver)
-		if errRMC != nil {
-			err = fmt.Errorf("[Wrapped]: RollbackMutationContext error: %w\n[Original]: %q", errRMC, err)
-		}
-		return
-	}
-	err = FinishMutationContext(ctx, r.GeneratedResolver)
-	return
-}
-
-// DeletePaymentHistoryHandler handler
-func DeletePaymentHistoryHandler(ctx context.Context, r *GeneratedResolver, id string) (item *PaymentHistory, err error) {
-	principalID := GetPrincipalIDFromContext(ctx)
-	item = &PaymentHistory{}
-	now := time.Now()
-	tx := r.GetDB(ctx)
-
-	err = GetItem(ctx, tx, item, &id)
-	if err != nil {
-		tx.Rollback()
-		return
-	}
-
-	event := events.NewEvent(events.EventMetadata{
-		Type:        events.EventTypeDeleted,
-		Entity:      "PaymentHistory",
-		EntityID:    id,
-		Date:        now,
-		PrincipalID: principalID,
-	})
-
-	err = tx.Delete(item, TableName("payment_histories")+".id = ?", id).Error
-	if err != nil {
-		tx.Rollback()
-		return
-	}
-
-	AddMutationEvent(ctx, event)
-
-	return
-}
-
-// DeleteAllPaymentHistories method
-func (r *GeneratedMutationResolver) DeleteAllPaymentHistories(ctx context.Context) (bool, error) {
-	ctx = EnrichContextWithMutations(ctx, r.GeneratedResolver)
-	done, err := r.Handlers.DeleteAllPaymentHistories(ctx, r.GeneratedResolver)
-	if err != nil {
-		errRMC := RollbackMutationContext(ctx, r.GeneratedResolver)
-		if errRMC != nil {
-			err = fmt.Errorf("[Wrapped]: RollbackMutationContext error: %w\n[Original]: %q", errRMC, err)
-		}
-		return done, err
-	}
-	err = FinishMutationContext(ctx, r.GeneratedResolver)
-	return done, err
-}
-
-// DeleteAllPaymentHistoriesHandler handler
-func DeleteAllPaymentHistoriesHandler(ctx context.Context, r *GeneratedResolver) (bool, error) {
-	tx := r.GetDB(ctx)
-	err := tx.Delete(&PaymentHistory{}).Error
 	if err != nil {
 		tx.Rollback()
 		return false, err

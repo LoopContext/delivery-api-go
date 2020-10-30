@@ -23,12 +23,6 @@ type Query {
   deliveryChannels(offset: Int, limit: Int = 30, q: String, sort: [DeliveryChannelSortType!], filter: DeliveryChannelFilterType): DeliveryChannelResultType!
   vehicleType(id: ID, q: String, filter: VehicleTypeFilterType): VehicleType
   vehicleTypes(offset: Int, limit: Int = 30, q: String, sort: [VehicleTypeSortType!], filter: VehicleTypeFilterType): VehicleTypeResultType!
-  paymentChannel(id: ID, q: String, filter: PaymentChannelFilterType): PaymentChannel
-  paymentChannels(offset: Int, limit: Int = 30, q: String, sort: [PaymentChannelSortType!], filter: PaymentChannelFilterType): PaymentChannelResultType!
-  paymentStatus(id: ID, q: String, filter: PaymentStatusFilterType): PaymentStatus
-  paymentStatuses(offset: Int, limit: Int = 30, q: String, sort: [PaymentStatusSortType!], filter: PaymentStatusFilterType): PaymentStatusResultType!
-  paymentHistory(id: ID, q: String, filter: PaymentHistoryFilterType): PaymentHistory
-  paymentHistories(offset: Int, limit: Int = 30, q: String, sort: [PaymentHistorySortType!], filter: PaymentHistoryFilterType): PaymentHistoryResultType!
 }
 
 type Mutation {
@@ -52,18 +46,6 @@ type Mutation {
   updateVehicleType(id: ID!, input: VehicleTypeUpdateInput!): VehicleType!
   deleteVehicleType(id: ID!): VehicleType!
   deleteAllVehicleTypes: Boolean!
-  createPaymentChannel(input: PaymentChannelCreateInput!): PaymentChannel!
-  updatePaymentChannel(id: ID!, input: PaymentChannelUpdateInput!): PaymentChannel!
-  deletePaymentChannel(id: ID!): PaymentChannel!
-  deleteAllPaymentChannels: Boolean!
-  createPaymentStatus(input: PaymentStatusCreateInput!): PaymentStatus!
-  updatePaymentStatus(id: ID!, input: PaymentStatusUpdateInput!): PaymentStatus!
-  deletePaymentStatus(id: ID!): PaymentStatus!
-  deleteAllPaymentStatuses: Boolean!
-  createPaymentHistory(input: PaymentHistoryCreateInput!): PaymentHistory!
-  updatePaymentHistory(id: ID!, input: PaymentHistoryUpdateInput!): PaymentHistory!
-  deletePaymentHistory(id: ID!): PaymentHistory!
-  deleteAllPaymentHistories: Boolean!
 }
 
 enum ObjectSortType {
@@ -77,8 +59,10 @@ type Delivery {
   receiver: Person!
   deliver: Person!
   vehicleType: VehicleType
-  paymentChannel: PaymentChannel
-  deliveryType: DeliveryType
+  paymentId: ID
+  paymentTotal: Float
+  paymentOnDeliver: Boolean
+  deliveryType: DeliveryType!
   deliveryChannel: DeliveryChannel
   collectDateTime: Time
   collectAddress: String
@@ -86,8 +70,6 @@ type Delivery {
   dropDateTime: Time
   dropAddress: String
   dropPoint: String
-  paymentTotal: Float
-  paymentOnDeliver: Boolean
   expectedDistance: String
   expectedCost: Float
   completed: Boolean
@@ -97,6 +79,8 @@ type Delivery {
   senderId: ID
   receiverId: ID
   deliverId: ID
+  deliveryTypeId: ID
+  deliveryChannelId: ID
   updatedAt: Time
   createdAt: Time!
   updatedBy: ID
@@ -120,10 +104,6 @@ type Person {
   deliveriesSent: [Delivery!]!
   deliveriesReceived: [Delivery!]!
   userId: String
-  paymentStatus: PaymentStatus!
-  paymentHistory: PaymentHistory!
-  paymentStatusId: ID
-  paymentHistoryId: ID
   updatedAt: Time
   createdAt: Time!
   updatedBy: ID
@@ -140,6 +120,8 @@ type DeliveryType {
   id: ID!
   name: String
   description: String
+  delivery: Delivery
+  deliveryId: ID
   updatedAt: Time
   createdAt: Time!
   updatedBy: ID
@@ -150,6 +132,8 @@ type DeliveryChannel {
   id: ID!
   name: String
   description: String
+  delivery: Delivery
+  deliveryId: ID
   updatedAt: Time
   createdAt: Time!
   updatedBy: ID
@@ -166,58 +150,17 @@ type VehicleType {
   createdBy: ID
 }
 
-enum PaymentType {
-  Credit
-  Balance
-  Loan
-}
-
-type PaymentChannel {
-  id: ID!
-  name: String
-  description: String
-  updatedAt: Time
-  createdAt: Time!
-  updatedBy: ID
-  createdBy: ID
-}
-
-type PaymentStatus {
-  id: ID!
-  person: Person!
-  type: PaymentType!
-  amount: Float!
-  personId: ID
-  updatedAt: Time
-  createdAt: Time!
-  updatedBy: ID
-  createdBy: ID
-}
-
-type PaymentHistory {
-  id: ID!
-  person: Person!
-  paymentChannel: PaymentChannel
-  type: PaymentType!
-  amount: Float!
-  concept: String
-  personId: ID
-  updatedAt: Time
-  createdAt: Time!
-  updatedBy: ID
-  createdBy: ID
-}
-
 input DeliveryCreateInput {
   id: ID
+  paymentId: ID
+  paymentTotal: Float
+  paymentOnDeliver: Boolean
   collectDateTime: Time
   collectAddress: String
   collectPoint: String
   dropDateTime: Time
   dropAddress: String
   dropPoint: String
-  paymentTotal: Float
-  paymentOnDeliver: Boolean
   expectedDistance: String
   expectedCost: Float
   completed: Boolean
@@ -227,17 +170,20 @@ input DeliveryCreateInput {
   senderId: ID
   receiverId: ID
   deliverId: ID
+  deliveryTypeId: ID
+  deliveryChannelId: ID
 }
 
 input DeliveryUpdateInput {
+  paymentId: ID
+  paymentTotal: Float
+  paymentOnDeliver: Boolean
   collectDateTime: Time
   collectAddress: String
   collectPoint: String
   dropDateTime: Time
   dropAddress: String
   dropPoint: String
-  paymentTotal: Float
-  paymentOnDeliver: Boolean
   expectedDistance: String
   expectedCost: Float
   completed: Boolean
@@ -247,12 +193,24 @@ input DeliveryUpdateInput {
   senderId: ID
   receiverId: ID
   deliverId: ID
+  deliveryTypeId: ID
+  deliveryChannelId: ID
 }
 
 input DeliverySortType {
   id: ObjectSortType
   idMin: ObjectSortType
   idMax: ObjectSortType
+  paymentId: ObjectSortType
+  paymentIdMin: ObjectSortType
+  paymentIdMax: ObjectSortType
+  paymentTotal: ObjectSortType
+  paymentTotalMin: ObjectSortType
+  paymentTotalMax: ObjectSortType
+  paymentTotalAvg: ObjectSortType
+  paymentOnDeliver: ObjectSortType
+  paymentOnDeliverMin: ObjectSortType
+  paymentOnDeliverMax: ObjectSortType
   collectDateTime: ObjectSortType
   collectDateTimeMin: ObjectSortType
   collectDateTimeMax: ObjectSortType
@@ -271,13 +229,6 @@ input DeliverySortType {
   dropPoint: ObjectSortType
   dropPointMin: ObjectSortType
   dropPointMax: ObjectSortType
-  paymentTotal: ObjectSortType
-  paymentTotalMin: ObjectSortType
-  paymentTotalMax: ObjectSortType
-  paymentTotalAvg: ObjectSortType
-  paymentOnDeliver: ObjectSortType
-  paymentOnDeliverMin: ObjectSortType
-  paymentOnDeliverMax: ObjectSortType
   expectedDistance: ObjectSortType
   expectedDistanceMin: ObjectSortType
   expectedDistanceMax: ObjectSortType
@@ -306,6 +257,12 @@ input DeliverySortType {
   deliverId: ObjectSortType
   deliverIdMin: ObjectSortType
   deliverIdMax: ObjectSortType
+  deliveryTypeId: ObjectSortType
+  deliveryTypeIdMin: ObjectSortType
+  deliveryTypeIdMax: ObjectSortType
+  deliveryChannelId: ObjectSortType
+  deliveryChannelIdMin: ObjectSortType
+  deliveryChannelIdMax: ObjectSortType
   updatedAt: ObjectSortType
   updatedAtMin: ObjectSortType
   updatedAtMax: ObjectSortType
@@ -321,6 +278,8 @@ input DeliverySortType {
   sender: PersonSortType
   receiver: PersonSortType
   deliver: PersonSortType
+  deliveryType: DeliveryTypeSortType
+  deliveryChannel: DeliveryChannelSortType
 }
 
 input DeliveryFilterType {
@@ -348,6 +307,79 @@ input DeliveryFilterType {
   idMin_in: [ID!]
   idMax_in: [ID!]
   id_null: Boolean
+  paymentId: ID
+  paymentIdMin: ID
+  paymentIdMax: ID
+  paymentId_ne: ID
+  paymentIdMin_ne: ID
+  paymentIdMax_ne: ID
+  paymentId_gt: ID
+  paymentIdMin_gt: ID
+  paymentIdMax_gt: ID
+  paymentId_lt: ID
+  paymentIdMin_lt: ID
+  paymentIdMax_lt: ID
+  paymentId_gte: ID
+  paymentIdMin_gte: ID
+  paymentIdMax_gte: ID
+  paymentId_lte: ID
+  paymentIdMin_lte: ID
+  paymentIdMax_lte: ID
+  paymentId_in: [ID!]
+  paymentIdMin_in: [ID!]
+  paymentIdMax_in: [ID!]
+  paymentId_null: Boolean
+  paymentTotal: Float
+  paymentTotalMin: Float
+  paymentTotalMax: Float
+  paymentTotalAvg: Float
+  paymentTotal_ne: Float
+  paymentTotalMin_ne: Float
+  paymentTotalMax_ne: Float
+  paymentTotalAvg_ne: Float
+  paymentTotal_gt: Float
+  paymentTotalMin_gt: Float
+  paymentTotalMax_gt: Float
+  paymentTotalAvg_gt: Float
+  paymentTotal_lt: Float
+  paymentTotalMin_lt: Float
+  paymentTotalMax_lt: Float
+  paymentTotalAvg_lt: Float
+  paymentTotal_gte: Float
+  paymentTotalMin_gte: Float
+  paymentTotalMax_gte: Float
+  paymentTotalAvg_gte: Float
+  paymentTotal_lte: Float
+  paymentTotalMin_lte: Float
+  paymentTotalMax_lte: Float
+  paymentTotalAvg_lte: Float
+  paymentTotal_in: [Float!]
+  paymentTotalMin_in: [Float!]
+  paymentTotalMax_in: [Float!]
+  paymentTotalAvg_in: [Float!]
+  paymentTotal_null: Boolean
+  paymentOnDeliver: Boolean
+  paymentOnDeliverMin: Boolean
+  paymentOnDeliverMax: Boolean
+  paymentOnDeliver_ne: Boolean
+  paymentOnDeliverMin_ne: Boolean
+  paymentOnDeliverMax_ne: Boolean
+  paymentOnDeliver_gt: Boolean
+  paymentOnDeliverMin_gt: Boolean
+  paymentOnDeliverMax_gt: Boolean
+  paymentOnDeliver_lt: Boolean
+  paymentOnDeliverMin_lt: Boolean
+  paymentOnDeliverMax_lt: Boolean
+  paymentOnDeliver_gte: Boolean
+  paymentOnDeliverMin_gte: Boolean
+  paymentOnDeliverMax_gte: Boolean
+  paymentOnDeliver_lte: Boolean
+  paymentOnDeliverMin_lte: Boolean
+  paymentOnDeliverMax_lte: Boolean
+  paymentOnDeliver_in: [Boolean!]
+  paymentOnDeliverMin_in: [Boolean!]
+  paymentOnDeliverMax_in: [Boolean!]
+  paymentOnDeliver_null: Boolean
   collectDateTime: Time
   collectDateTimeMin: Time
   collectDateTimeMax: Time
@@ -516,57 +548,6 @@ input DeliveryFilterType {
   dropPointMin_suffix: String
   dropPointMax_suffix: String
   dropPoint_null: Boolean
-  paymentTotal: Float
-  paymentTotalMin: Float
-  paymentTotalMax: Float
-  paymentTotalAvg: Float
-  paymentTotal_ne: Float
-  paymentTotalMin_ne: Float
-  paymentTotalMax_ne: Float
-  paymentTotalAvg_ne: Float
-  paymentTotal_gt: Float
-  paymentTotalMin_gt: Float
-  paymentTotalMax_gt: Float
-  paymentTotalAvg_gt: Float
-  paymentTotal_lt: Float
-  paymentTotalMin_lt: Float
-  paymentTotalMax_lt: Float
-  paymentTotalAvg_lt: Float
-  paymentTotal_gte: Float
-  paymentTotalMin_gte: Float
-  paymentTotalMax_gte: Float
-  paymentTotalAvg_gte: Float
-  paymentTotal_lte: Float
-  paymentTotalMin_lte: Float
-  paymentTotalMax_lte: Float
-  paymentTotalAvg_lte: Float
-  paymentTotal_in: [Float!]
-  paymentTotalMin_in: [Float!]
-  paymentTotalMax_in: [Float!]
-  paymentTotalAvg_in: [Float!]
-  paymentTotal_null: Boolean
-  paymentOnDeliver: Boolean
-  paymentOnDeliverMin: Boolean
-  paymentOnDeliverMax: Boolean
-  paymentOnDeliver_ne: Boolean
-  paymentOnDeliverMin_ne: Boolean
-  paymentOnDeliverMax_ne: Boolean
-  paymentOnDeliver_gt: Boolean
-  paymentOnDeliverMin_gt: Boolean
-  paymentOnDeliverMax_gt: Boolean
-  paymentOnDeliver_lt: Boolean
-  paymentOnDeliverMin_lt: Boolean
-  paymentOnDeliverMax_lt: Boolean
-  paymentOnDeliver_gte: Boolean
-  paymentOnDeliverMin_gte: Boolean
-  paymentOnDeliverMax_gte: Boolean
-  paymentOnDeliver_lte: Boolean
-  paymentOnDeliverMin_lte: Boolean
-  paymentOnDeliverMax_lte: Boolean
-  paymentOnDeliver_in: [Boolean!]
-  paymentOnDeliverMin_in: [Boolean!]
-  paymentOnDeliverMax_in: [Boolean!]
-  paymentOnDeliver_null: Boolean
   expectedDistance: String
   expectedDistanceMin: String
   expectedDistanceMax: String
@@ -808,6 +789,50 @@ input DeliveryFilterType {
   deliverIdMin_in: [ID!]
   deliverIdMax_in: [ID!]
   deliverId_null: Boolean
+  deliveryTypeId: ID
+  deliveryTypeIdMin: ID
+  deliveryTypeIdMax: ID
+  deliveryTypeId_ne: ID
+  deliveryTypeIdMin_ne: ID
+  deliveryTypeIdMax_ne: ID
+  deliveryTypeId_gt: ID
+  deliveryTypeIdMin_gt: ID
+  deliveryTypeIdMax_gt: ID
+  deliveryTypeId_lt: ID
+  deliveryTypeIdMin_lt: ID
+  deliveryTypeIdMax_lt: ID
+  deliveryTypeId_gte: ID
+  deliveryTypeIdMin_gte: ID
+  deliveryTypeIdMax_gte: ID
+  deliveryTypeId_lte: ID
+  deliveryTypeIdMin_lte: ID
+  deliveryTypeIdMax_lte: ID
+  deliveryTypeId_in: [ID!]
+  deliveryTypeIdMin_in: [ID!]
+  deliveryTypeIdMax_in: [ID!]
+  deliveryTypeId_null: Boolean
+  deliveryChannelId: ID
+  deliveryChannelIdMin: ID
+  deliveryChannelIdMax: ID
+  deliveryChannelId_ne: ID
+  deliveryChannelIdMin_ne: ID
+  deliveryChannelIdMax_ne: ID
+  deliveryChannelId_gt: ID
+  deliveryChannelIdMin_gt: ID
+  deliveryChannelIdMax_gt: ID
+  deliveryChannelId_lt: ID
+  deliveryChannelIdMin_lt: ID
+  deliveryChannelIdMax_lt: ID
+  deliveryChannelId_gte: ID
+  deliveryChannelIdMin_gte: ID
+  deliveryChannelIdMax_gte: ID
+  deliveryChannelId_lte: ID
+  deliveryChannelIdMin_lte: ID
+  deliveryChannelIdMax_lte: ID
+  deliveryChannelId_in: [ID!]
+  deliveryChannelIdMin_in: [ID!]
+  deliveryChannelIdMax_in: [ID!]
+  deliveryChannelId_null: Boolean
   updatedAt: Time
   updatedAtMin: Time
   updatedAtMax: Time
@@ -899,6 +924,8 @@ input DeliveryFilterType {
   sender: PersonFilterType
   receiver: PersonFilterType
   deliver: PersonFilterType
+  deliveryType: DeliveryTypeFilterType
+  deliveryChannel: DeliveryChannelFilterType
 }
 
 type DeliveryResultType {
@@ -920,8 +947,6 @@ input PersonCreateInput {
   description: String
   location: String
   userId: String
-  paymentStatusId: ID
-  paymentHistoryId: ID
   deliveriesIds: [ID!]
   deliveriesSentIds: [ID!]
   deliveriesReceivedIds: [ID!]
@@ -940,8 +965,6 @@ input PersonUpdateInput {
   description: String
   location: String
   userId: String
-  paymentStatusId: ID
-  paymentHistoryId: ID
   deliveriesIds: [ID!]
   deliveriesSentIds: [ID!]
   deliveriesReceivedIds: [ID!]
@@ -987,12 +1010,6 @@ input PersonSortType {
   userId: ObjectSortType
   userIdMin: ObjectSortType
   userIdMax: ObjectSortType
-  paymentStatusId: ObjectSortType
-  paymentStatusIdMin: ObjectSortType
-  paymentStatusIdMax: ObjectSortType
-  paymentHistoryId: ObjectSortType
-  paymentHistoryIdMin: ObjectSortType
-  paymentHistoryIdMax: ObjectSortType
   updatedAt: ObjectSortType
   updatedAtMin: ObjectSortType
   updatedAtMax: ObjectSortType
@@ -1017,8 +1034,6 @@ input PersonSortType {
   deliveries: DeliverySortType
   deliveriesSent: DeliverySortType
   deliveriesReceived: DeliverySortType
-  paymentStatus: PaymentStatusSortType
-  paymentHistory: PaymentHistorySortType
 }
 
 input PersonFilterType {
@@ -1409,50 +1424,6 @@ input PersonFilterType {
   userIdMin_suffix: String
   userIdMax_suffix: String
   userId_null: Boolean
-  paymentStatusId: ID
-  paymentStatusIdMin: ID
-  paymentStatusIdMax: ID
-  paymentStatusId_ne: ID
-  paymentStatusIdMin_ne: ID
-  paymentStatusIdMax_ne: ID
-  paymentStatusId_gt: ID
-  paymentStatusIdMin_gt: ID
-  paymentStatusIdMax_gt: ID
-  paymentStatusId_lt: ID
-  paymentStatusIdMin_lt: ID
-  paymentStatusIdMax_lt: ID
-  paymentStatusId_gte: ID
-  paymentStatusIdMin_gte: ID
-  paymentStatusIdMax_gte: ID
-  paymentStatusId_lte: ID
-  paymentStatusIdMin_lte: ID
-  paymentStatusIdMax_lte: ID
-  paymentStatusId_in: [ID!]
-  paymentStatusIdMin_in: [ID!]
-  paymentStatusIdMax_in: [ID!]
-  paymentStatusId_null: Boolean
-  paymentHistoryId: ID
-  paymentHistoryIdMin: ID
-  paymentHistoryIdMax: ID
-  paymentHistoryId_ne: ID
-  paymentHistoryIdMin_ne: ID
-  paymentHistoryIdMax_ne: ID
-  paymentHistoryId_gt: ID
-  paymentHistoryIdMin_gt: ID
-  paymentHistoryIdMax_gt: ID
-  paymentHistoryId_lt: ID
-  paymentHistoryIdMin_lt: ID
-  paymentHistoryIdMax_lt: ID
-  paymentHistoryId_gte: ID
-  paymentHistoryIdMin_gte: ID
-  paymentHistoryIdMax_gte: ID
-  paymentHistoryId_lte: ID
-  paymentHistoryIdMin_lte: ID
-  paymentHistoryIdMax_lte: ID
-  paymentHistoryId_in: [ID!]
-  paymentHistoryIdMin_in: [ID!]
-  paymentHistoryIdMax_in: [ID!]
-  paymentHistoryId_null: Boolean
   updatedAt: Time
   updatedAtMin: Time
   updatedAtMax: Time
@@ -1544,8 +1515,6 @@ input PersonFilterType {
   deliveries: DeliveryFilterType
   deliveriesSent: DeliveryFilterType
   deliveriesReceived: DeliveryFilterType
-  paymentStatus: PaymentStatusFilterType
-  paymentHistory: PaymentHistoryFilterType
 }
 
 type PersonResultType {
@@ -1557,11 +1526,13 @@ input DeliveryTypeCreateInput {
   id: ID
   name: String
   description: String
+  deliveryId: ID
 }
 
 input DeliveryTypeUpdateInput {
   name: String
   description: String
+  deliveryId: ID
 }
 
 input DeliveryTypeSortType {
@@ -1574,6 +1545,9 @@ input DeliveryTypeSortType {
   description: ObjectSortType
   descriptionMin: ObjectSortType
   descriptionMax: ObjectSortType
+  deliveryId: ObjectSortType
+  deliveryIdMin: ObjectSortType
+  deliveryIdMax: ObjectSortType
   updatedAt: ObjectSortType
   updatedAtMin: ObjectSortType
   updatedAtMax: ObjectSortType
@@ -1586,6 +1560,7 @@ input DeliveryTypeSortType {
   createdBy: ObjectSortType
   createdByMin: ObjectSortType
   createdByMax: ObjectSortType
+  delivery: DeliverySortType
 }
 
 input DeliveryTypeFilterType {
@@ -1675,6 +1650,28 @@ input DeliveryTypeFilterType {
   descriptionMin_suffix: String
   descriptionMax_suffix: String
   description_null: Boolean
+  deliveryId: ID
+  deliveryIdMin: ID
+  deliveryIdMax: ID
+  deliveryId_ne: ID
+  deliveryIdMin_ne: ID
+  deliveryIdMax_ne: ID
+  deliveryId_gt: ID
+  deliveryIdMin_gt: ID
+  deliveryIdMax_gt: ID
+  deliveryId_lt: ID
+  deliveryIdMin_lt: ID
+  deliveryIdMax_lt: ID
+  deliveryId_gte: ID
+  deliveryIdMin_gte: ID
+  deliveryIdMax_gte: ID
+  deliveryId_lte: ID
+  deliveryIdMin_lte: ID
+  deliveryIdMax_lte: ID
+  deliveryId_in: [ID!]
+  deliveryIdMin_in: [ID!]
+  deliveryIdMax_in: [ID!]
+  deliveryId_null: Boolean
   updatedAt: Time
   updatedAtMin: Time
   updatedAtMax: Time
@@ -1763,6 +1760,7 @@ input DeliveryTypeFilterType {
   createdByMin_in: [ID!]
   createdByMax_in: [ID!]
   createdBy_null: Boolean
+  delivery: DeliveryFilterType
 }
 
 type DeliveryTypeResultType {
@@ -1774,11 +1772,13 @@ input DeliveryChannelCreateInput {
   id: ID
   name: String
   description: String
+  deliveryId: ID
 }
 
 input DeliveryChannelUpdateInput {
   name: String
   description: String
+  deliveryId: ID
 }
 
 input DeliveryChannelSortType {
@@ -1791,6 +1791,9 @@ input DeliveryChannelSortType {
   description: ObjectSortType
   descriptionMin: ObjectSortType
   descriptionMax: ObjectSortType
+  deliveryId: ObjectSortType
+  deliveryIdMin: ObjectSortType
+  deliveryIdMax: ObjectSortType
   updatedAt: ObjectSortType
   updatedAtMin: ObjectSortType
   updatedAtMax: ObjectSortType
@@ -1803,6 +1806,7 @@ input DeliveryChannelSortType {
   createdBy: ObjectSortType
   createdByMin: ObjectSortType
   createdByMax: ObjectSortType
+  delivery: DeliverySortType
 }
 
 input DeliveryChannelFilterType {
@@ -1892,6 +1896,28 @@ input DeliveryChannelFilterType {
   descriptionMin_suffix: String
   descriptionMax_suffix: String
   description_null: Boolean
+  deliveryId: ID
+  deliveryIdMin: ID
+  deliveryIdMax: ID
+  deliveryId_ne: ID
+  deliveryIdMin_ne: ID
+  deliveryIdMax_ne: ID
+  deliveryId_gt: ID
+  deliveryIdMin_gt: ID
+  deliveryIdMax_gt: ID
+  deliveryId_lt: ID
+  deliveryIdMin_lt: ID
+  deliveryIdMax_lt: ID
+  deliveryId_gte: ID
+  deliveryIdMin_gte: ID
+  deliveryIdMax_gte: ID
+  deliveryId_lte: ID
+  deliveryIdMin_lte: ID
+  deliveryIdMax_lte: ID
+  deliveryId_in: [ID!]
+  deliveryIdMin_in: [ID!]
+  deliveryIdMax_in: [ID!]
+  deliveryId_null: Boolean
   updatedAt: Time
   updatedAtMin: Time
   updatedAtMax: Time
@@ -1980,6 +2006,7 @@ input DeliveryChannelFilterType {
   createdByMin_in: [ID!]
   createdByMax_in: [ID!]
   createdBy_null: Boolean
+  delivery: DeliveryFilterType
 }
 
 type DeliveryChannelResultType {
@@ -2201,731 +2228,6 @@ input VehicleTypeFilterType {
 
 type VehicleTypeResultType {
   items: [VehicleType!]!
-  count: Int!
-}
-
-input PaymentChannelCreateInput {
-  id: ID
-  name: String
-  description: String
-}
-
-input PaymentChannelUpdateInput {
-  name: String
-  description: String
-}
-
-input PaymentChannelSortType {
-  id: ObjectSortType
-  idMin: ObjectSortType
-  idMax: ObjectSortType
-  name: ObjectSortType
-  nameMin: ObjectSortType
-  nameMax: ObjectSortType
-  description: ObjectSortType
-  descriptionMin: ObjectSortType
-  descriptionMax: ObjectSortType
-  updatedAt: ObjectSortType
-  updatedAtMin: ObjectSortType
-  updatedAtMax: ObjectSortType
-  createdAt: ObjectSortType
-  createdAtMin: ObjectSortType
-  createdAtMax: ObjectSortType
-  updatedBy: ObjectSortType
-  updatedByMin: ObjectSortType
-  updatedByMax: ObjectSortType
-  createdBy: ObjectSortType
-  createdByMin: ObjectSortType
-  createdByMax: ObjectSortType
-}
-
-input PaymentChannelFilterType {
-  AND: [PaymentChannelFilterType!]
-  OR: [PaymentChannelFilterType!]
-  id: ID
-  idMin: ID
-  idMax: ID
-  id_ne: ID
-  idMin_ne: ID
-  idMax_ne: ID
-  id_gt: ID
-  idMin_gt: ID
-  idMax_gt: ID
-  id_lt: ID
-  idMin_lt: ID
-  idMax_lt: ID
-  id_gte: ID
-  idMin_gte: ID
-  idMax_gte: ID
-  id_lte: ID
-  idMin_lte: ID
-  idMax_lte: ID
-  id_in: [ID!]
-  idMin_in: [ID!]
-  idMax_in: [ID!]
-  id_null: Boolean
-  name: String
-  nameMin: String
-  nameMax: String
-  name_ne: String
-  nameMin_ne: String
-  nameMax_ne: String
-  name_gt: String
-  nameMin_gt: String
-  nameMax_gt: String
-  name_lt: String
-  nameMin_lt: String
-  nameMax_lt: String
-  name_gte: String
-  nameMin_gte: String
-  nameMax_gte: String
-  name_lte: String
-  nameMin_lte: String
-  nameMax_lte: String
-  name_in: [String!]
-  nameMin_in: [String!]
-  nameMax_in: [String!]
-  name_like: String
-  nameMin_like: String
-  nameMax_like: String
-  name_prefix: String
-  nameMin_prefix: String
-  nameMax_prefix: String
-  name_suffix: String
-  nameMin_suffix: String
-  nameMax_suffix: String
-  name_null: Boolean
-  description: String
-  descriptionMin: String
-  descriptionMax: String
-  description_ne: String
-  descriptionMin_ne: String
-  descriptionMax_ne: String
-  description_gt: String
-  descriptionMin_gt: String
-  descriptionMax_gt: String
-  description_lt: String
-  descriptionMin_lt: String
-  descriptionMax_lt: String
-  description_gte: String
-  descriptionMin_gte: String
-  descriptionMax_gte: String
-  description_lte: String
-  descriptionMin_lte: String
-  descriptionMax_lte: String
-  description_in: [String!]
-  descriptionMin_in: [String!]
-  descriptionMax_in: [String!]
-  description_like: String
-  descriptionMin_like: String
-  descriptionMax_like: String
-  description_prefix: String
-  descriptionMin_prefix: String
-  descriptionMax_prefix: String
-  description_suffix: String
-  descriptionMin_suffix: String
-  descriptionMax_suffix: String
-  description_null: Boolean
-  updatedAt: Time
-  updatedAtMin: Time
-  updatedAtMax: Time
-  updatedAt_ne: Time
-  updatedAtMin_ne: Time
-  updatedAtMax_ne: Time
-  updatedAt_gt: Time
-  updatedAtMin_gt: Time
-  updatedAtMax_gt: Time
-  updatedAt_lt: Time
-  updatedAtMin_lt: Time
-  updatedAtMax_lt: Time
-  updatedAt_gte: Time
-  updatedAtMin_gte: Time
-  updatedAtMax_gte: Time
-  updatedAt_lte: Time
-  updatedAtMin_lte: Time
-  updatedAtMax_lte: Time
-  updatedAt_in: [Time!]
-  updatedAtMin_in: [Time!]
-  updatedAtMax_in: [Time!]
-  updatedAt_null: Boolean
-  createdAt: Time
-  createdAtMin: Time
-  createdAtMax: Time
-  createdAt_ne: Time
-  createdAtMin_ne: Time
-  createdAtMax_ne: Time
-  createdAt_gt: Time
-  createdAtMin_gt: Time
-  createdAtMax_gt: Time
-  createdAt_lt: Time
-  createdAtMin_lt: Time
-  createdAtMax_lt: Time
-  createdAt_gte: Time
-  createdAtMin_gte: Time
-  createdAtMax_gte: Time
-  createdAt_lte: Time
-  createdAtMin_lte: Time
-  createdAtMax_lte: Time
-  createdAt_in: [Time!]
-  createdAtMin_in: [Time!]
-  createdAtMax_in: [Time!]
-  createdAt_null: Boolean
-  updatedBy: ID
-  updatedByMin: ID
-  updatedByMax: ID
-  updatedBy_ne: ID
-  updatedByMin_ne: ID
-  updatedByMax_ne: ID
-  updatedBy_gt: ID
-  updatedByMin_gt: ID
-  updatedByMax_gt: ID
-  updatedBy_lt: ID
-  updatedByMin_lt: ID
-  updatedByMax_lt: ID
-  updatedBy_gte: ID
-  updatedByMin_gte: ID
-  updatedByMax_gte: ID
-  updatedBy_lte: ID
-  updatedByMin_lte: ID
-  updatedByMax_lte: ID
-  updatedBy_in: [ID!]
-  updatedByMin_in: [ID!]
-  updatedByMax_in: [ID!]
-  updatedBy_null: Boolean
-  createdBy: ID
-  createdByMin: ID
-  createdByMax: ID
-  createdBy_ne: ID
-  createdByMin_ne: ID
-  createdByMax_ne: ID
-  createdBy_gt: ID
-  createdByMin_gt: ID
-  createdByMax_gt: ID
-  createdBy_lt: ID
-  createdByMin_lt: ID
-  createdByMax_lt: ID
-  createdBy_gte: ID
-  createdByMin_gte: ID
-  createdByMax_gte: ID
-  createdBy_lte: ID
-  createdByMin_lte: ID
-  createdByMax_lte: ID
-  createdBy_in: [ID!]
-  createdByMin_in: [ID!]
-  createdByMax_in: [ID!]
-  createdBy_null: Boolean
-}
-
-type PaymentChannelResultType {
-  items: [PaymentChannel!]!
-  count: Int!
-}
-
-input PaymentStatusCreateInput {
-  id: ID
-  type: PaymentType!
-  amount: Float!
-  personId: ID
-}
-
-input PaymentStatusUpdateInput {
-  type: PaymentType
-  amount: Float
-  personId: ID
-}
-
-input PaymentStatusSortType {
-  id: ObjectSortType
-  idMin: ObjectSortType
-  idMax: ObjectSortType
-  type: ObjectSortType
-  typeMin: ObjectSortType
-  typeMax: ObjectSortType
-  amount: ObjectSortType
-  amountMin: ObjectSortType
-  amountMax: ObjectSortType
-  amountAvg: ObjectSortType
-  personId: ObjectSortType
-  personIdMin: ObjectSortType
-  personIdMax: ObjectSortType
-  updatedAt: ObjectSortType
-  updatedAtMin: ObjectSortType
-  updatedAtMax: ObjectSortType
-  createdAt: ObjectSortType
-  createdAtMin: ObjectSortType
-  createdAtMax: ObjectSortType
-  updatedBy: ObjectSortType
-  updatedByMin: ObjectSortType
-  updatedByMax: ObjectSortType
-  createdBy: ObjectSortType
-  createdByMin: ObjectSortType
-  createdByMax: ObjectSortType
-  person: PersonSortType
-}
-
-input PaymentStatusFilterType {
-  AND: [PaymentStatusFilterType!]
-  OR: [PaymentStatusFilterType!]
-  id: ID
-  idMin: ID
-  idMax: ID
-  id_ne: ID
-  idMin_ne: ID
-  idMax_ne: ID
-  id_gt: ID
-  idMin_gt: ID
-  idMax_gt: ID
-  id_lt: ID
-  idMin_lt: ID
-  idMax_lt: ID
-  id_gte: ID
-  idMin_gte: ID
-  idMax_gte: ID
-  id_lte: ID
-  idMin_lte: ID
-  idMax_lte: ID
-  id_in: [ID!]
-  idMin_in: [ID!]
-  idMax_in: [ID!]
-  id_null: Boolean
-  type: PaymentType
-  typeMin: PaymentType
-  typeMax: PaymentType
-  type_ne: PaymentType
-  typeMin_ne: PaymentType
-  typeMax_ne: PaymentType
-  type_gt: PaymentType
-  typeMin_gt: PaymentType
-  typeMax_gt: PaymentType
-  type_lt: PaymentType
-  typeMin_lt: PaymentType
-  typeMax_lt: PaymentType
-  type_gte: PaymentType
-  typeMin_gte: PaymentType
-  typeMax_gte: PaymentType
-  type_lte: PaymentType
-  typeMin_lte: PaymentType
-  typeMax_lte: PaymentType
-  type_in: [PaymentType!]
-  typeMin_in: [PaymentType!]
-  typeMax_in: [PaymentType!]
-  type_null: Boolean
-  amount: Float
-  amountMin: Float
-  amountMax: Float
-  amountAvg: Float
-  amount_ne: Float
-  amountMin_ne: Float
-  amountMax_ne: Float
-  amountAvg_ne: Float
-  amount_gt: Float
-  amountMin_gt: Float
-  amountMax_gt: Float
-  amountAvg_gt: Float
-  amount_lt: Float
-  amountMin_lt: Float
-  amountMax_lt: Float
-  amountAvg_lt: Float
-  amount_gte: Float
-  amountMin_gte: Float
-  amountMax_gte: Float
-  amountAvg_gte: Float
-  amount_lte: Float
-  amountMin_lte: Float
-  amountMax_lte: Float
-  amountAvg_lte: Float
-  amount_in: [Float!]
-  amountMin_in: [Float!]
-  amountMax_in: [Float!]
-  amountAvg_in: [Float!]
-  amount_null: Boolean
-  personId: ID
-  personIdMin: ID
-  personIdMax: ID
-  personId_ne: ID
-  personIdMin_ne: ID
-  personIdMax_ne: ID
-  personId_gt: ID
-  personIdMin_gt: ID
-  personIdMax_gt: ID
-  personId_lt: ID
-  personIdMin_lt: ID
-  personIdMax_lt: ID
-  personId_gte: ID
-  personIdMin_gte: ID
-  personIdMax_gte: ID
-  personId_lte: ID
-  personIdMin_lte: ID
-  personIdMax_lte: ID
-  personId_in: [ID!]
-  personIdMin_in: [ID!]
-  personIdMax_in: [ID!]
-  personId_null: Boolean
-  updatedAt: Time
-  updatedAtMin: Time
-  updatedAtMax: Time
-  updatedAt_ne: Time
-  updatedAtMin_ne: Time
-  updatedAtMax_ne: Time
-  updatedAt_gt: Time
-  updatedAtMin_gt: Time
-  updatedAtMax_gt: Time
-  updatedAt_lt: Time
-  updatedAtMin_lt: Time
-  updatedAtMax_lt: Time
-  updatedAt_gte: Time
-  updatedAtMin_gte: Time
-  updatedAtMax_gte: Time
-  updatedAt_lte: Time
-  updatedAtMin_lte: Time
-  updatedAtMax_lte: Time
-  updatedAt_in: [Time!]
-  updatedAtMin_in: [Time!]
-  updatedAtMax_in: [Time!]
-  updatedAt_null: Boolean
-  createdAt: Time
-  createdAtMin: Time
-  createdAtMax: Time
-  createdAt_ne: Time
-  createdAtMin_ne: Time
-  createdAtMax_ne: Time
-  createdAt_gt: Time
-  createdAtMin_gt: Time
-  createdAtMax_gt: Time
-  createdAt_lt: Time
-  createdAtMin_lt: Time
-  createdAtMax_lt: Time
-  createdAt_gte: Time
-  createdAtMin_gte: Time
-  createdAtMax_gte: Time
-  createdAt_lte: Time
-  createdAtMin_lte: Time
-  createdAtMax_lte: Time
-  createdAt_in: [Time!]
-  createdAtMin_in: [Time!]
-  createdAtMax_in: [Time!]
-  createdAt_null: Boolean
-  updatedBy: ID
-  updatedByMin: ID
-  updatedByMax: ID
-  updatedBy_ne: ID
-  updatedByMin_ne: ID
-  updatedByMax_ne: ID
-  updatedBy_gt: ID
-  updatedByMin_gt: ID
-  updatedByMax_gt: ID
-  updatedBy_lt: ID
-  updatedByMin_lt: ID
-  updatedByMax_lt: ID
-  updatedBy_gte: ID
-  updatedByMin_gte: ID
-  updatedByMax_gte: ID
-  updatedBy_lte: ID
-  updatedByMin_lte: ID
-  updatedByMax_lte: ID
-  updatedBy_in: [ID!]
-  updatedByMin_in: [ID!]
-  updatedByMax_in: [ID!]
-  updatedBy_null: Boolean
-  createdBy: ID
-  createdByMin: ID
-  createdByMax: ID
-  createdBy_ne: ID
-  createdByMin_ne: ID
-  createdByMax_ne: ID
-  createdBy_gt: ID
-  createdByMin_gt: ID
-  createdByMax_gt: ID
-  createdBy_lt: ID
-  createdByMin_lt: ID
-  createdByMax_lt: ID
-  createdBy_gte: ID
-  createdByMin_gte: ID
-  createdByMax_gte: ID
-  createdBy_lte: ID
-  createdByMin_lte: ID
-  createdByMax_lte: ID
-  createdBy_in: [ID!]
-  createdByMin_in: [ID!]
-  createdByMax_in: [ID!]
-  createdBy_null: Boolean
-  person: PersonFilterType
-}
-
-type PaymentStatusResultType {
-  items: [PaymentStatus!]!
-  count: Int!
-}
-
-input PaymentHistoryCreateInput {
-  id: ID
-  type: PaymentType!
-  amount: Float!
-  concept: String
-  personId: ID
-}
-
-input PaymentHistoryUpdateInput {
-  type: PaymentType
-  amount: Float
-  concept: String
-  personId: ID
-}
-
-input PaymentHistorySortType {
-  id: ObjectSortType
-  idMin: ObjectSortType
-  idMax: ObjectSortType
-  type: ObjectSortType
-  typeMin: ObjectSortType
-  typeMax: ObjectSortType
-  amount: ObjectSortType
-  amountMin: ObjectSortType
-  amountMax: ObjectSortType
-  amountAvg: ObjectSortType
-  concept: ObjectSortType
-  conceptMin: ObjectSortType
-  conceptMax: ObjectSortType
-  personId: ObjectSortType
-  personIdMin: ObjectSortType
-  personIdMax: ObjectSortType
-  updatedAt: ObjectSortType
-  updatedAtMin: ObjectSortType
-  updatedAtMax: ObjectSortType
-  createdAt: ObjectSortType
-  createdAtMin: ObjectSortType
-  createdAtMax: ObjectSortType
-  updatedBy: ObjectSortType
-  updatedByMin: ObjectSortType
-  updatedByMax: ObjectSortType
-  createdBy: ObjectSortType
-  createdByMin: ObjectSortType
-  createdByMax: ObjectSortType
-  person: PersonSortType
-}
-
-input PaymentHistoryFilterType {
-  AND: [PaymentHistoryFilterType!]
-  OR: [PaymentHistoryFilterType!]
-  id: ID
-  idMin: ID
-  idMax: ID
-  id_ne: ID
-  idMin_ne: ID
-  idMax_ne: ID
-  id_gt: ID
-  idMin_gt: ID
-  idMax_gt: ID
-  id_lt: ID
-  idMin_lt: ID
-  idMax_lt: ID
-  id_gte: ID
-  idMin_gte: ID
-  idMax_gte: ID
-  id_lte: ID
-  idMin_lte: ID
-  idMax_lte: ID
-  id_in: [ID!]
-  idMin_in: [ID!]
-  idMax_in: [ID!]
-  id_null: Boolean
-  type: PaymentType
-  typeMin: PaymentType
-  typeMax: PaymentType
-  type_ne: PaymentType
-  typeMin_ne: PaymentType
-  typeMax_ne: PaymentType
-  type_gt: PaymentType
-  typeMin_gt: PaymentType
-  typeMax_gt: PaymentType
-  type_lt: PaymentType
-  typeMin_lt: PaymentType
-  typeMax_lt: PaymentType
-  type_gte: PaymentType
-  typeMin_gte: PaymentType
-  typeMax_gte: PaymentType
-  type_lte: PaymentType
-  typeMin_lte: PaymentType
-  typeMax_lte: PaymentType
-  type_in: [PaymentType!]
-  typeMin_in: [PaymentType!]
-  typeMax_in: [PaymentType!]
-  type_null: Boolean
-  amount: Float
-  amountMin: Float
-  amountMax: Float
-  amountAvg: Float
-  amount_ne: Float
-  amountMin_ne: Float
-  amountMax_ne: Float
-  amountAvg_ne: Float
-  amount_gt: Float
-  amountMin_gt: Float
-  amountMax_gt: Float
-  amountAvg_gt: Float
-  amount_lt: Float
-  amountMin_lt: Float
-  amountMax_lt: Float
-  amountAvg_lt: Float
-  amount_gte: Float
-  amountMin_gte: Float
-  amountMax_gte: Float
-  amountAvg_gte: Float
-  amount_lte: Float
-  amountMin_lte: Float
-  amountMax_lte: Float
-  amountAvg_lte: Float
-  amount_in: [Float!]
-  amountMin_in: [Float!]
-  amountMax_in: [Float!]
-  amountAvg_in: [Float!]
-  amount_null: Boolean
-  concept: String
-  conceptMin: String
-  conceptMax: String
-  concept_ne: String
-  conceptMin_ne: String
-  conceptMax_ne: String
-  concept_gt: String
-  conceptMin_gt: String
-  conceptMax_gt: String
-  concept_lt: String
-  conceptMin_lt: String
-  conceptMax_lt: String
-  concept_gte: String
-  conceptMin_gte: String
-  conceptMax_gte: String
-  concept_lte: String
-  conceptMin_lte: String
-  conceptMax_lte: String
-  concept_in: [String!]
-  conceptMin_in: [String!]
-  conceptMax_in: [String!]
-  concept_like: String
-  conceptMin_like: String
-  conceptMax_like: String
-  concept_prefix: String
-  conceptMin_prefix: String
-  conceptMax_prefix: String
-  concept_suffix: String
-  conceptMin_suffix: String
-  conceptMax_suffix: String
-  concept_null: Boolean
-  personId: ID
-  personIdMin: ID
-  personIdMax: ID
-  personId_ne: ID
-  personIdMin_ne: ID
-  personIdMax_ne: ID
-  personId_gt: ID
-  personIdMin_gt: ID
-  personIdMax_gt: ID
-  personId_lt: ID
-  personIdMin_lt: ID
-  personIdMax_lt: ID
-  personId_gte: ID
-  personIdMin_gte: ID
-  personIdMax_gte: ID
-  personId_lte: ID
-  personIdMin_lte: ID
-  personIdMax_lte: ID
-  personId_in: [ID!]
-  personIdMin_in: [ID!]
-  personIdMax_in: [ID!]
-  personId_null: Boolean
-  updatedAt: Time
-  updatedAtMin: Time
-  updatedAtMax: Time
-  updatedAt_ne: Time
-  updatedAtMin_ne: Time
-  updatedAtMax_ne: Time
-  updatedAt_gt: Time
-  updatedAtMin_gt: Time
-  updatedAtMax_gt: Time
-  updatedAt_lt: Time
-  updatedAtMin_lt: Time
-  updatedAtMax_lt: Time
-  updatedAt_gte: Time
-  updatedAtMin_gte: Time
-  updatedAtMax_gte: Time
-  updatedAt_lte: Time
-  updatedAtMin_lte: Time
-  updatedAtMax_lte: Time
-  updatedAt_in: [Time!]
-  updatedAtMin_in: [Time!]
-  updatedAtMax_in: [Time!]
-  updatedAt_null: Boolean
-  createdAt: Time
-  createdAtMin: Time
-  createdAtMax: Time
-  createdAt_ne: Time
-  createdAtMin_ne: Time
-  createdAtMax_ne: Time
-  createdAt_gt: Time
-  createdAtMin_gt: Time
-  createdAtMax_gt: Time
-  createdAt_lt: Time
-  createdAtMin_lt: Time
-  createdAtMax_lt: Time
-  createdAt_gte: Time
-  createdAtMin_gte: Time
-  createdAtMax_gte: Time
-  createdAt_lte: Time
-  createdAtMin_lte: Time
-  createdAtMax_lte: Time
-  createdAt_in: [Time!]
-  createdAtMin_in: [Time!]
-  createdAtMax_in: [Time!]
-  createdAt_null: Boolean
-  updatedBy: ID
-  updatedByMin: ID
-  updatedByMax: ID
-  updatedBy_ne: ID
-  updatedByMin_ne: ID
-  updatedByMax_ne: ID
-  updatedBy_gt: ID
-  updatedByMin_gt: ID
-  updatedByMax_gt: ID
-  updatedBy_lt: ID
-  updatedByMin_lt: ID
-  updatedByMax_lt: ID
-  updatedBy_gte: ID
-  updatedByMin_gte: ID
-  updatedByMax_gte: ID
-  updatedBy_lte: ID
-  updatedByMin_lte: ID
-  updatedByMax_lte: ID
-  updatedBy_in: [ID!]
-  updatedByMin_in: [ID!]
-  updatedByMax_in: [ID!]
-  updatedBy_null: Boolean
-  createdBy: ID
-  createdByMin: ID
-  createdByMax: ID
-  createdBy_ne: ID
-  createdByMin_ne: ID
-  createdByMax_ne: ID
-  createdBy_gt: ID
-  createdByMin_gt: ID
-  createdByMax_gt: ID
-  createdBy_lt: ID
-  createdByMin_lt: ID
-  createdByMax_lt: ID
-  createdBy_gte: ID
-  createdByMin_gte: ID
-  createdByMax_gte: ID
-  createdBy_lte: ID
-  createdByMin_lte: ID
-  createdByMax_lte: ID
-  createdBy_in: [ID!]
-  createdByMin_in: [ID!]
-  createdByMax_in: [ID!]
-  createdBy_null: Boolean
-  person: PersonFilterType
-}
-
-type PaymentHistoryResultType {
-  items: [PaymentHistory!]!
   count: Int!
 }`
 )
