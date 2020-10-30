@@ -59,6 +59,15 @@ func AutoMigrate(db *gorm.DB) (err error) {
 			log.Err(err).Send()
 		}
 
+		err = _db.Model(Delivery{}).RemoveForeignKey("vehicleTypeId", TableName("vehicle_types")+"(id)").Error
+		if err != nil {
+			log.Err(err).Send()
+		}
+		err = _db.Model(Delivery{}).AddForeignKey("vehicleTypeId", TableName("vehicle_types")+"(id)", "SET NULL", "SET NULL").Error
+		if err != nil {
+			log.Err(err).Send()
+		}
+
 		err = _db.Model(Delivery{}).RemoveForeignKey("deliveryTypeId", TableName("delivery_types")+"(id)").Error
 		if err != nil {
 			log.Err(err).Send()
@@ -91,6 +100,15 @@ func AutoMigrate(db *gorm.DB) (err error) {
 			log.Err(err).Send()
 		}
 		err = _db.Model(DeliveryChannel{}).AddForeignKey("deliveryId", TableName("deliveries")+"(id)", "SET NULL", "SET NULL").Error
+		if err != nil {
+			log.Err(err).Send()
+		}
+
+		err = _db.Model(VehicleType{}).RemoveForeignKey("deliveryId", TableName("deliveries")+"(id)").Error
+		if err != nil {
+			log.Err(err).Send()
+		}
+		err = _db.Model(VehicleType{}).AddForeignKey("deliveryId", TableName("deliveries")+"(id)", "SET NULL", "SET NULL").Error
 		if err != nil {
 			log.Err(err).Send()
 		}

@@ -182,3 +182,17 @@ func (r *Resolver) VehicleTypeResultType() gen.VehicleTypeResultTypeResolver {
 		},
 	}
 }
+
+// VehicleTypeResolver struct
+type VehicleTypeResolver struct {
+	*gen.GeneratedVehicleTypeResolver
+}
+
+// VehicleType ...
+func (r *Resolver) VehicleType() gen.VehicleTypeResolver {
+	return &VehicleTypeResolver{
+		GeneratedVehicleTypeResolver: &gen.GeneratedVehicleTypeResolver{
+			GeneratedResolver: r.GeneratedResolver,
+		},
+	}
+}

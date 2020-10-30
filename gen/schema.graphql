@@ -51,15 +51,15 @@ enum ObjectSortType {
 
 type Delivery {
   id: ID!
-  sender: Person!
-  receiver: Person!
-  deliver: Person!
-  vehicleType: VehicleType
+  sender: Person
+  receiver: Person
+  deliver: Person
+  vehicleType: VehicleType!
+  deliveryType: DeliveryType!
+  deliveryChannel: DeliveryChannel!
   paymentId: ID
   paymentTotal: Float
   paymentOnDeliver: Boolean
-  deliveryType: DeliveryType!
-  deliveryChannel: DeliveryChannel
   collectDateTime: Time
   collectAddress: String
   collectPoint: String
@@ -75,6 +75,7 @@ type Delivery {
   senderId: ID
   receiverId: ID
   deliverId: ID
+  vehicleTypeId: ID
   deliveryTypeId: ID
   deliveryChannelId: ID
   updatedAt: Time
@@ -140,6 +141,8 @@ type VehicleType {
   id: ID!
   name: String
   description: String
+  delivery: Delivery
+  deliveryId: ID
   updatedAt: Time
   createdAt: Time!
   updatedBy: ID
@@ -162,10 +165,10 @@ input DeliveryCreateInput {
   completed: Boolean
   smsToken: String
   status: String
-  instructions: String
   senderId: ID
   receiverId: ID
   deliverId: ID
+  vehicleTypeId: ID
   deliveryTypeId: ID
   deliveryChannelId: ID
 }
@@ -185,10 +188,10 @@ input DeliveryUpdateInput {
   completed: Boolean
   smsToken: String
   status: String
-  instructions: String
   senderId: ID
   receiverId: ID
   deliverId: ID
+  vehicleTypeId: ID
   deliveryTypeId: ID
   deliveryChannelId: ID
 }
@@ -241,9 +244,6 @@ input DeliverySortType {
   status: ObjectSortType
   statusMin: ObjectSortType
   statusMax: ObjectSortType
-  instructions: ObjectSortType
-  instructionsMin: ObjectSortType
-  instructionsMax: ObjectSortType
   senderId: ObjectSortType
   senderIdMin: ObjectSortType
   senderIdMax: ObjectSortType
@@ -253,6 +253,9 @@ input DeliverySortType {
   deliverId: ObjectSortType
   deliverIdMin: ObjectSortType
   deliverIdMax: ObjectSortType
+  vehicleTypeId: ObjectSortType
+  vehicleTypeIdMin: ObjectSortType
+  vehicleTypeIdMax: ObjectSortType
   deliveryTypeId: ObjectSortType
   deliveryTypeIdMin: ObjectSortType
   deliveryTypeIdMax: ObjectSortType
@@ -274,6 +277,7 @@ input DeliverySortType {
   sender: PersonSortType
   receiver: PersonSortType
   deliver: PersonSortType
+  vehicleType: VehicleTypeSortType
   deliveryType: DeliveryTypeSortType
   deliveryChannel: DeliveryChannelSortType
 }
@@ -688,37 +692,6 @@ input DeliveryFilterType {
   statusMin_suffix: String
   statusMax_suffix: String
   status_null: Boolean
-  instructions: String
-  instructionsMin: String
-  instructionsMax: String
-  instructions_ne: String
-  instructionsMin_ne: String
-  instructionsMax_ne: String
-  instructions_gt: String
-  instructionsMin_gt: String
-  instructionsMax_gt: String
-  instructions_lt: String
-  instructionsMin_lt: String
-  instructionsMax_lt: String
-  instructions_gte: String
-  instructionsMin_gte: String
-  instructionsMax_gte: String
-  instructions_lte: String
-  instructionsMin_lte: String
-  instructionsMax_lte: String
-  instructions_in: [String!]
-  instructionsMin_in: [String!]
-  instructionsMax_in: [String!]
-  instructions_like: String
-  instructionsMin_like: String
-  instructionsMax_like: String
-  instructions_prefix: String
-  instructionsMin_prefix: String
-  instructionsMax_prefix: String
-  instructions_suffix: String
-  instructionsMin_suffix: String
-  instructionsMax_suffix: String
-  instructions_null: Boolean
   senderId: ID
   senderIdMin: ID
   senderIdMax: ID
@@ -785,6 +758,28 @@ input DeliveryFilterType {
   deliverIdMin_in: [ID!]
   deliverIdMax_in: [ID!]
   deliverId_null: Boolean
+  vehicleTypeId: ID
+  vehicleTypeIdMin: ID
+  vehicleTypeIdMax: ID
+  vehicleTypeId_ne: ID
+  vehicleTypeIdMin_ne: ID
+  vehicleTypeIdMax_ne: ID
+  vehicleTypeId_gt: ID
+  vehicleTypeIdMin_gt: ID
+  vehicleTypeIdMax_gt: ID
+  vehicleTypeId_lt: ID
+  vehicleTypeIdMin_lt: ID
+  vehicleTypeIdMax_lt: ID
+  vehicleTypeId_gte: ID
+  vehicleTypeIdMin_gte: ID
+  vehicleTypeIdMax_gte: ID
+  vehicleTypeId_lte: ID
+  vehicleTypeIdMin_lte: ID
+  vehicleTypeIdMax_lte: ID
+  vehicleTypeId_in: [ID!]
+  vehicleTypeIdMin_in: [ID!]
+  vehicleTypeIdMax_in: [ID!]
+  vehicleTypeId_null: Boolean
   deliveryTypeId: ID
   deliveryTypeIdMin: ID
   deliveryTypeIdMax: ID
@@ -920,6 +915,7 @@ input DeliveryFilterType {
   sender: PersonFilterType
   receiver: PersonFilterType
   deliver: PersonFilterType
+  vehicleType: VehicleTypeFilterType
   deliveryType: DeliveryTypeFilterType
   deliveryChannel: DeliveryChannelFilterType
 }
@@ -2014,11 +2010,13 @@ input VehicleTypeCreateInput {
   id: ID
   name: String
   description: String
+  deliveryId: ID
 }
 
 input VehicleTypeUpdateInput {
   name: String
   description: String
+  deliveryId: ID
 }
 
 input VehicleTypeSortType {
@@ -2031,6 +2029,9 @@ input VehicleTypeSortType {
   description: ObjectSortType
   descriptionMin: ObjectSortType
   descriptionMax: ObjectSortType
+  deliveryId: ObjectSortType
+  deliveryIdMin: ObjectSortType
+  deliveryIdMax: ObjectSortType
   updatedAt: ObjectSortType
   updatedAtMin: ObjectSortType
   updatedAtMax: ObjectSortType
@@ -2043,6 +2044,7 @@ input VehicleTypeSortType {
   createdBy: ObjectSortType
   createdByMin: ObjectSortType
   createdByMax: ObjectSortType
+  delivery: DeliverySortType
 }
 
 input VehicleTypeFilterType {
@@ -2132,6 +2134,28 @@ input VehicleTypeFilterType {
   descriptionMin_suffix: String
   descriptionMax_suffix: String
   description_null: Boolean
+  deliveryId: ID
+  deliveryIdMin: ID
+  deliveryIdMax: ID
+  deliveryId_ne: ID
+  deliveryIdMin_ne: ID
+  deliveryIdMax_ne: ID
+  deliveryId_gt: ID
+  deliveryIdMin_gt: ID
+  deliveryIdMax_gt: ID
+  deliveryId_lt: ID
+  deliveryIdMin_lt: ID
+  deliveryIdMax_lt: ID
+  deliveryId_gte: ID
+  deliveryIdMin_gte: ID
+  deliveryIdMax_gte: ID
+  deliveryId_lte: ID
+  deliveryIdMin_lte: ID
+  deliveryIdMax_lte: ID
+  deliveryId_in: [ID!]
+  deliveryIdMin_in: [ID!]
+  deliveryIdMax_in: [ID!]
+  deliveryId_null: Boolean
   updatedAt: Time
   updatedAtMin: Time
   updatedAtMax: Time
@@ -2220,6 +2244,7 @@ input VehicleTypeFilterType {
   createdByMin_in: [ID!]
   createdByMax_in: [ID!]
   createdBy_null: Boolean
+  delivery: DeliveryFilterType
 }
 
 type VehicleTypeResultType {

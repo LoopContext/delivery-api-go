@@ -46,6 +46,7 @@ type ResolverRoot interface {
 	Person() PersonResolver
 	PersonResultType() PersonResultTypeResolver
 	Query() QueryResolver
+	VehicleType() VehicleTypeResolver
 	VehicleTypeResultType() VehicleTypeResultTypeResolver
 }
 
@@ -85,6 +86,7 @@ type ComplexityRoot struct {
 		UpdatedAt         func(childComplexity int) int
 		UpdatedBy         func(childComplexity int) int
 		VehicleType       func(childComplexity int) int
+		VehicleTypeID     func(childComplexity int) int
 	}
 
 	DeliveryChannel struct {
@@ -200,6 +202,8 @@ type ComplexityRoot struct {
 	VehicleType struct {
 		CreatedAt   func(childComplexity int) int
 		CreatedBy   func(childComplexity int) int
+		Delivery    func(childComplexity int) int
+		DeliveryID  func(childComplexity int) int
 		Description func(childComplexity int) int
 		ID          func(childComplexity int) int
 		Name        func(childComplexity int) int
@@ -222,9 +226,10 @@ type DeliveryResolver interface {
 	Receiver(ctx context.Context, obj *Delivery) (*Person, error)
 	Deliver(ctx context.Context, obj *Delivery) (*Person, error)
 	VehicleType(ctx context.Context, obj *Delivery) (*VehicleType, error)
-
 	DeliveryType(ctx context.Context, obj *Delivery) (*DeliveryType, error)
 	DeliveryChannel(ctx context.Context, obj *Delivery) (*DeliveryChannel, error)
+
+	Instructions(ctx context.Context, obj *Delivery) (*string, error)
 }
 type DeliveryChannelResolver interface {
 	Delivery(ctx context.Context, obj *DeliveryChannel) (*Delivery, error)
@@ -293,6 +298,9 @@ type QueryResolver interface {
 	DeliveryChannels(ctx context.Context, offset *int, limit *int, q *string, sort []*DeliveryChannelSortType, filter *DeliveryChannelFilterType) (*DeliveryChannelResultType, error)
 	VehicleType(ctx context.Context, id *string, q *string, filter *VehicleTypeFilterType) (*VehicleType, error)
 	VehicleTypes(ctx context.Context, offset *int, limit *int, q *string, sort []*VehicleTypeSortType, filter *VehicleTypeFilterType) (*VehicleTypeResultType, error)
+}
+type VehicleTypeResolver interface {
+	Delivery(ctx context.Context, obj *VehicleType) (*Delivery, error)
 }
 type VehicleTypeResultTypeResolver interface {
 	Items(ctx context.Context, obj *VehicleTypeResultType) ([]*VehicleType, error)
@@ -530,6 +538,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Delivery.VehicleType(childComplexity), true
+
+	case "Delivery.vehicleTypeId":
+		if e.complexity.Delivery.VehicleTypeID == nil {
+			break
+		}
+
+		return e.complexity.Delivery.VehicleTypeID(childComplexity), true
 
 	case "DeliveryChannel.createdAt":
 		if e.complexity.DeliveryChannel.CreatedAt == nil {
@@ -1266,6 +1281,20 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.VehicleType.CreatedBy(childComplexity), true
 
+	case "VehicleType.delivery":
+		if e.complexity.VehicleType.Delivery == nil {
+			break
+		}
+
+		return e.complexity.VehicleType.Delivery(childComplexity), true
+
+	case "VehicleType.deliveryId":
+		if e.complexity.VehicleType.DeliveryID == nil {
+			break
+		}
+
+		return e.complexity.VehicleType.DeliveryID(childComplexity), true
+
 	case "VehicleType.description":
 		if e.complexity.VehicleType.Description == nil {
 			break
@@ -1439,15 +1468,15 @@ enum ObjectSortType {
 
 type Delivery {
   id: ID!
-  sender: Person!
-  receiver: Person!
-  deliver: Person!
-  vehicleType: VehicleType
+  sender: Person
+  receiver: Person
+  deliver: Person
+  vehicleType: VehicleType!
+  deliveryType: DeliveryType!
+  deliveryChannel: DeliveryChannel!
   paymentId: ID
   paymentTotal: Float
   paymentOnDeliver: Boolean
-  deliveryType: DeliveryType!
-  deliveryChannel: DeliveryChannel
   collectDateTime: Time
   collectAddress: String
   collectPoint: String
@@ -1463,6 +1492,7 @@ type Delivery {
   senderId: ID
   receiverId: ID
   deliverId: ID
+  vehicleTypeId: ID
   deliveryTypeId: ID
   deliveryChannelId: ID
   updatedAt: Time
@@ -1528,6 +1558,8 @@ type VehicleType {
   id: ID!
   name: String
   description: String
+  delivery: Delivery
+  deliveryId: ID
   updatedAt: Time
   createdAt: Time!
   updatedBy: ID
@@ -1550,10 +1582,10 @@ input DeliveryCreateInput {
   completed: Boolean
   smsToken: String
   status: String
-  instructions: String
   senderId: ID
   receiverId: ID
   deliverId: ID
+  vehicleTypeId: ID
   deliveryTypeId: ID
   deliveryChannelId: ID
 }
@@ -1573,10 +1605,10 @@ input DeliveryUpdateInput {
   completed: Boolean
   smsToken: String
   status: String
-  instructions: String
   senderId: ID
   receiverId: ID
   deliverId: ID
+  vehicleTypeId: ID
   deliveryTypeId: ID
   deliveryChannelId: ID
 }
@@ -1629,9 +1661,6 @@ input DeliverySortType {
   status: ObjectSortType
   statusMin: ObjectSortType
   statusMax: ObjectSortType
-  instructions: ObjectSortType
-  instructionsMin: ObjectSortType
-  instructionsMax: ObjectSortType
   senderId: ObjectSortType
   senderIdMin: ObjectSortType
   senderIdMax: ObjectSortType
@@ -1641,6 +1670,9 @@ input DeliverySortType {
   deliverId: ObjectSortType
   deliverIdMin: ObjectSortType
   deliverIdMax: ObjectSortType
+  vehicleTypeId: ObjectSortType
+  vehicleTypeIdMin: ObjectSortType
+  vehicleTypeIdMax: ObjectSortType
   deliveryTypeId: ObjectSortType
   deliveryTypeIdMin: ObjectSortType
   deliveryTypeIdMax: ObjectSortType
@@ -1662,6 +1694,7 @@ input DeliverySortType {
   sender: PersonSortType
   receiver: PersonSortType
   deliver: PersonSortType
+  vehicleType: VehicleTypeSortType
   deliveryType: DeliveryTypeSortType
   deliveryChannel: DeliveryChannelSortType
 }
@@ -2076,37 +2109,6 @@ input DeliveryFilterType {
   statusMin_suffix: String
   statusMax_suffix: String
   status_null: Boolean
-  instructions: String
-  instructionsMin: String
-  instructionsMax: String
-  instructions_ne: String
-  instructionsMin_ne: String
-  instructionsMax_ne: String
-  instructions_gt: String
-  instructionsMin_gt: String
-  instructionsMax_gt: String
-  instructions_lt: String
-  instructionsMin_lt: String
-  instructionsMax_lt: String
-  instructions_gte: String
-  instructionsMin_gte: String
-  instructionsMax_gte: String
-  instructions_lte: String
-  instructionsMin_lte: String
-  instructionsMax_lte: String
-  instructions_in: [String!]
-  instructionsMin_in: [String!]
-  instructionsMax_in: [String!]
-  instructions_like: String
-  instructionsMin_like: String
-  instructionsMax_like: String
-  instructions_prefix: String
-  instructionsMin_prefix: String
-  instructionsMax_prefix: String
-  instructions_suffix: String
-  instructionsMin_suffix: String
-  instructionsMax_suffix: String
-  instructions_null: Boolean
   senderId: ID
   senderIdMin: ID
   senderIdMax: ID
@@ -2173,6 +2175,28 @@ input DeliveryFilterType {
   deliverIdMin_in: [ID!]
   deliverIdMax_in: [ID!]
   deliverId_null: Boolean
+  vehicleTypeId: ID
+  vehicleTypeIdMin: ID
+  vehicleTypeIdMax: ID
+  vehicleTypeId_ne: ID
+  vehicleTypeIdMin_ne: ID
+  vehicleTypeIdMax_ne: ID
+  vehicleTypeId_gt: ID
+  vehicleTypeIdMin_gt: ID
+  vehicleTypeIdMax_gt: ID
+  vehicleTypeId_lt: ID
+  vehicleTypeIdMin_lt: ID
+  vehicleTypeIdMax_lt: ID
+  vehicleTypeId_gte: ID
+  vehicleTypeIdMin_gte: ID
+  vehicleTypeIdMax_gte: ID
+  vehicleTypeId_lte: ID
+  vehicleTypeIdMin_lte: ID
+  vehicleTypeIdMax_lte: ID
+  vehicleTypeId_in: [ID!]
+  vehicleTypeIdMin_in: [ID!]
+  vehicleTypeIdMax_in: [ID!]
+  vehicleTypeId_null: Boolean
   deliveryTypeId: ID
   deliveryTypeIdMin: ID
   deliveryTypeIdMax: ID
@@ -2308,6 +2332,7 @@ input DeliveryFilterType {
   sender: PersonFilterType
   receiver: PersonFilterType
   deliver: PersonFilterType
+  vehicleType: VehicleTypeFilterType
   deliveryType: DeliveryTypeFilterType
   deliveryChannel: DeliveryChannelFilterType
 }
@@ -3402,11 +3427,13 @@ input VehicleTypeCreateInput {
   id: ID
   name: String
   description: String
+  deliveryId: ID
 }
 
 input VehicleTypeUpdateInput {
   name: String
   description: String
+  deliveryId: ID
 }
 
 input VehicleTypeSortType {
@@ -3419,6 +3446,9 @@ input VehicleTypeSortType {
   description: ObjectSortType
   descriptionMin: ObjectSortType
   descriptionMax: ObjectSortType
+  deliveryId: ObjectSortType
+  deliveryIdMin: ObjectSortType
+  deliveryIdMax: ObjectSortType
   updatedAt: ObjectSortType
   updatedAtMin: ObjectSortType
   updatedAtMax: ObjectSortType
@@ -3431,6 +3461,7 @@ input VehicleTypeSortType {
   createdBy: ObjectSortType
   createdByMin: ObjectSortType
   createdByMax: ObjectSortType
+  delivery: DeliverySortType
 }
 
 input VehicleTypeFilterType {
@@ -3520,6 +3551,28 @@ input VehicleTypeFilterType {
   descriptionMin_suffix: String
   descriptionMax_suffix: String
   description_null: Boolean
+  deliveryId: ID
+  deliveryIdMin: ID
+  deliveryIdMax: ID
+  deliveryId_ne: ID
+  deliveryIdMin_ne: ID
+  deliveryIdMax_ne: ID
+  deliveryId_gt: ID
+  deliveryIdMin_gt: ID
+  deliveryIdMax_gt: ID
+  deliveryId_lt: ID
+  deliveryIdMin_lt: ID
+  deliveryIdMax_lt: ID
+  deliveryId_gte: ID
+  deliveryIdMin_gte: ID
+  deliveryIdMax_gte: ID
+  deliveryId_lte: ID
+  deliveryIdMin_lte: ID
+  deliveryIdMax_lte: ID
+  deliveryId_in: [ID!]
+  deliveryIdMin_in: [ID!]
+  deliveryIdMax_in: [ID!]
+  deliveryId_null: Boolean
   updatedAt: Time
   updatedAtMin: Time
   updatedAtMax: Time
@@ -3608,6 +3661,7 @@ input VehicleTypeFilterType {
   createdByMin_in: [ID!]
   createdByMax_in: [ID!]
   createdBy_null: Boolean
+  delivery: DeliveryFilterType
 }
 
 type VehicleTypeResultType {
@@ -4592,14 +4646,11 @@ func (ec *executionContext) _Delivery_sender(ctx context.Context, field graphql.
 		return graphql.Null
 	}
 	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
 		return graphql.Null
 	}
 	res := resTmp.(*Person)
 	fc.Result = res
-	return ec.marshalNPerson2ᚖgithubᚗcomᚋloopcontextᚋdeliverᚑapiᚑgoᚋgenᚐPerson(ctx, field.Selections, res)
+	return ec.marshalOPerson2ᚖgithubᚗcomᚋloopcontextᚋdeliverᚑapiᚑgoᚋgenᚐPerson(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Delivery_receiver(ctx context.Context, field graphql.CollectedField, obj *Delivery) (ret graphql.Marshaler) {
@@ -4627,14 +4678,11 @@ func (ec *executionContext) _Delivery_receiver(ctx context.Context, field graphq
 		return graphql.Null
 	}
 	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
 		return graphql.Null
 	}
 	res := resTmp.(*Person)
 	fc.Result = res
-	return ec.marshalNPerson2ᚖgithubᚗcomᚋloopcontextᚋdeliverᚑapiᚑgoᚋgenᚐPerson(ctx, field.Selections, res)
+	return ec.marshalOPerson2ᚖgithubᚗcomᚋloopcontextᚋdeliverᚑapiᚑgoᚋgenᚐPerson(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Delivery_deliver(ctx context.Context, field graphql.CollectedField, obj *Delivery) (ret graphql.Marshaler) {
@@ -4662,14 +4710,11 @@ func (ec *executionContext) _Delivery_deliver(ctx context.Context, field graphql
 		return graphql.Null
 	}
 	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
 		return graphql.Null
 	}
 	res := resTmp.(*Person)
 	fc.Result = res
-	return ec.marshalNPerson2ᚖgithubᚗcomᚋloopcontextᚋdeliverᚑapiᚑgoᚋgenᚐPerson(ctx, field.Selections, res)
+	return ec.marshalOPerson2ᚖgithubᚗcomᚋloopcontextᚋdeliverᚑapiᚑgoᚋgenᚐPerson(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Delivery_vehicleType(ctx context.Context, field graphql.CollectedField, obj *Delivery) (ret graphql.Marshaler) {
@@ -4697,11 +4742,84 @@ func (ec *executionContext) _Delivery_vehicleType(ctx context.Context, field gra
 		return graphql.Null
 	}
 	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
 		return graphql.Null
 	}
 	res := resTmp.(*VehicleType)
 	fc.Result = res
-	return ec.marshalOVehicleType2ᚖgithubᚗcomᚋloopcontextᚋdeliverᚑapiᚑgoᚋgenᚐVehicleType(ctx, field.Selections, res)
+	return ec.marshalNVehicleType2ᚖgithubᚗcomᚋloopcontextᚋdeliverᚑapiᚑgoᚋgenᚐVehicleType(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Delivery_deliveryType(ctx context.Context, field graphql.CollectedField, obj *Delivery) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "Delivery",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   true,
+		IsResolver: true,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Delivery().DeliveryType(rctx, obj)
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*DeliveryType)
+	fc.Result = res
+	return ec.marshalNDeliveryType2ᚖgithubᚗcomᚋloopcontextᚋdeliverᚑapiᚑgoᚋgenᚐDeliveryType(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Delivery_deliveryChannel(ctx context.Context, field graphql.CollectedField, obj *Delivery) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "Delivery",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   true,
+		IsResolver: true,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Delivery().DeliveryChannel(rctx, obj)
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*DeliveryChannel)
+	fc.Result = res
+	return ec.marshalNDeliveryChannel2ᚖgithubᚗcomᚋloopcontextᚋdeliverᚑapiᚑgoᚋgenᚐDeliveryChannel(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Delivery_paymentId(ctx context.Context, field graphql.CollectedField, obj *Delivery) (ret graphql.Marshaler) {
@@ -4798,73 +4916,6 @@ func (ec *executionContext) _Delivery_paymentOnDeliver(ctx context.Context, fiel
 	res := resTmp.(*bool)
 	fc.Result = res
 	return ec.marshalOBoolean2ᚖbool(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) _Delivery_deliveryType(ctx context.Context, field graphql.CollectedField, obj *Delivery) (ret graphql.Marshaler) {
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	fc := &graphql.FieldContext{
-		Object:     "Delivery",
-		Field:      field,
-		Args:       nil,
-		IsMethod:   true,
-		IsResolver: true,
-	}
-
-	ctx = graphql.WithFieldContext(ctx, fc)
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Delivery().DeliveryType(rctx, obj)
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(*DeliveryType)
-	fc.Result = res
-	return ec.marshalNDeliveryType2ᚖgithubᚗcomᚋloopcontextᚋdeliverᚑapiᚑgoᚋgenᚐDeliveryType(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) _Delivery_deliveryChannel(ctx context.Context, field graphql.CollectedField, obj *Delivery) (ret graphql.Marshaler) {
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	fc := &graphql.FieldContext{
-		Object:     "Delivery",
-		Field:      field,
-		Args:       nil,
-		IsMethod:   true,
-		IsResolver: true,
-	}
-
-	ctx = graphql.WithFieldContext(ctx, fc)
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Delivery().DeliveryChannel(rctx, obj)
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*DeliveryChannel)
-	fc.Result = res
-	return ec.marshalODeliveryChannel2ᚖgithubᚗcomᚋloopcontextᚋdeliverᚑapiᚑgoᚋgenᚐDeliveryChannel(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Delivery_collectDateTime(ctx context.Context, field graphql.CollectedField, obj *Delivery) (ret graphql.Marshaler) {
@@ -5230,14 +5281,14 @@ func (ec *executionContext) _Delivery_instructions(ctx context.Context, field gr
 		Object:     "Delivery",
 		Field:      field,
 		Args:       nil,
-		IsMethod:   false,
-		IsResolver: false,
+		IsMethod:   true,
+		IsResolver: true,
 	}
 
 	ctx = graphql.WithFieldContext(ctx, fc)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Instructions, nil
+		return ec.resolvers.Delivery().Instructions(rctx, obj)
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -5334,6 +5385,38 @@ func (ec *executionContext) _Delivery_deliverId(ctx context.Context, field graph
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
 		return obj.DeliverID, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	fc.Result = res
+	return ec.marshalOID2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Delivery_vehicleTypeId(ctx context.Context, field graphql.CollectedField, obj *Delivery) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "Delivery",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   false,
+		IsResolver: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.VehicleTypeID, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -8712,6 +8795,70 @@ func (ec *executionContext) _VehicleType_description(ctx context.Context, field 
 	res := resTmp.(*string)
 	fc.Result = res
 	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _VehicleType_delivery(ctx context.Context, field graphql.CollectedField, obj *VehicleType) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "VehicleType",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   true,
+		IsResolver: true,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.VehicleType().Delivery(rctx, obj)
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*Delivery)
+	fc.Result = res
+	return ec.marshalODelivery2ᚖgithubᚗcomᚋloopcontextᚋdeliverᚑapiᚑgoᚋgenᚐDelivery(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _VehicleType_deliveryId(ctx context.Context, field graphql.CollectedField, obj *VehicleType) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "VehicleType",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   false,
+		IsResolver: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.DeliveryID, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	fc.Result = res
+	return ec.marshalOID2ᚖstring(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _VehicleType_updatedAt(ctx context.Context, field graphql.CollectedField, obj *VehicleType) (ret graphql.Marshaler) {
@@ -15112,254 +15259,6 @@ func (ec *executionContext) unmarshalInputDeliveryFilterType(ctx context.Context
 			if err != nil {
 				return it, err
 			}
-		case "instructions":
-			var err error
-
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("instructions"))
-			it.Instructions, err = ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-		case "instructionsMin":
-			var err error
-
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("instructionsMin"))
-			it.InstructionsMin, err = ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-		case "instructionsMax":
-			var err error
-
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("instructionsMax"))
-			it.InstructionsMax, err = ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-		case "instructions_ne":
-			var err error
-
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("instructions_ne"))
-			it.InstructionsNe, err = ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-		case "instructionsMin_ne":
-			var err error
-
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("instructionsMin_ne"))
-			it.InstructionsMinNe, err = ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-		case "instructionsMax_ne":
-			var err error
-
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("instructionsMax_ne"))
-			it.InstructionsMaxNe, err = ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-		case "instructions_gt":
-			var err error
-
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("instructions_gt"))
-			it.InstructionsGt, err = ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-		case "instructionsMin_gt":
-			var err error
-
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("instructionsMin_gt"))
-			it.InstructionsMinGt, err = ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-		case "instructionsMax_gt":
-			var err error
-
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("instructionsMax_gt"))
-			it.InstructionsMaxGt, err = ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-		case "instructions_lt":
-			var err error
-
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("instructions_lt"))
-			it.InstructionsLt, err = ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-		case "instructionsMin_lt":
-			var err error
-
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("instructionsMin_lt"))
-			it.InstructionsMinLt, err = ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-		case "instructionsMax_lt":
-			var err error
-
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("instructionsMax_lt"))
-			it.InstructionsMaxLt, err = ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-		case "instructions_gte":
-			var err error
-
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("instructions_gte"))
-			it.InstructionsGte, err = ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-		case "instructionsMin_gte":
-			var err error
-
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("instructionsMin_gte"))
-			it.InstructionsMinGte, err = ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-		case "instructionsMax_gte":
-			var err error
-
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("instructionsMax_gte"))
-			it.InstructionsMaxGte, err = ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-		case "instructions_lte":
-			var err error
-
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("instructions_lte"))
-			it.InstructionsLte, err = ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-		case "instructionsMin_lte":
-			var err error
-
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("instructionsMin_lte"))
-			it.InstructionsMinLte, err = ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-		case "instructionsMax_lte":
-			var err error
-
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("instructionsMax_lte"))
-			it.InstructionsMaxLte, err = ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-		case "instructions_in":
-			var err error
-
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("instructions_in"))
-			it.InstructionsIn, err = ec.unmarshalOString2ᚕstringᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-		case "instructionsMin_in":
-			var err error
-
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("instructionsMin_in"))
-			it.InstructionsMinIn, err = ec.unmarshalOString2ᚕstringᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-		case "instructionsMax_in":
-			var err error
-
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("instructionsMax_in"))
-			it.InstructionsMaxIn, err = ec.unmarshalOString2ᚕstringᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-		case "instructions_like":
-			var err error
-
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("instructions_like"))
-			it.InstructionsLike, err = ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-		case "instructionsMin_like":
-			var err error
-
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("instructionsMin_like"))
-			it.InstructionsMinLike, err = ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-		case "instructionsMax_like":
-			var err error
-
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("instructionsMax_like"))
-			it.InstructionsMaxLike, err = ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-		case "instructions_prefix":
-			var err error
-
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("instructions_prefix"))
-			it.InstructionsPrefix, err = ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-		case "instructionsMin_prefix":
-			var err error
-
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("instructionsMin_prefix"))
-			it.InstructionsMinPrefix, err = ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-		case "instructionsMax_prefix":
-			var err error
-
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("instructionsMax_prefix"))
-			it.InstructionsMaxPrefix, err = ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-		case "instructions_suffix":
-			var err error
-
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("instructions_suffix"))
-			it.InstructionsSuffix, err = ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-		case "instructionsMin_suffix":
-			var err error
-
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("instructionsMin_suffix"))
-			it.InstructionsMinSuffix, err = ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-		case "instructionsMax_suffix":
-			var err error
-
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("instructionsMax_suffix"))
-			it.InstructionsMaxSuffix, err = ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-		case "instructions_null":
-			var err error
-
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("instructions_null"))
-			it.InstructionsNull, err = ec.unmarshalOBoolean2ᚖbool(ctx, v)
-			if err != nil {
-				return it, err
-			}
 		case "senderId":
 			var err error
 
@@ -15885,6 +15784,182 @@ func (ec *executionContext) unmarshalInputDeliveryFilterType(ctx context.Context
 
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deliverId_null"))
 			it.DeliverIDNull, err = ec.unmarshalOBoolean2ᚖbool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "vehicleTypeId":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("vehicleTypeId"))
+			it.VehicleTypeID, err = ec.unmarshalOID2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "vehicleTypeIdMin":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("vehicleTypeIdMin"))
+			it.VehicleTypeIDMin, err = ec.unmarshalOID2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "vehicleTypeIdMax":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("vehicleTypeIdMax"))
+			it.VehicleTypeIDMax, err = ec.unmarshalOID2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "vehicleTypeId_ne":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("vehicleTypeId_ne"))
+			it.VehicleTypeIDNe, err = ec.unmarshalOID2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "vehicleTypeIdMin_ne":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("vehicleTypeIdMin_ne"))
+			it.VehicleTypeIDMinNe, err = ec.unmarshalOID2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "vehicleTypeIdMax_ne":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("vehicleTypeIdMax_ne"))
+			it.VehicleTypeIDMaxNe, err = ec.unmarshalOID2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "vehicleTypeId_gt":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("vehicleTypeId_gt"))
+			it.VehicleTypeIDGt, err = ec.unmarshalOID2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "vehicleTypeIdMin_gt":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("vehicleTypeIdMin_gt"))
+			it.VehicleTypeIDMinGt, err = ec.unmarshalOID2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "vehicleTypeIdMax_gt":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("vehicleTypeIdMax_gt"))
+			it.VehicleTypeIDMaxGt, err = ec.unmarshalOID2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "vehicleTypeId_lt":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("vehicleTypeId_lt"))
+			it.VehicleTypeIDLt, err = ec.unmarshalOID2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "vehicleTypeIdMin_lt":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("vehicleTypeIdMin_lt"))
+			it.VehicleTypeIDMinLt, err = ec.unmarshalOID2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "vehicleTypeIdMax_lt":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("vehicleTypeIdMax_lt"))
+			it.VehicleTypeIDMaxLt, err = ec.unmarshalOID2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "vehicleTypeId_gte":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("vehicleTypeId_gte"))
+			it.VehicleTypeIDGte, err = ec.unmarshalOID2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "vehicleTypeIdMin_gte":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("vehicleTypeIdMin_gte"))
+			it.VehicleTypeIDMinGte, err = ec.unmarshalOID2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "vehicleTypeIdMax_gte":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("vehicleTypeIdMax_gte"))
+			it.VehicleTypeIDMaxGte, err = ec.unmarshalOID2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "vehicleTypeId_lte":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("vehicleTypeId_lte"))
+			it.VehicleTypeIDLte, err = ec.unmarshalOID2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "vehicleTypeIdMin_lte":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("vehicleTypeIdMin_lte"))
+			it.VehicleTypeIDMinLte, err = ec.unmarshalOID2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "vehicleTypeIdMax_lte":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("vehicleTypeIdMax_lte"))
+			it.VehicleTypeIDMaxLte, err = ec.unmarshalOID2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "vehicleTypeId_in":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("vehicleTypeId_in"))
+			it.VehicleTypeIDIn, err = ec.unmarshalOID2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "vehicleTypeIdMin_in":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("vehicleTypeIdMin_in"))
+			it.VehicleTypeIDMinIn, err = ec.unmarshalOID2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "vehicleTypeIdMax_in":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("vehicleTypeIdMax_in"))
+			it.VehicleTypeIDMaxIn, err = ec.unmarshalOID2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "vehicleTypeId_null":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("vehicleTypeId_null"))
+			it.VehicleTypeIDNull, err = ec.unmarshalOBoolean2ᚖbool(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -16968,6 +17043,14 @@ func (ec *executionContext) unmarshalInputDeliveryFilterType(ctx context.Context
 			if err != nil {
 				return it, err
 			}
+		case "vehicleType":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("vehicleType"))
+			it.VehicleType, err = ec.unmarshalOVehicleTypeFilterType2ᚖgithubᚗcomᚋloopcontextᚋdeliverᚑapiᚑgoᚋgenᚐVehicleTypeFilterType(ctx, v)
+			if err != nil {
+				return it, err
+			}
 		case "deliveryType":
 			var err error
 
@@ -17372,30 +17455,6 @@ func (ec *executionContext) unmarshalInputDeliverySortType(ctx context.Context, 
 			if err != nil {
 				return it, err
 			}
-		case "instructions":
-			var err error
-
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("instructions"))
-			it.Instructions, err = ec.unmarshalOObjectSortType2ᚖgithubᚗcomᚋloopcontextᚋdeliverᚑapiᚑgoᚋgenᚐObjectSortType(ctx, v)
-			if err != nil {
-				return it, err
-			}
-		case "instructionsMin":
-			var err error
-
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("instructionsMin"))
-			it.InstructionsMin, err = ec.unmarshalOObjectSortType2ᚖgithubᚗcomᚋloopcontextᚋdeliverᚑapiᚑgoᚋgenᚐObjectSortType(ctx, v)
-			if err != nil {
-				return it, err
-			}
-		case "instructionsMax":
-			var err error
-
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("instructionsMax"))
-			it.InstructionsMax, err = ec.unmarshalOObjectSortType2ᚖgithubᚗcomᚋloopcontextᚋdeliverᚑapiᚑgoᚋgenᚐObjectSortType(ctx, v)
-			if err != nil {
-				return it, err
-			}
 		case "senderId":
 			var err error
 
@@ -17465,6 +17524,30 @@ func (ec *executionContext) unmarshalInputDeliverySortType(ctx context.Context, 
 
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deliverIdMax"))
 			it.DeliverIDMax, err = ec.unmarshalOObjectSortType2ᚖgithubᚗcomᚋloopcontextᚋdeliverᚑapiᚑgoᚋgenᚐObjectSortType(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "vehicleTypeId":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("vehicleTypeId"))
+			it.VehicleTypeID, err = ec.unmarshalOObjectSortType2ᚖgithubᚗcomᚋloopcontextᚋdeliverᚑapiᚑgoᚋgenᚐObjectSortType(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "vehicleTypeIdMin":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("vehicleTypeIdMin"))
+			it.VehicleTypeIDMin, err = ec.unmarshalOObjectSortType2ᚖgithubᚗcomᚋloopcontextᚋdeliverᚑapiᚑgoᚋgenᚐObjectSortType(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "vehicleTypeIdMax":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("vehicleTypeIdMax"))
+			it.VehicleTypeIDMax, err = ec.unmarshalOObjectSortType2ᚖgithubᚗcomᚋloopcontextᚋdeliverᚑapiᚑgoᚋgenᚐObjectSortType(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -17633,6 +17716,14 @@ func (ec *executionContext) unmarshalInputDeliverySortType(ctx context.Context, 
 
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deliver"))
 			it.Deliver, err = ec.unmarshalOPersonSortType2ᚖgithubᚗcomᚋloopcontextᚋdeliverᚑapiᚑgoᚋgenᚐPersonSortType(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "vehicleType":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("vehicleType"))
+			it.VehicleType, err = ec.unmarshalOVehicleTypeSortType2ᚖgithubᚗcomᚋloopcontextᚋdeliverᚑapiᚑgoᚋgenᚐVehicleTypeSortType(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -24504,6 +24595,182 @@ func (ec *executionContext) unmarshalInputVehicleTypeFilterType(ctx context.Cont
 			if err != nil {
 				return it, err
 			}
+		case "deliveryId":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deliveryId"))
+			it.DeliveryID, err = ec.unmarshalOID2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "deliveryIdMin":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deliveryIdMin"))
+			it.DeliveryIDMin, err = ec.unmarshalOID2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "deliveryIdMax":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deliveryIdMax"))
+			it.DeliveryIDMax, err = ec.unmarshalOID2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "deliveryId_ne":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deliveryId_ne"))
+			it.DeliveryIDNe, err = ec.unmarshalOID2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "deliveryIdMin_ne":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deliveryIdMin_ne"))
+			it.DeliveryIDMinNe, err = ec.unmarshalOID2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "deliveryIdMax_ne":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deliveryIdMax_ne"))
+			it.DeliveryIDMaxNe, err = ec.unmarshalOID2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "deliveryId_gt":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deliveryId_gt"))
+			it.DeliveryIDGt, err = ec.unmarshalOID2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "deliveryIdMin_gt":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deliveryIdMin_gt"))
+			it.DeliveryIDMinGt, err = ec.unmarshalOID2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "deliveryIdMax_gt":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deliveryIdMax_gt"))
+			it.DeliveryIDMaxGt, err = ec.unmarshalOID2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "deliveryId_lt":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deliveryId_lt"))
+			it.DeliveryIDLt, err = ec.unmarshalOID2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "deliveryIdMin_lt":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deliveryIdMin_lt"))
+			it.DeliveryIDMinLt, err = ec.unmarshalOID2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "deliveryIdMax_lt":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deliveryIdMax_lt"))
+			it.DeliveryIDMaxLt, err = ec.unmarshalOID2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "deliveryId_gte":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deliveryId_gte"))
+			it.DeliveryIDGte, err = ec.unmarshalOID2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "deliveryIdMin_gte":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deliveryIdMin_gte"))
+			it.DeliveryIDMinGte, err = ec.unmarshalOID2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "deliveryIdMax_gte":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deliveryIdMax_gte"))
+			it.DeliveryIDMaxGte, err = ec.unmarshalOID2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "deliveryId_lte":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deliveryId_lte"))
+			it.DeliveryIDLte, err = ec.unmarshalOID2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "deliveryIdMin_lte":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deliveryIdMin_lte"))
+			it.DeliveryIDMinLte, err = ec.unmarshalOID2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "deliveryIdMax_lte":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deliveryIdMax_lte"))
+			it.DeliveryIDMaxLte, err = ec.unmarshalOID2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "deliveryId_in":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deliveryId_in"))
+			it.DeliveryIDIn, err = ec.unmarshalOID2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "deliveryIdMin_in":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deliveryIdMin_in"))
+			it.DeliveryIDMinIn, err = ec.unmarshalOID2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "deliveryIdMax_in":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deliveryIdMax_in"))
+			it.DeliveryIDMaxIn, err = ec.unmarshalOID2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "deliveryId_null":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deliveryId_null"))
+			it.DeliveryIDNull, err = ec.unmarshalOBoolean2ᚖbool(ctx, v)
+			if err != nil {
+				return it, err
+			}
 		case "updatedAt":
 			var err error
 
@@ -25208,6 +25475,14 @@ func (ec *executionContext) unmarshalInputVehicleTypeFilterType(ctx context.Cont
 			if err != nil {
 				return it, err
 			}
+		case "delivery":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("delivery"))
+			it.Delivery, err = ec.unmarshalODeliveryFilterType2ᚖgithubᚗcomᚋloopcontextᚋdeliverᚑapiᚑgoᚋgenᚐDeliveryFilterType(ctx, v)
+			if err != nil {
+				return it, err
+			}
 		}
 	}
 
@@ -25289,6 +25564,30 @@ func (ec *executionContext) unmarshalInputVehicleTypeSortType(ctx context.Contex
 
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("descriptionMax"))
 			it.DescriptionMax, err = ec.unmarshalOObjectSortType2ᚖgithubᚗcomᚋloopcontextᚋdeliverᚑapiᚑgoᚋgenᚐObjectSortType(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "deliveryId":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deliveryId"))
+			it.DeliveryID, err = ec.unmarshalOObjectSortType2ᚖgithubᚗcomᚋloopcontextᚋdeliverᚑapiᚑgoᚋgenᚐObjectSortType(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "deliveryIdMin":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deliveryIdMin"))
+			it.DeliveryIDMin, err = ec.unmarshalOObjectSortType2ᚖgithubᚗcomᚋloopcontextᚋdeliverᚑapiᚑgoᚋgenᚐObjectSortType(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "deliveryIdMax":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deliveryIdMax"))
+			it.DeliveryIDMax, err = ec.unmarshalOObjectSortType2ᚖgithubᚗcomᚋloopcontextᚋdeliverᚑapiᚑgoᚋgenᚐObjectSortType(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -25388,6 +25687,14 @@ func (ec *executionContext) unmarshalInputVehicleTypeSortType(ctx context.Contex
 			if err != nil {
 				return it, err
 			}
+		case "delivery":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("delivery"))
+			it.Delivery, err = ec.unmarshalODeliverySortType2ᚖgithubᚗcomᚋloopcontextᚋdeliverᚑapiᚑgoᚋgenᚐDeliverySortType(ctx, v)
+			if err != nil {
+				return it, err
+			}
 		}
 	}
 
@@ -25427,9 +25734,6 @@ func (ec *executionContext) _Delivery(ctx context.Context, sel ast.SelectionSet,
 					}
 				}()
 				res = ec._Delivery_sender(ctx, field, obj)
-				if res == graphql.Null {
-					atomic.AddUint32(&invalids, 1)
-				}
 				return res
 			})
 		case "receiver":
@@ -25441,9 +25745,6 @@ func (ec *executionContext) _Delivery(ctx context.Context, sel ast.SelectionSet,
 					}
 				}()
 				res = ec._Delivery_receiver(ctx, field, obj)
-				if res == graphql.Null {
-					atomic.AddUint32(&invalids, 1)
-				}
 				return res
 			})
 		case "deliver":
@@ -25455,9 +25756,6 @@ func (ec *executionContext) _Delivery(ctx context.Context, sel ast.SelectionSet,
 					}
 				}()
 				res = ec._Delivery_deliver(ctx, field, obj)
-				if res == graphql.Null {
-					atomic.AddUint32(&invalids, 1)
-				}
 				return res
 			})
 		case "vehicleType":
@@ -25469,14 +25767,11 @@ func (ec *executionContext) _Delivery(ctx context.Context, sel ast.SelectionSet,
 					}
 				}()
 				res = ec._Delivery_vehicleType(ctx, field, obj)
+				if res == graphql.Null {
+					atomic.AddUint32(&invalids, 1)
+				}
 				return res
 			})
-		case "paymentId":
-			out.Values[i] = ec._Delivery_paymentId(ctx, field, obj)
-		case "paymentTotal":
-			out.Values[i] = ec._Delivery_paymentTotal(ctx, field, obj)
-		case "paymentOnDeliver":
-			out.Values[i] = ec._Delivery_paymentOnDeliver(ctx, field, obj)
 		case "deliveryType":
 			field := field
 			out.Concurrently(i, func() (res graphql.Marshaler) {
@@ -25500,8 +25795,17 @@ func (ec *executionContext) _Delivery(ctx context.Context, sel ast.SelectionSet,
 					}
 				}()
 				res = ec._Delivery_deliveryChannel(ctx, field, obj)
+				if res == graphql.Null {
+					atomic.AddUint32(&invalids, 1)
+				}
 				return res
 			})
+		case "paymentId":
+			out.Values[i] = ec._Delivery_paymentId(ctx, field, obj)
+		case "paymentTotal":
+			out.Values[i] = ec._Delivery_paymentTotal(ctx, field, obj)
+		case "paymentOnDeliver":
+			out.Values[i] = ec._Delivery_paymentOnDeliver(ctx, field, obj)
 		case "collectDateTime":
 			out.Values[i] = ec._Delivery_collectDateTime(ctx, field, obj)
 		case "collectAddress":
@@ -25525,13 +25829,24 @@ func (ec *executionContext) _Delivery(ctx context.Context, sel ast.SelectionSet,
 		case "status":
 			out.Values[i] = ec._Delivery_status(ctx, field, obj)
 		case "instructions":
-			out.Values[i] = ec._Delivery_instructions(ctx, field, obj)
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Delivery_instructions(ctx, field, obj)
+				return res
+			})
 		case "senderId":
 			out.Values[i] = ec._Delivery_senderId(ctx, field, obj)
 		case "receiverId":
 			out.Values[i] = ec._Delivery_receiverId(ctx, field, obj)
 		case "deliverId":
 			out.Values[i] = ec._Delivery_deliverId(ctx, field, obj)
+		case "vehicleTypeId":
+			out.Values[i] = ec._Delivery_vehicleTypeId(ctx, field, obj)
 		case "deliveryTypeId":
 			out.Values[i] = ec._Delivery_deliveryTypeId(ctx, field, obj)
 		case "deliveryChannelId":
@@ -26368,18 +26683,31 @@ func (ec *executionContext) _VehicleType(ctx context.Context, sel ast.SelectionS
 		case "id":
 			out.Values[i] = ec._VehicleType_id(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				invalids++
+				atomic.AddUint32(&invalids, 1)
 			}
 		case "name":
 			out.Values[i] = ec._VehicleType_name(ctx, field, obj)
 		case "description":
 			out.Values[i] = ec._VehicleType_description(ctx, field, obj)
+		case "delivery":
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._VehicleType_delivery(ctx, field, obj)
+				return res
+			})
+		case "deliveryId":
+			out.Values[i] = ec._VehicleType_deliveryId(ctx, field, obj)
 		case "updatedAt":
 			out.Values[i] = ec._VehicleType_updatedAt(ctx, field, obj)
 		case "createdAt":
 			out.Values[i] = ec._VehicleType_createdAt(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				invalids++
+				atomic.AddUint32(&invalids, 1)
 			}
 		case "updatedBy":
 			out.Values[i] = ec._VehicleType_updatedBy(ctx, field, obj)
@@ -28168,6 +28496,14 @@ func (ec *executionContext) unmarshalOVehicleTypeSortType2ᚕᚖgithubᚗcomᚋl
 		}
 	}
 	return res, nil
+}
+
+func (ec *executionContext) unmarshalOVehicleTypeSortType2ᚖgithubᚗcomᚋloopcontextᚋdeliverᚑapiᚑgoᚋgenᚐVehicleTypeSortType(ctx context.Context, v interface{}) (*VehicleTypeSortType, error) {
+	if v == nil {
+		return nil, nil
+	}
+	res, err := ec.unmarshalInputVehicleTypeSortType(ctx, v)
+	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
 func (ec *executionContext) marshalO__EnumValue2ᚕgithubᚗcomᚋ99designsᚋgqlgenᚋgraphqlᚋintrospectionᚐEnumValueᚄ(ctx context.Context, sel ast.SelectionSet, v []introspection.EnumValue) graphql.Marshaler {

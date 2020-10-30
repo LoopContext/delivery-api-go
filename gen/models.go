@@ -31,10 +31,10 @@ type Delivery struct {
 	Completed         *bool      `json:"completed" gorm:"column:completed"`
 	SmsToken          *string    `json:"smsToken" gorm:"column:smsToken"`
 	Status            *string    `json:"status" gorm:"column:status;index:statusidx"`
-	Instructions      *string    `json:"instructions" gorm:"column:instructions;type:text"`
 	SenderID          *string    `json:"senderId" gorm:"column:senderId"`
 	ReceiverID        *string    `json:"receiverId" gorm:"column:receiverId"`
 	DeliverID         *string    `json:"deliverId" gorm:"column:deliverId"`
+	VehicleTypeID     *string    `json:"vehicleTypeId" gorm:"column:vehicleTypeId"`
 	DeliveryTypeID    *string    `json:"deliveryTypeId" gorm:"column:deliveryTypeId"`
 	DeliveryChannelID *string    `json:"deliveryChannelId" gorm:"column:deliveryChannelId"`
 	UpdatedAt         *time.Time `json:"updatedAt" gorm:"column:updatedAt"`
@@ -50,6 +50,9 @@ type Delivery struct {
 
 	Deliver          *Person `json:"deliver"`
 	DeliverPreloaded bool    `gorm:"-"`
+
+	VehicleType          *VehicleType `json:"vehicleType"`
+	VehicleTypePreloaded bool         `gorm:"-"`
 
 	DeliveryType *DeliveryType `json:"deliveryType"`
 
@@ -76,10 +79,10 @@ type DeliveryChanges struct {
 	Completed         *bool
 	SmsToken          *string
 	Status            *string
-	Instructions      *string
 	SenderID          *string
 	ReceiverID        *string
 	DeliverID         *string
+	VehicleTypeID     *string
 	DeliveryTypeID    *string
 	DeliveryChannelID *string
 	UpdatedAt         *time.Time
@@ -98,13 +101,13 @@ type Person struct {
 	ID          string     `json:"id" gorm:"column:id;primary_key"`
 	Deliver     *bool      `json:"deliver" gorm:"column:deliver;default:false"`
 	Email       string     `json:"email" gorm:"column:email;unique"`
-	Phone       *string    `json:"phone" gorm:"column:phone;type:varchar(36)"`
-	DocumentNo  *string    `json:"documentNo" gorm:"column:documentNo;type:varchar(255)"`
-	AvatarURL   *string    `json:"avatarURL" gorm:"column:avatarURL;type:text"`
-	DisplayName *string    `json:"displayName" gorm:"column:displayName;type:varchar(255)"`
-	FirstName   *string    `json:"firstName" gorm:"column:firstName;type:varchar(255)"`
-	LastName    *string    `json:"lastName" gorm:"column:lastName;type:varchar(255)"`
-	NickName    *string    `json:"nickName" gorm:"column:nickName;type:varchar(255)"`
+	Phone       *string    `json:"phone" gorm:"column:phone"`
+	DocumentNo  *string    `json:"documentNo" gorm:"column:documentNo"`
+	AvatarURL   *string    `json:"avatarURL" gorm:"column:avatarURL"`
+	DisplayName *string    `json:"displayName" gorm:"column:displayName"`
+	FirstName   *string    `json:"firstName" gorm:"column:firstName"`
+	LastName    *string    `json:"lastName" gorm:"column:lastName"`
+	NickName    *string    `json:"nickName" gorm:"column:nickName"`
 	Description *string    `json:"description" gorm:"column:description"`
 	Location    *string    `json:"location" gorm:"column:location"`
 	UserID      *string    `json:"userId" gorm:"column:userId;index:useridx"`
@@ -157,7 +160,7 @@ type DeliveryTypeResultType struct {
 type DeliveryType struct {
 	ID          string     `json:"id" gorm:"column:id;primary_key"`
 	Name        *string    `json:"name" gorm:"column:name"`
-	Description *string    `json:"description" gorm:"column:description;type:text"`
+	Description *string    `json:"description" gorm:"column:description"`
 	DeliveryID  *string    `json:"deliveryId" gorm:"column:deliveryId"`
 	UpdatedAt   *time.Time `json:"updatedAt" gorm:"column:updatedAt"`
 	CreatedAt   time.Time  `json:"createdAt" gorm:"column:createdAt"`
@@ -191,7 +194,7 @@ type DeliveryChannelResultType struct {
 type DeliveryChannel struct {
 	ID          string     `json:"id" gorm:"column:id;primary_key"`
 	Name        *string    `json:"name" gorm:"column:name"`
-	Description *string    `json:"description" gorm:"column:description;type:text"`
+	Description *string    `json:"description" gorm:"column:description"`
 	DeliveryID  *string    `json:"deliveryId" gorm:"column:deliveryId"`
 	UpdatedAt   *time.Time `json:"updatedAt" gorm:"column:updatedAt"`
 	CreatedAt   time.Time  `json:"createdAt" gorm:"column:createdAt"`
@@ -225,11 +228,14 @@ type VehicleTypeResultType struct {
 type VehicleType struct {
 	ID          string     `json:"id" gorm:"column:id;primary_key"`
 	Name        *string    `json:"name" gorm:"column:name"`
-	Description *string    `json:"description" gorm:"column:description;type:text"`
+	Description *string    `json:"description" gorm:"column:description"`
+	DeliveryID  *string    `json:"deliveryId" gorm:"column:deliveryId"`
 	UpdatedAt   *time.Time `json:"updatedAt" gorm:"column:updatedAt"`
 	CreatedAt   time.Time  `json:"createdAt" gorm:"column:createdAt"`
 	UpdatedBy   *string    `json:"updatedBy" gorm:"column:updatedBy"`
 	CreatedBy   *string    `json:"createdBy" gorm:"column:createdBy"`
+
+	Delivery *Delivery `json:"delivery"`
 }
 
 // IsEntity ...
@@ -240,6 +246,7 @@ type VehicleTypeChanges struct {
 	ID          string
 	Name        *string
 	Description *string
+	DeliveryID  *string
 	UpdatedAt   *time.Time
 	CreatedAt   time.Time
 	UpdatedBy   *string

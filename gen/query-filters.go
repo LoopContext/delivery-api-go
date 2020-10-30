@@ -132,14 +132,6 @@ func (qf *DeliveryQueryFilter) applyQueryWithFields(dialect gorm.Dialect, fields
 		*values = append(*values, query+"%", "% "+query+"%")
 	}
 
-	if _, ok := fieldsMap["instructions"]; ok {
-
-		column := dialect.Quote(alias) + "." + dialect.Quote("instructions")
-
-		*ors = append(*ors, fmt.Sprintf("%[1]s LIKE ? OR %[1]s LIKE ?", column))
-		*values = append(*values, query+"%", "% "+query+"%")
-	}
-
 	if fs, ok := fieldsMap["sender"]; ok {
 		_fields := []*ast.Field{}
 		_alias := alias + "_sender"
@@ -191,6 +183,25 @@ func (qf *DeliveryQueryFilter) applyQueryWithFields(dialect gorm.Dialect, fields
 			}
 		}
 		q := PersonQueryFilter{qf.Query}
+		err := q.applyQueryWithFields(dialect, _fields, query, _alias, ors, values, joins)
+		if err != nil {
+			return err
+		}
+	}
+
+	if fs, ok := fieldsMap["vehicleType"]; ok {
+		_fields := []*ast.Field{}
+		_alias := alias + "_vehicleType"
+		*joins = append(*joins, "LEFT JOIN "+dialect.Quote(TableName("vehicle_types"))+" "+dialect.Quote(_alias)+" ON "+dialect.Quote(_alias)+".id = "+alias+"."+dialect.Quote("vehicleTypeId"))
+
+		for _, f := range fs {
+			for _, s := range f.SelectionSet {
+				if f, ok := s.(*ast.Field); ok {
+					_fields = append(_fields, f)
+				}
+			}
+		}
+		q := VehicleTypeQueryFilter{qf.Query}
 		err := q.applyQueryWithFields(dialect, _fields, query, _alias, ors, values, joins)
 		if err != nil {
 			return err
@@ -648,6 +659,25 @@ func (qf *VehicleTypeQueryFilter) applyQueryWithFields(dialect gorm.Dialect, fie
 
 		*ors = append(*ors, fmt.Sprintf("%[1]s LIKE ? OR %[1]s LIKE ?", column))
 		*values = append(*values, query+"%", "% "+query+"%")
+	}
+
+	if fs, ok := fieldsMap["delivery"]; ok {
+		_fields := []*ast.Field{}
+		_alias := alias + "_delivery"
+		*joins = append(*joins, "LEFT JOIN "+dialect.Quote(TableName("deliveries"))+" "+dialect.Quote(_alias)+" ON "+dialect.Quote(_alias)+".id = "+alias+"."+dialect.Quote("deliveryId"))
+
+		for _, f := range fs {
+			for _, s := range f.SelectionSet {
+				if f, ok := s.(*ast.Field); ok {
+					_fields = append(_fields, f)
+				}
+			}
+		}
+		q := DeliveryQueryFilter{qf.Query}
+		err := q.applyQueryWithFields(dialect, _fields, query, _alias, ors, values, joins)
+		if err != nil {
+			return err
+		}
 	}
 
 	return nil

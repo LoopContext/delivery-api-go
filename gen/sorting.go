@@ -250,21 +250,6 @@ func (s DeliverySortType) ApplyWithAlias(ctx context.Context, dialect gorm.Diale
 		*sorts = append(*sorts, sort)
 	}
 
-	if s.Instructions != nil {
-		sort := SortInfo{Field: aliasPrefix + dialect.Quote("instructions"), Direction: s.Instructions.String()}
-		*sorts = append(*sorts, sort)
-	}
-
-	if s.InstructionsMin != nil {
-		sort := SortInfo{Field: "Min(" + aliasPrefix + dialect.Quote("instructions") + ")", Direction: s.InstructionsMin.String(), IsAggregation: true}
-		*sorts = append(*sorts, sort)
-	}
-
-	if s.InstructionsMax != nil {
-		sort := SortInfo{Field: "Max(" + aliasPrefix + dialect.Quote("instructions") + ")", Direction: s.InstructionsMax.String(), IsAggregation: true}
-		*sorts = append(*sorts, sort)
-	}
-
 	if s.SenderID != nil {
 		sort := SortInfo{Field: aliasPrefix + dialect.Quote("senderId"), Direction: s.SenderID.String()}
 		*sorts = append(*sorts, sort)
@@ -307,6 +292,21 @@ func (s DeliverySortType) ApplyWithAlias(ctx context.Context, dialect gorm.Diale
 
 	if s.DeliverIDMax != nil {
 		sort := SortInfo{Field: "Max(" + aliasPrefix + dialect.Quote("deliverId") + ")", Direction: s.DeliverIDMax.String(), IsAggregation: true}
+		*sorts = append(*sorts, sort)
+	}
+
+	if s.VehicleTypeID != nil {
+		sort := SortInfo{Field: aliasPrefix + dialect.Quote("vehicleTypeId"), Direction: s.VehicleTypeID.String()}
+		*sorts = append(*sorts, sort)
+	}
+
+	if s.VehicleTypeIDMin != nil {
+		sort := SortInfo{Field: "Min(" + aliasPrefix + dialect.Quote("vehicleTypeId") + ")", Direction: s.VehicleTypeIDMin.String(), IsAggregation: true}
+		*sorts = append(*sorts, sort)
+	}
+
+	if s.VehicleTypeIDMax != nil {
+		sort := SortInfo{Field: "Max(" + aliasPrefix + dialect.Quote("vehicleTypeId") + ")", Direction: s.VehicleTypeIDMax.String(), IsAggregation: true}
 		*sorts = append(*sorts, sort)
 	}
 
@@ -422,6 +422,15 @@ func (s DeliverySortType) ApplyWithAlias(ctx context.Context, dialect gorm.Diale
 		_alias := alias + "_deliver"
 		*joins = append(*joins, "LEFT JOIN "+dialect.Quote(TableName("people"))+" "+dialect.Quote(_alias)+" ON "+dialect.Quote(_alias)+".id = "+alias+"."+dialect.Quote("deliverId"))
 		err := s.Deliver.ApplyWithAlias(ctx, dialect, _alias, sorts, joins)
+		if err != nil {
+			return err
+		}
+	}
+
+	if s.VehicleType != nil {
+		_alias := alias + "_vehicleType"
+		*joins = append(*joins, "LEFT JOIN "+dialect.Quote(TableName("vehicle_types"))+" "+dialect.Quote(_alias)+" ON "+dialect.Quote(_alias)+".id = "+alias+"."+dialect.Quote("vehicleTypeId"))
+		err := s.VehicleType.ApplyWithAlias(ctx, dialect, _alias, sorts, joins)
 		if err != nil {
 			return err
 		}
@@ -1078,6 +1087,21 @@ func (s VehicleTypeSortType) ApplyWithAlias(ctx context.Context, dialect gorm.Di
 		*sorts = append(*sorts, sort)
 	}
 
+	if s.DeliveryID != nil {
+		sort := SortInfo{Field: aliasPrefix + dialect.Quote("deliveryId"), Direction: s.DeliveryID.String()}
+		*sorts = append(*sorts, sort)
+	}
+
+	if s.DeliveryIDMin != nil {
+		sort := SortInfo{Field: "Min(" + aliasPrefix + dialect.Quote("deliveryId") + ")", Direction: s.DeliveryIDMin.String(), IsAggregation: true}
+		*sorts = append(*sorts, sort)
+	}
+
+	if s.DeliveryIDMax != nil {
+		sort := SortInfo{Field: "Max(" + aliasPrefix + dialect.Quote("deliveryId") + ")", Direction: s.DeliveryIDMax.String(), IsAggregation: true}
+		*sorts = append(*sorts, sort)
+	}
+
 	if s.UpdatedAt != nil {
 		sort := SortInfo{Field: aliasPrefix + dialect.Quote("updatedAt"), Direction: s.UpdatedAt.String()}
 		*sorts = append(*sorts, sort)
@@ -1136,6 +1160,15 @@ func (s VehicleTypeSortType) ApplyWithAlias(ctx context.Context, dialect gorm.Di
 	if s.CreatedByMax != nil {
 		sort := SortInfo{Field: "Max(" + aliasPrefix + dialect.Quote("createdBy") + ")", Direction: s.CreatedByMax.String(), IsAggregation: true}
 		*sorts = append(*sorts, sort)
+	}
+
+	if s.Delivery != nil {
+		_alias := alias + "_delivery"
+		*joins = append(*joins, "LEFT JOIN "+dialect.Quote(TableName("deliveries"))+" "+dialect.Quote(_alias)+" ON "+dialect.Quote(_alias)+".id = "+alias+"."+dialect.Quote("deliveryId"))
+		err := s.Delivery.ApplyWithAlias(ctx, dialect, _alias, sorts, joins)
+		if err != nil {
+			return err
+		}
 	}
 
 	return nil

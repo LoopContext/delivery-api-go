@@ -647,37 +647,6 @@ type DeliveryFilterType struct {
 	StatusMinSuffix           *string                    `json:"statusMin_suffix"`
 	StatusMaxSuffix           *string                    `json:"statusMax_suffix"`
 	StatusNull                *bool                      `json:"status_null"`
-	Instructions              *string                    `json:"instructions"`
-	InstructionsMin           *string                    `json:"instructionsMin"`
-	InstructionsMax           *string                    `json:"instructionsMax"`
-	InstructionsNe            *string                    `json:"instructions_ne"`
-	InstructionsMinNe         *string                    `json:"instructionsMin_ne"`
-	InstructionsMaxNe         *string                    `json:"instructionsMax_ne"`
-	InstructionsGt            *string                    `json:"instructions_gt"`
-	InstructionsMinGt         *string                    `json:"instructionsMin_gt"`
-	InstructionsMaxGt         *string                    `json:"instructionsMax_gt"`
-	InstructionsLt            *string                    `json:"instructions_lt"`
-	InstructionsMinLt         *string                    `json:"instructionsMin_lt"`
-	InstructionsMaxLt         *string                    `json:"instructionsMax_lt"`
-	InstructionsGte           *string                    `json:"instructions_gte"`
-	InstructionsMinGte        *string                    `json:"instructionsMin_gte"`
-	InstructionsMaxGte        *string                    `json:"instructionsMax_gte"`
-	InstructionsLte           *string                    `json:"instructions_lte"`
-	InstructionsMinLte        *string                    `json:"instructionsMin_lte"`
-	InstructionsMaxLte        *string                    `json:"instructionsMax_lte"`
-	InstructionsIn            []string                   `json:"instructions_in"`
-	InstructionsMinIn         []string                   `json:"instructionsMin_in"`
-	InstructionsMaxIn         []string                   `json:"instructionsMax_in"`
-	InstructionsLike          *string                    `json:"instructions_like"`
-	InstructionsMinLike       *string                    `json:"instructionsMin_like"`
-	InstructionsMaxLike       *string                    `json:"instructionsMax_like"`
-	InstructionsPrefix        *string                    `json:"instructions_prefix"`
-	InstructionsMinPrefix     *string                    `json:"instructionsMin_prefix"`
-	InstructionsMaxPrefix     *string                    `json:"instructionsMax_prefix"`
-	InstructionsSuffix        *string                    `json:"instructions_suffix"`
-	InstructionsMinSuffix     *string                    `json:"instructionsMin_suffix"`
-	InstructionsMaxSuffix     *string                    `json:"instructionsMax_suffix"`
-	InstructionsNull          *bool                      `json:"instructions_null"`
 	SenderID                  *string                    `json:"senderId"`
 	SenderIDMin               *string                    `json:"senderIdMin"`
 	SenderIDMax               *string                    `json:"senderIdMax"`
@@ -744,6 +713,28 @@ type DeliveryFilterType struct {
 	DeliverIDMinIn            []string                   `json:"deliverIdMin_in"`
 	DeliverIDMaxIn            []string                   `json:"deliverIdMax_in"`
 	DeliverIDNull             *bool                      `json:"deliverId_null"`
+	VehicleTypeID             *string                    `json:"vehicleTypeId"`
+	VehicleTypeIDMin          *string                    `json:"vehicleTypeIdMin"`
+	VehicleTypeIDMax          *string                    `json:"vehicleTypeIdMax"`
+	VehicleTypeIDNe           *string                    `json:"vehicleTypeId_ne"`
+	VehicleTypeIDMinNe        *string                    `json:"vehicleTypeIdMin_ne"`
+	VehicleTypeIDMaxNe        *string                    `json:"vehicleTypeIdMax_ne"`
+	VehicleTypeIDGt           *string                    `json:"vehicleTypeId_gt"`
+	VehicleTypeIDMinGt        *string                    `json:"vehicleTypeIdMin_gt"`
+	VehicleTypeIDMaxGt        *string                    `json:"vehicleTypeIdMax_gt"`
+	VehicleTypeIDLt           *string                    `json:"vehicleTypeId_lt"`
+	VehicleTypeIDMinLt        *string                    `json:"vehicleTypeIdMin_lt"`
+	VehicleTypeIDMaxLt        *string                    `json:"vehicleTypeIdMax_lt"`
+	VehicleTypeIDGte          *string                    `json:"vehicleTypeId_gte"`
+	VehicleTypeIDMinGte       *string                    `json:"vehicleTypeIdMin_gte"`
+	VehicleTypeIDMaxGte       *string                    `json:"vehicleTypeIdMax_gte"`
+	VehicleTypeIDLte          *string                    `json:"vehicleTypeId_lte"`
+	VehicleTypeIDMinLte       *string                    `json:"vehicleTypeIdMin_lte"`
+	VehicleTypeIDMaxLte       *string                    `json:"vehicleTypeIdMax_lte"`
+	VehicleTypeIDIn           []string                   `json:"vehicleTypeId_in"`
+	VehicleTypeIDMinIn        []string                   `json:"vehicleTypeIdMin_in"`
+	VehicleTypeIDMaxIn        []string                   `json:"vehicleTypeIdMax_in"`
+	VehicleTypeIDNull         *bool                      `json:"vehicleTypeId_null"`
 	DeliveryTypeID            *string                    `json:"deliveryTypeId"`
 	DeliveryTypeIDMin         *string                    `json:"deliveryTypeIdMin"`
 	DeliveryTypeIDMax         *string                    `json:"deliveryTypeIdMax"`
@@ -879,6 +870,7 @@ type DeliveryFilterType struct {
 	Sender                    *PersonFilterType          `json:"sender"`
 	Receiver                  *PersonFilterType          `json:"receiver"`
 	Deliver                   *PersonFilterType          `json:"deliver"`
+	VehicleType               *VehicleTypeFilterType     `json:"vehicleType"`
 	DeliveryType              *DeliveryTypeFilterType    `json:"deliveryType"`
 	DeliveryChannel           *DeliveryChannelFilterType `json:"deliveryChannel"`
 }
@@ -931,9 +923,6 @@ type DeliverySortType struct {
 	Status               *ObjectSortType          `json:"status"`
 	StatusMin            *ObjectSortType          `json:"statusMin"`
 	StatusMax            *ObjectSortType          `json:"statusMax"`
-	Instructions         *ObjectSortType          `json:"instructions"`
-	InstructionsMin      *ObjectSortType          `json:"instructionsMin"`
-	InstructionsMax      *ObjectSortType          `json:"instructionsMax"`
 	SenderID             *ObjectSortType          `json:"senderId"`
 	SenderIDMin          *ObjectSortType          `json:"senderIdMin"`
 	SenderIDMax          *ObjectSortType          `json:"senderIdMax"`
@@ -943,6 +932,9 @@ type DeliverySortType struct {
 	DeliverID            *ObjectSortType          `json:"deliverId"`
 	DeliverIDMin         *ObjectSortType          `json:"deliverIdMin"`
 	DeliverIDMax         *ObjectSortType          `json:"deliverIdMax"`
+	VehicleTypeID        *ObjectSortType          `json:"vehicleTypeId"`
+	VehicleTypeIDMin     *ObjectSortType          `json:"vehicleTypeIdMin"`
+	VehicleTypeIDMax     *ObjectSortType          `json:"vehicleTypeIdMax"`
 	DeliveryTypeID       *ObjectSortType          `json:"deliveryTypeId"`
 	DeliveryTypeIDMin    *ObjectSortType          `json:"deliveryTypeIdMin"`
 	DeliveryTypeIDMax    *ObjectSortType          `json:"deliveryTypeIdMax"`
@@ -964,6 +956,7 @@ type DeliverySortType struct {
 	Sender               *PersonSortType          `json:"sender"`
 	Receiver             *PersonSortType          `json:"receiver"`
 	Deliver              *PersonSortType          `json:"deliver"`
+	VehicleType          *VehicleTypeSortType     `json:"vehicleType"`
 	DeliveryType         *DeliveryTypeSortType    `json:"deliveryType"`
 	DeliveryChannel      *DeliveryChannelSortType `json:"deliveryChannel"`
 }
@@ -1830,6 +1823,28 @@ type VehicleTypeFilterType struct {
 	DescriptionMinSuffix *string                  `json:"descriptionMin_suffix"`
 	DescriptionMaxSuffix *string                  `json:"descriptionMax_suffix"`
 	DescriptionNull      *bool                    `json:"description_null"`
+	DeliveryID           *string                  `json:"deliveryId"`
+	DeliveryIDMin        *string                  `json:"deliveryIdMin"`
+	DeliveryIDMax        *string                  `json:"deliveryIdMax"`
+	DeliveryIDNe         *string                  `json:"deliveryId_ne"`
+	DeliveryIDMinNe      *string                  `json:"deliveryIdMin_ne"`
+	DeliveryIDMaxNe      *string                  `json:"deliveryIdMax_ne"`
+	DeliveryIDGt         *string                  `json:"deliveryId_gt"`
+	DeliveryIDMinGt      *string                  `json:"deliveryIdMin_gt"`
+	DeliveryIDMaxGt      *string                  `json:"deliveryIdMax_gt"`
+	DeliveryIDLt         *string                  `json:"deliveryId_lt"`
+	DeliveryIDMinLt      *string                  `json:"deliveryIdMin_lt"`
+	DeliveryIDMaxLt      *string                  `json:"deliveryIdMax_lt"`
+	DeliveryIDGte        *string                  `json:"deliveryId_gte"`
+	DeliveryIDMinGte     *string                  `json:"deliveryIdMin_gte"`
+	DeliveryIDMaxGte     *string                  `json:"deliveryIdMax_gte"`
+	DeliveryIDLte        *string                  `json:"deliveryId_lte"`
+	DeliveryIDMinLte     *string                  `json:"deliveryIdMin_lte"`
+	DeliveryIDMaxLte     *string                  `json:"deliveryIdMax_lte"`
+	DeliveryIDIn         []string                 `json:"deliveryId_in"`
+	DeliveryIDMinIn      []string                 `json:"deliveryIdMin_in"`
+	DeliveryIDMaxIn      []string                 `json:"deliveryIdMax_in"`
+	DeliveryIDNull       *bool                    `json:"deliveryId_null"`
 	UpdatedAt            *time.Time               `json:"updatedAt"`
 	UpdatedAtMin         *time.Time               `json:"updatedAtMin"`
 	UpdatedAtMax         *time.Time               `json:"updatedAtMax"`
@@ -1918,30 +1933,35 @@ type VehicleTypeFilterType struct {
 	CreatedByMinIn       []string                 `json:"createdByMin_in"`
 	CreatedByMaxIn       []string                 `json:"createdByMax_in"`
 	CreatedByNull        *bool                    `json:"createdBy_null"`
+	Delivery             *DeliveryFilterType      `json:"delivery"`
 }
 
 type VehicleTypeSortType struct {
-	ID             *ObjectSortType `json:"id"`
-	IDMin          *ObjectSortType `json:"idMin"`
-	IDMax          *ObjectSortType `json:"idMax"`
-	Name           *ObjectSortType `json:"name"`
-	NameMin        *ObjectSortType `json:"nameMin"`
-	NameMax        *ObjectSortType `json:"nameMax"`
-	Description    *ObjectSortType `json:"description"`
-	DescriptionMin *ObjectSortType `json:"descriptionMin"`
-	DescriptionMax *ObjectSortType `json:"descriptionMax"`
-	UpdatedAt      *ObjectSortType `json:"updatedAt"`
-	UpdatedAtMin   *ObjectSortType `json:"updatedAtMin"`
-	UpdatedAtMax   *ObjectSortType `json:"updatedAtMax"`
-	CreatedAt      *ObjectSortType `json:"createdAt"`
-	CreatedAtMin   *ObjectSortType `json:"createdAtMin"`
-	CreatedAtMax   *ObjectSortType `json:"createdAtMax"`
-	UpdatedBy      *ObjectSortType `json:"updatedBy"`
-	UpdatedByMin   *ObjectSortType `json:"updatedByMin"`
-	UpdatedByMax   *ObjectSortType `json:"updatedByMax"`
-	CreatedBy      *ObjectSortType `json:"createdBy"`
-	CreatedByMin   *ObjectSortType `json:"createdByMin"`
-	CreatedByMax   *ObjectSortType `json:"createdByMax"`
+	ID             *ObjectSortType   `json:"id"`
+	IDMin          *ObjectSortType   `json:"idMin"`
+	IDMax          *ObjectSortType   `json:"idMax"`
+	Name           *ObjectSortType   `json:"name"`
+	NameMin        *ObjectSortType   `json:"nameMin"`
+	NameMax        *ObjectSortType   `json:"nameMax"`
+	Description    *ObjectSortType   `json:"description"`
+	DescriptionMin *ObjectSortType   `json:"descriptionMin"`
+	DescriptionMax *ObjectSortType   `json:"descriptionMax"`
+	DeliveryID     *ObjectSortType   `json:"deliveryId"`
+	DeliveryIDMin  *ObjectSortType   `json:"deliveryIdMin"`
+	DeliveryIDMax  *ObjectSortType   `json:"deliveryIdMax"`
+	UpdatedAt      *ObjectSortType   `json:"updatedAt"`
+	UpdatedAtMin   *ObjectSortType   `json:"updatedAtMin"`
+	UpdatedAtMax   *ObjectSortType   `json:"updatedAtMax"`
+	CreatedAt      *ObjectSortType   `json:"createdAt"`
+	CreatedAtMin   *ObjectSortType   `json:"createdAtMin"`
+	CreatedAtMax   *ObjectSortType   `json:"createdAtMax"`
+	UpdatedBy      *ObjectSortType   `json:"updatedBy"`
+	UpdatedByMin   *ObjectSortType   `json:"updatedByMin"`
+	UpdatedByMax   *ObjectSortType   `json:"updatedByMax"`
+	CreatedBy      *ObjectSortType   `json:"createdBy"`
+	CreatedByMin   *ObjectSortType   `json:"createdByMin"`
+	CreatedByMax   *ObjectSortType   `json:"createdByMax"`
+	Delivery       *DeliverySortType `json:"delivery"`
 }
 
 type ObjectSortType string

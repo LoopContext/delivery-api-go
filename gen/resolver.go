@@ -18,13 +18,15 @@ type ResolutionHandlers struct {
 	QueryDelivery       func(ctx context.Context, r *GeneratedResolver, opts QueryDeliveryHandlerOptions) (*Delivery, error)
 	QueryDeliveries     func(ctx context.Context, r *GeneratedResolver, opts QueryDeliveriesHandlerOptions) (*DeliveryResultType, error)
 
-	DeliveryVehicleType func(ctx context.Context, r *GeneratedResolver, obj *Delivery) (res *VehicleType, err error)
+	DeliveryInstructions func(ctx context.Context, r *GeneratedResolver, obj *Delivery) (res *string, err error)
 
 	DeliverySender func(ctx context.Context, r *GeneratedResolver, obj *Delivery) (res *Person, err error)
 
 	DeliveryReceiver func(ctx context.Context, r *GeneratedResolver, obj *Delivery) (res *Person, err error)
 
 	DeliveryDeliver func(ctx context.Context, r *GeneratedResolver, obj *Delivery) (res *Person, err error)
+
+	DeliveryVehicleType func(ctx context.Context, r *GeneratedResolver, obj *Delivery) (res *VehicleType, err error)
 
 	DeliveryDeliveryType func(ctx context.Context, r *GeneratedResolver, obj *Delivery) (res *DeliveryType, err error)
 
@@ -67,6 +69,8 @@ type ResolutionHandlers struct {
 	DeleteAllVehicleTypes func(ctx context.Context, r *GeneratedResolver) (bool, error)
 	QueryVehicleType      func(ctx context.Context, r *GeneratedResolver, opts QueryVehicleTypeHandlerOptions) (*VehicleType, error)
 	QueryVehicleTypes     func(ctx context.Context, r *GeneratedResolver, opts QueryVehicleTypesHandlerOptions) (*VehicleTypeResultType, error)
+
+	VehicleTypeDelivery func(ctx context.Context, r *GeneratedResolver, obj *VehicleType) (res *Delivery, err error)
 }
 
 // DefaultResolutionHandlers ...
@@ -81,13 +85,15 @@ func DefaultResolutionHandlers() ResolutionHandlers {
 		QueryDelivery:       QueryDeliveryHandler,
 		QueryDeliveries:     QueryDeliveriesHandler,
 
-		DeliveryVehicleType: DeliveryVehicleTypeHandler,
+		DeliveryInstructions: DeliveryInstructionsHandler,
 
 		DeliverySender: DeliverySenderHandler,
 
 		DeliveryReceiver: DeliveryReceiverHandler,
 
 		DeliveryDeliver: DeliveryDeliverHandler,
+
+		DeliveryVehicleType: DeliveryVehicleTypeHandler,
 
 		DeliveryDeliveryType: DeliveryDeliveryTypeHandler,
 
@@ -130,6 +136,8 @@ func DefaultResolutionHandlers() ResolutionHandlers {
 		DeleteAllVehicleTypes: DeleteAllVehicleTypesHandler,
 		QueryVehicleType:      QueryVehicleTypeHandler,
 		QueryVehicleTypes:     QueryVehicleTypesHandler,
+
+		VehicleTypeDelivery: VehicleTypeDeliveryHandler,
 	}
 	return handlers
 }

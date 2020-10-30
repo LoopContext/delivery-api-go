@@ -189,12 +189,6 @@ func CreateDeliveryHandler(ctx context.Context, r *GeneratedResolver, input map[
 		event.AddNewValue("status", changes.Status)
 	}
 
-	if _, ok := input["instructions"]; ok && (item.Instructions != changes.Instructions) && (item.Instructions == nil || changes.Instructions == nil || *item.Instructions != *changes.Instructions) {
-		item.Instructions = changes.Instructions
-
-		event.AddNewValue("instructions", changes.Instructions)
-	}
-
 	if _, ok := input["senderId"]; ok && (item.SenderID != changes.SenderID) && (item.SenderID == nil || changes.SenderID == nil || *item.SenderID != *changes.SenderID) {
 		item.SenderID = changes.SenderID
 
@@ -211,6 +205,12 @@ func CreateDeliveryHandler(ctx context.Context, r *GeneratedResolver, input map[
 		item.DeliverID = changes.DeliverID
 
 		event.AddNewValue("deliverId", changes.DeliverID)
+	}
+
+	if _, ok := input["vehicleTypeId"]; ok && (item.VehicleTypeID != changes.VehicleTypeID) && (item.VehicleTypeID == nil || changes.VehicleTypeID == nil || *item.VehicleTypeID != *changes.VehicleTypeID) {
+		item.VehicleTypeID = changes.VehicleTypeID
+
+		event.AddNewValue("vehicleTypeId", changes.VehicleTypeID)
 	}
 
 	if _, ok := input["deliveryTypeId"]; ok && (item.DeliveryTypeID != changes.DeliveryTypeID) && (item.DeliveryTypeID == nil || changes.DeliveryTypeID == nil || *item.DeliveryTypeID != *changes.DeliveryTypeID) {
@@ -365,12 +365,6 @@ func UpdateDeliveryHandler(ctx context.Context, r *GeneratedResolver, id string,
 		item.Status = changes.Status
 	}
 
-	if _, ok := input["instructions"]; ok && (item.Instructions != changes.Instructions) && (item.Instructions == nil || changes.Instructions == nil || *item.Instructions != *changes.Instructions) {
-		event.AddOldValue("instructions", item.Instructions)
-		event.AddNewValue("instructions", changes.Instructions)
-		item.Instructions = changes.Instructions
-	}
-
 	if _, ok := input["senderId"]; ok && (item.SenderID != changes.SenderID) && (item.SenderID == nil || changes.SenderID == nil || *item.SenderID != *changes.SenderID) {
 		event.AddOldValue("senderId", item.SenderID)
 		event.AddNewValue("senderId", changes.SenderID)
@@ -387,6 +381,12 @@ func UpdateDeliveryHandler(ctx context.Context, r *GeneratedResolver, id string,
 		event.AddOldValue("deliverId", item.DeliverID)
 		event.AddNewValue("deliverId", changes.DeliverID)
 		item.DeliverID = changes.DeliverID
+	}
+
+	if _, ok := input["vehicleTypeId"]; ok && (item.VehicleTypeID != changes.VehicleTypeID) && (item.VehicleTypeID == nil || changes.VehicleTypeID == nil || *item.VehicleTypeID != *changes.VehicleTypeID) {
+		event.AddOldValue("vehicleTypeId", item.VehicleTypeID)
+		event.AddNewValue("vehicleTypeId", changes.VehicleTypeID)
+		item.VehicleTypeID = changes.VehicleTypeID
 	}
 
 	if _, ok := input["deliveryTypeId"]; ok && (item.DeliveryTypeID != changes.DeliveryTypeID) && (item.DeliveryTypeID == nil || changes.DeliveryTypeID == nil || *item.DeliveryTypeID != *changes.DeliveryTypeID) {
@@ -1339,6 +1339,12 @@ func CreateVehicleTypeHandler(ctx context.Context, r *GeneratedResolver, input m
 		event.AddNewValue("description", changes.Description)
 	}
 
+	if _, ok := input["deliveryId"]; ok && (item.DeliveryID != changes.DeliveryID) && (item.DeliveryID == nil || changes.DeliveryID == nil || *item.DeliveryID != *changes.DeliveryID) {
+		item.DeliveryID = changes.DeliveryID
+
+		event.AddNewValue("deliveryId", changes.DeliveryID)
+	}
+
 	err = tx.Create(item).Error
 	if err != nil {
 		tx.Rollback()
@@ -1405,6 +1411,12 @@ func UpdateVehicleTypeHandler(ctx context.Context, r *GeneratedResolver, id stri
 		event.AddOldValue("description", item.Description)
 		event.AddNewValue("description", changes.Description)
 		item.Description = changes.Description
+	}
+
+	if _, ok := input["deliveryId"]; ok && (item.DeliveryID != changes.DeliveryID) && (item.DeliveryID == nil || changes.DeliveryID == nil || *item.DeliveryID != *changes.DeliveryID) {
+		event.AddOldValue("deliveryId", item.DeliveryID)
+		event.AddNewValue("deliveryId", changes.DeliveryID)
+		item.DeliveryID = changes.DeliveryID
 	}
 
 	err = tx.Save(item).Error

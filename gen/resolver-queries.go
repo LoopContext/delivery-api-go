@@ -64,6 +64,7 @@ func QueryDeliveryHandler(ctx context.Context, r *GeneratedResolver, opts QueryD
 			"Sender",
 			"Receiver",
 			"Deliver",
+			"VehicleType",
 		},
 	}
 	err := rt.GetItems(ctx, qb, giOpts, &items)
@@ -136,6 +137,7 @@ func (r *GeneratedDeliveryResultTypeResolver) Items(ctx context.Context, obj *De
 			"Sender",
 			"Receiver",
 			"Deliver",
+			"VehicleType",
 		},
 	}
 	err = obj.GetItems(ctx, r.DB.db, otps, &items)
@@ -145,6 +147,7 @@ func (r *GeneratedDeliveryResultTypeResolver) Items(ctx context.Context, obj *De
 		item.SenderPreloaded = true
 		item.ReceiverPreloaded = true
 		item.DeliverPreloaded = true
+		item.VehicleTypePreloaded = true
 	}
 
 	uniqueItems := []*Delivery{}
@@ -167,6 +170,7 @@ func (r *GeneratedDeliveryResultTypeResolver) Count(ctx context.Context, obj *De
 			"Sender",
 			"Receiver",
 			"Deliver",
+			"VehicleType",
 		},
 	}
 	return obj.GetCount(ctx, r.DB.db, opts, &Delivery{})
@@ -175,15 +179,15 @@ func (r *GeneratedDeliveryResultTypeResolver) Count(ctx context.Context, obj *De
 // GeneratedDeliveryResolver struct
 type GeneratedDeliveryResolver struct{ *GeneratedResolver }
 
-// VehicleType ...
-func (r *GeneratedDeliveryResolver) VehicleType(ctx context.Context, obj *Delivery) (res *VehicleType, err error) {
-	return r.Handlers.DeliveryVehicleType(ctx, r.GeneratedResolver, obj)
+// Instructions ...
+func (r *GeneratedDeliveryResolver) Instructions(ctx context.Context, obj *Delivery) (res *string, err error) {
+	return r.Handlers.DeliveryInstructions(ctx, r.GeneratedResolver, obj)
 }
 
-// DeliveryVehicleTypeHandler handler
-func DeliveryVehicleTypeHandler(ctx context.Context, r *GeneratedResolver, obj *Delivery) (res *VehicleType, err error) {
+// DeliveryInstructionsHandler handler
+func DeliveryInstructionsHandler(ctx context.Context, r *GeneratedResolver, obj *Delivery) (res *string, err error) {
 
-	err = fmt.Errorf("Resolver handler for DeliveryVehicleType not implemented")
+	err = fmt.Errorf("Resolver handler for DeliveryInstructions not implemented")
 
 	return
 }
@@ -205,9 +209,6 @@ func DeliverySenderHandler(ctx context.Context, r *GeneratedResolver, obj *Deliv
 			item, _err := loaders["Person"].Load(ctx, dataloader.StringKey(*obj.SenderID))()
 			res, _ = item.(*Person)
 
-			if res == nil {
-				_err = fmt.Errorf("Person with id '%s' not found", *obj.SenderID)
-			}
 			err = _err
 		}
 
@@ -233,9 +234,6 @@ func DeliveryReceiverHandler(ctx context.Context, r *GeneratedResolver, obj *Del
 			item, _err := loaders["Person"].Load(ctx, dataloader.StringKey(*obj.ReceiverID))()
 			res, _ = item.(*Person)
 
-			if res == nil {
-				_err = fmt.Errorf("Person with id '%s' not found", *obj.ReceiverID)
-			}
 			err = _err
 		}
 
@@ -261,8 +259,33 @@ func DeliveryDeliverHandler(ctx context.Context, r *GeneratedResolver, obj *Deli
 			item, _err := loaders["Person"].Load(ctx, dataloader.StringKey(*obj.DeliverID))()
 			res, _ = item.(*Person)
 
+			err = _err
+		}
+
+	}
+
+	return
+}
+
+// VehicleType ...
+func (r *GeneratedDeliveryResolver) VehicleType(ctx context.Context, obj *Delivery) (res *VehicleType, err error) {
+	return r.Handlers.DeliveryVehicleType(ctx, r.GeneratedResolver, obj)
+}
+
+// DeliveryVehicleTypeHandler handler
+func DeliveryVehicleTypeHandler(ctx context.Context, r *GeneratedResolver, obj *Delivery) (res *VehicleType, err error) {
+
+	if obj.VehicleTypePreloaded {
+		res = obj.VehicleType
+	} else {
+
+		loaders := ctx.Value(KeyLoaders).(map[string]*dataloader.Loader)
+		if obj.VehicleTypeID != nil {
+			item, _err := loaders["VehicleType"].Load(ctx, dataloader.StringKey(*obj.VehicleTypeID))()
+			res, _ = item.(*VehicleType)
+
 			if res == nil {
-				_err = fmt.Errorf("Person with id '%s' not found", *obj.DeliverID)
+				_err = fmt.Errorf("VehicleType with id '%s' not found", *obj.VehicleTypeID)
 			}
 			err = _err
 		}
@@ -307,6 +330,9 @@ func DeliveryDeliveryChannelHandler(ctx context.Context, r *GeneratedResolver, o
 		item, _err := loaders["DeliveryChannel"].Load(ctx, dataloader.StringKey(*obj.DeliveryChannelID))()
 		res, _ = item.(*DeliveryChannel)
 
+		if res == nil {
+			_err = fmt.Errorf("DeliveryChannel with id '%s' not found", *obj.DeliveryChannelID)
+		}
 		err = _err
 	}
 
@@ -1114,4 +1140,26 @@ func (r *GeneratedVehicleTypeResultTypeResolver) Count(ctx context.Context, obj 
 		Preloaders: []string{},
 	}
 	return obj.GetCount(ctx, r.DB.db, opts, &VehicleType{})
+}
+
+// GeneratedVehicleTypeResolver struct
+type GeneratedVehicleTypeResolver struct{ *GeneratedResolver }
+
+// Delivery ...
+func (r *GeneratedVehicleTypeResolver) Delivery(ctx context.Context, obj *VehicleType) (res *Delivery, err error) {
+	return r.Handlers.VehicleTypeDelivery(ctx, r.GeneratedResolver, obj)
+}
+
+// VehicleTypeDeliveryHandler handler
+func VehicleTypeDeliveryHandler(ctx context.Context, r *GeneratedResolver, obj *VehicleType) (res *Delivery, err error) {
+
+	loaders := ctx.Value(KeyLoaders).(map[string]*dataloader.Loader)
+	if obj.DeliveryID != nil {
+		item, _err := loaders["Delivery"].Load(ctx, dataloader.StringKey(*obj.DeliveryID))()
+		res, _ = item.(*Delivery)
+
+		err = _err
+	}
+
+	return
 }

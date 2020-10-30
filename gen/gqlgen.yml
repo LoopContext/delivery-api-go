@@ -27,6 +27,8 @@ models:
         resolver: true
       deliver:
         resolver: true
+      vehicleType:
+        resolver: true
       deliveryType:
         resolver: true
       deliveryChannel:
@@ -101,6 +103,8 @@ models:
   VehicleType:
     model: github.com/loopcontext/deliver-api-go/gen.VehicleType
     fields:
+      delivery:
+        resolver: true
   VehicleTypeResultType:
     model: github.com/loopcontext/deliver-api-go/gen.VehicleTypeResultType
     fields:
