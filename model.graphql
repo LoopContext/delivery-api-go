@@ -1,13 +1,13 @@
 type Delivery @entity {
-  sender: Person! @relationship(inverse: "deliveriesSent", preload: true)
-  receiver: Person! @relationship(inverse: "deliveriesReceived", preload: true)
-  deliver: Person! @relationship(inverse: "deliveries", preload: true)
-  vehicleType: VehicleType
-  paymentId: ID @column(index: "pidx") #Payment id, comes from payment-api
+  sender: Person @relationship(inverse: "deliveriesSent", preload: true)
+  receiver: Person @relationship(inverse: "deliveriesReceived", preload: true)
+  deliver: Person @relationship(inverse: "deliveries", preload: true)
+  vehicleType: VehicleType! @relationship(inverse: "delivery", preload: true)
+  deliveryType: DeliveryType! @relationship(inverse: "delivery")
+  deliveryChannel: DeliveryChannel! @relationship(inverse: "delivery")
+  paymentId: ID @column(index: "pidx") #Payment id, comes from payment-api, once confirmed
   paymentTotal: Float @column
   paymentOnDeliver: Boolean @column
-  deliveryType: DeliveryType! @relationship(inverse: "delivery")
-  deliveryChannel: DeliveryChannel @relationship(inverse: "delivery")
   collectDateTime: Time @column
   collectAddress: String @column
   collectPoint: String @column
@@ -19,19 +19,19 @@ type Delivery @entity {
   completed: Boolean @column
   smsToken: String @column
   status: String @column(index: "statusidx")
-  instructions: String @column(type: "text")
+  instructions: String
 }
 
 type Person @entity {
   deliver: Boolean @column(default: false)
   email: String! @column(unique: true)
-  phone: String @column(type: "varchar(36)")
-  documentNo: String @column(type: "varchar(255)")
-  avatarURL: String @column(type: "text")
-  displayName: String @column(type: "varchar(255)")
-  firstName: String @column(type: "varchar(255)")
-  lastName: String @column(type: "varchar(255)")
-  nickName: String @column(type: "varchar(255)")
+  phone: String @column
+  documentNo: String @column
+  avatarURL: String @column
+  displayName: String @column
+  firstName: String @column
+  lastName: String @column
+  nickName: String @column
   description: String @column
   location: String @column
   deliveries: [Delivery!]! @relationship(inverse: "deliver")
@@ -42,17 +42,18 @@ type Person @entity {
 
 type DeliveryType @entity {
   name: String @column
-  description: String @column(type: "text")
+  description: String @column
   delivery: Delivery @relationship(inverse: "deliveryType")
 }
 
 type DeliveryChannel @entity {
   name: String @column
-  description: String @column(type: "text")
+  description: String @column
   delivery: Delivery @relationship(inverse: "deliveryChannel")
 }
 
 type VehicleType @entity {
   name: String @column
-  description: String @column(type: "text")
+  description: String @column
+  delivery: Delivery @relationship(inverse: "vehicleType")
 }
