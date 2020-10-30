@@ -159,7 +159,7 @@ type DeliveryTypeResultType struct {
 // DeliveryType struct
 type DeliveryType struct {
 	ID          string     `json:"id" gorm:"column:id;primary_key"`
-	Name        *string    `json:"name" gorm:"column:name"`
+	Name        string     `json:"name" gorm:"column:name"`
 	Description *string    `json:"description" gorm:"column:description"`
 	DeliveryID  *string    `json:"deliveryId" gorm:"column:deliveryId"`
 	UpdatedAt   *time.Time `json:"updatedAt" gorm:"column:updatedAt"`
@@ -176,7 +176,7 @@ func (m *DeliveryType) IsEntity() {}
 // DeliveryTypeChanges struct
 type DeliveryTypeChanges struct {
 	ID          string
-	Name        *string
+	Name        string
 	Description *string
 	DeliveryID  *string
 	UpdatedAt   *time.Time
@@ -193,7 +193,7 @@ type DeliveryChannelResultType struct {
 // DeliveryChannel struct
 type DeliveryChannel struct {
 	ID          string     `json:"id" gorm:"column:id;primary_key"`
-	Name        *string    `json:"name" gorm:"column:name"`
+	Name        string     `json:"name" gorm:"column:name"`
 	Description *string    `json:"description" gorm:"column:description"`
 	DeliveryID  *string    `json:"deliveryId" gorm:"column:deliveryId"`
 	UpdatedAt   *time.Time `json:"updatedAt" gorm:"column:updatedAt"`
@@ -210,7 +210,7 @@ func (m *DeliveryChannel) IsEntity() {}
 // DeliveryChannelChanges struct
 type DeliveryChannelChanges struct {
 	ID          string
-	Name        *string
+	Name        string
 	Description *string
 	DeliveryID  *string
 	UpdatedAt   *time.Time
@@ -227,7 +227,7 @@ type VehicleTypeResultType struct {
 // VehicleType struct
 type VehicleType struct {
 	ID          string     `json:"id" gorm:"column:id;primary_key"`
-	Name        *string    `json:"name" gorm:"column:name"`
+	Name        string     `json:"name" gorm:"column:name"`
 	Description *string    `json:"description" gorm:"column:description"`
 	DeliveryID  *string    `json:"deliveryId" gorm:"column:deliveryId"`
 	UpdatedAt   *time.Time `json:"updatedAt" gorm:"column:updatedAt"`
@@ -244,7 +244,7 @@ func (m *VehicleType) IsEntity() {}
 // VehicleTypeChanges struct
 type VehicleTypeChanges struct {
 	ID          string
-	Name        *string
+	Name        string
 	Description *string
 	DeliveryID  *string
 	UpdatedAt   *time.Time

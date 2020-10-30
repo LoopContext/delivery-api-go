@@ -41,19 +41,19 @@ type Person @entity {
 }
 
 type DeliveryType @entity {
-  name: String @column
+  name: String! @column
   description: String @column
   delivery: Delivery @relationship(inverse: "deliveryType")
 }
 
 type DeliveryChannel @entity {
-  name: String @column
+  name: String! @column
   description: String @column
   delivery: Delivery @relationship(inverse: "deliveryChannel")
 }
 
 type VehicleType @entity {
-  name: String @column
+  name: String! @column
   description: String @column
   delivery: Delivery @relationship(inverse: "vehicleType")
 }

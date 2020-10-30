@@ -893,7 +893,7 @@ func CreateDeliveryTypeHandler(ctx context.Context, r *GeneratedResolver, input 
 		event.AddNewValue("id", changes.ID)
 	}
 
-	if _, ok := input["name"]; ok && (item.Name != changes.Name) && (item.Name == nil || changes.Name == nil || *item.Name != *changes.Name) {
+	if _, ok := input["name"]; ok && (item.Name != changes.Name) {
 		item.Name = changes.Name
 
 		event.AddNewValue("name", changes.Name)
@@ -967,7 +967,7 @@ func UpdateDeliveryTypeHandler(ctx context.Context, r *GeneratedResolver, id str
 
 	item.UpdatedBy = principalID
 
-	if _, ok := input["name"]; ok && (item.Name != changes.Name) && (item.Name == nil || changes.Name == nil || *item.Name != *changes.Name) {
+	if _, ok := input["name"]; ok && (item.Name != changes.Name) {
 		event.AddOldValue("name", item.Name)
 		event.AddNewValue("name", changes.Name)
 		item.Name = changes.Name
@@ -1110,7 +1110,7 @@ func CreateDeliveryChannelHandler(ctx context.Context, r *GeneratedResolver, inp
 		event.AddNewValue("id", changes.ID)
 	}
 
-	if _, ok := input["name"]; ok && (item.Name != changes.Name) && (item.Name == nil || changes.Name == nil || *item.Name != *changes.Name) {
+	if _, ok := input["name"]; ok && (item.Name != changes.Name) {
 		item.Name = changes.Name
 
 		event.AddNewValue("name", changes.Name)
@@ -1184,7 +1184,7 @@ func UpdateDeliveryChannelHandler(ctx context.Context, r *GeneratedResolver, id 
 
 	item.UpdatedBy = principalID
 
-	if _, ok := input["name"]; ok && (item.Name != changes.Name) && (item.Name == nil || changes.Name == nil || *item.Name != *changes.Name) {
+	if _, ok := input["name"]; ok && (item.Name != changes.Name) {
 		event.AddOldValue("name", item.Name)
 		event.AddNewValue("name", changes.Name)
 		item.Name = changes.Name
@@ -1327,7 +1327,7 @@ func CreateVehicleTypeHandler(ctx context.Context, r *GeneratedResolver, input m
 		event.AddNewValue("id", changes.ID)
 	}
 
-	if _, ok := input["name"]; ok && (item.Name != changes.Name) && (item.Name == nil || changes.Name == nil || *item.Name != *changes.Name) {
+	if _, ok := input["name"]; ok && (item.Name != changes.Name) {
 		item.Name = changes.Name
 
 		event.AddNewValue("name", changes.Name)
@@ -1401,7 +1401,7 @@ func UpdateVehicleTypeHandler(ctx context.Context, r *GeneratedResolver, id stri
 
 	item.UpdatedBy = principalID
 
-	if _, ok := input["name"]; ok && (item.Name != changes.Name) && (item.Name == nil || changes.Name == nil || *item.Name != *changes.Name) {
+	if _, ok := input["name"]; ok && (item.Name != changes.Name) {
 		event.AddOldValue("name", item.Name)
 		event.AddNewValue("name", changes.Name)
 		item.Name = changes.Name

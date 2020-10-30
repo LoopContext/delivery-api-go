@@ -119,7 +119,7 @@ type Person {
 
 type DeliveryType {
   id: ID!
-  name: String
+  name: String!
   description: String
   delivery: Delivery
   deliveryId: ID
@@ -131,7 +131,7 @@ type DeliveryType {
 
 type DeliveryChannel {
   id: ID!
-  name: String
+  name: String!
   description: String
   delivery: Delivery
   deliveryId: ID
@@ -143,7 +143,7 @@ type DeliveryChannel {
 
 type VehicleType {
   id: ID!
-  name: String
+  name: String!
   description: String
   delivery: Delivery
   deliveryId: ID
@@ -1520,7 +1520,7 @@ type PersonResultType {
 
 input DeliveryTypeCreateInput {
   id: ID
-  name: String
+  name: String!
   description: String
   deliveryId: ID
 }
@@ -1766,7 +1766,7 @@ type DeliveryTypeResultType {
 
 input DeliveryChannelCreateInput {
   id: ID
-  name: String
+  name: String!
   description: String
   deliveryId: ID
 }
@@ -2012,7 +2012,7 @@ type DeliveryChannelResultType {
 
 input VehicleTypeCreateInput {
   id: ID
-  name: String
+  name: String!
   description: String
   deliveryId: ID
 }

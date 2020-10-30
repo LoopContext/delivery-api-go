@@ -1532,7 +1532,7 @@ type Person {
 
 type DeliveryType {
   id: ID!
-  name: String
+  name: String!
   description: String
   delivery: Delivery
   deliveryId: ID
@@ -1544,7 +1544,7 @@ type DeliveryType {
 
 type DeliveryChannel {
   id: ID!
-  name: String
+  name: String!
   description: String
   delivery: Delivery
   deliveryId: ID
@@ -1556,7 +1556,7 @@ type DeliveryChannel {
 
 type VehicleType {
   id: ID!
-  name: String
+  name: String!
   description: String
   delivery: Delivery
   deliveryId: ID
@@ -2933,7 +2933,7 @@ type PersonResultType {
 
 input DeliveryTypeCreateInput {
   id: ID
-  name: String
+  name: String!
   description: String
   deliveryId: ID
 }
@@ -3179,7 +3179,7 @@ type DeliveryTypeResultType {
 
 input DeliveryChannelCreateInput {
   id: ID
-  name: String
+  name: String!
   description: String
   deliveryId: ID
 }
@@ -3425,7 +3425,7 @@ type DeliveryChannelResultType {
 
 input VehicleTypeCreateInput {
   id: ID
-  name: String
+  name: String!
   description: String
   deliveryId: ID
 }
@@ -5685,11 +5685,14 @@ func (ec *executionContext) _DeliveryChannel_name(ctx context.Context, field gra
 		return graphql.Null
 	}
 	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
 		return graphql.Null
 	}
-	res := resTmp.(*string)
+	res := resTmp.(string)
 	fc.Result = res
-	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _DeliveryChannel_description(ctx context.Context, field graphql.CollectedField, obj *DeliveryChannel) (ret graphql.Marshaler) {
@@ -6119,11 +6122,14 @@ func (ec *executionContext) _DeliveryType_name(ctx context.Context, field graphq
 		return graphql.Null
 	}
 	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
 		return graphql.Null
 	}
-	res := resTmp.(*string)
+	res := resTmp.(string)
 	fc.Result = res
-	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _DeliveryType_description(ctx context.Context, field graphql.CollectedField, obj *DeliveryType) (ret graphql.Marshaler) {
@@ -8758,11 +8764,14 @@ func (ec *executionContext) _VehicleType_name(ctx context.Context, field graphql
 		return graphql.Null
 	}
 	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
 		return graphql.Null
 	}
-	res := resTmp.(*string)
+	res := resTmp.(string)
 	fc.Result = res
-	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _VehicleType_description(ctx context.Context, field graphql.CollectedField, obj *VehicleType) (ret graphql.Marshaler) {
@@ -25891,6 +25900,9 @@ func (ec *executionContext) _DeliveryChannel(ctx context.Context, sel ast.Select
 			}
 		case "name":
 			out.Values[i] = ec._DeliveryChannel_name(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&invalids, 1)
+			}
 		case "description":
 			out.Values[i] = ec._DeliveryChannel_description(ctx, field, obj)
 		case "delivery":
@@ -26046,6 +26058,9 @@ func (ec *executionContext) _DeliveryType(ctx context.Context, sel ast.Selection
 			}
 		case "name":
 			out.Values[i] = ec._DeliveryType_name(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&invalids, 1)
+			}
 		case "description":
 			out.Values[i] = ec._DeliveryType_description(ctx, field, obj)
 		case "delivery":
@@ -26687,6 +26702,9 @@ func (ec *executionContext) _VehicleType(ctx context.Context, sel ast.SelectionS
 			}
 		case "name":
 			out.Values[i] = ec._VehicleType_name(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&invalids, 1)
+			}
 		case "description":
 			out.Values[i] = ec._VehicleType_description(ctx, field, obj)
 		case "delivery":
