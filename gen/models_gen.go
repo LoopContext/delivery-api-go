@@ -1567,15 +1567,6 @@ type PersonFilterType struct {
 	UserIDIn             []string            `json:"userId_in"`
 	UserIDMinIn          []string            `json:"userIdMin_in"`
 	UserIDMaxIn          []string            `json:"userIdMax_in"`
-	UserIDLike           *string             `json:"userId_like"`
-	UserIDMinLike        *string             `json:"userIdMin_like"`
-	UserIDMaxLike        *string             `json:"userIdMax_like"`
-	UserIDPrefix         *string             `json:"userId_prefix"`
-	UserIDMinPrefix      *string             `json:"userIdMin_prefix"`
-	UserIDMaxPrefix      *string             `json:"userIdMax_prefix"`
-	UserIDSuffix         *string             `json:"userId_suffix"`
-	UserIDMinSuffix      *string             `json:"userIdMin_suffix"`
-	UserIDMaxSuffix      *string             `json:"userIdMax_suffix"`
 	UserIDNull           *bool               `json:"userId_null"`
 	UpdatedAt            *time.Time          `json:"updatedAt"`
 	UpdatedAtMin         *time.Time          `json:"updatedAtMin"`

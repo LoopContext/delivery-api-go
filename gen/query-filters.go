@@ -372,14 +372,6 @@ func (qf *PersonQueryFilter) applyQueryWithFields(dialect gorm.Dialect, fields [
 		*values = append(*values, query+"%", "% "+query+"%")
 	}
 
-	if _, ok := fieldsMap["userId"]; ok {
-
-		column := dialect.Quote(alias) + "." + dialect.Quote("userId")
-
-		*ors = append(*ors, fmt.Sprintf("%[1]s LIKE ? OR %[1]s LIKE ?", column))
-		*values = append(*values, query+"%", "% "+query+"%")
-	}
-
 	if fs, ok := fieldsMap["deliveries"]; ok {
 		_fields := []*ast.Field{}
 		_alias := alias + "_deliveries"

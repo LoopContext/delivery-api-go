@@ -1517,7 +1517,7 @@ type Person {
   deliveries: [Delivery!]!
   deliveriesSent: [Delivery!]!
   deliveriesReceived: [Delivery!]!
-  userId: String
+  userId: ID
   updatedAt: Time
   createdAt: Time!
   updatedBy: ID
@@ -2355,7 +2355,7 @@ input PersonCreateInput {
   nickName: String
   description: String
   location: String
-  userId: String
+  userId: ID
   deliveriesIds: [ID!]
   deliveriesSentIds: [ID!]
   deliveriesReceivedIds: [ID!]
@@ -2373,7 +2373,7 @@ input PersonUpdateInput {
   nickName: String
   description: String
   location: String
-  userId: String
+  userId: ID
   deliveriesIds: [ID!]
   deliveriesSentIds: [ID!]
   deliveriesReceivedIds: [ID!]
@@ -2802,36 +2802,27 @@ input PersonFilterType {
   locationMin_suffix: String
   locationMax_suffix: String
   location_null: Boolean
-  userId: String
-  userIdMin: String
-  userIdMax: String
-  userId_ne: String
-  userIdMin_ne: String
-  userIdMax_ne: String
-  userId_gt: String
-  userIdMin_gt: String
-  userIdMax_gt: String
-  userId_lt: String
-  userIdMin_lt: String
-  userIdMax_lt: String
-  userId_gte: String
-  userIdMin_gte: String
-  userIdMax_gte: String
-  userId_lte: String
-  userIdMin_lte: String
-  userIdMax_lte: String
-  userId_in: [String!]
-  userIdMin_in: [String!]
-  userIdMax_in: [String!]
-  userId_like: String
-  userIdMin_like: String
-  userIdMax_like: String
-  userId_prefix: String
-  userIdMin_prefix: String
-  userIdMax_prefix: String
-  userId_suffix: String
-  userIdMin_suffix: String
-  userIdMax_suffix: String
+  userId: ID
+  userIdMin: ID
+  userIdMax: ID
+  userId_ne: ID
+  userIdMin_ne: ID
+  userIdMax_ne: ID
+  userId_gt: ID
+  userIdMin_gt: ID
+  userIdMax_gt: ID
+  userId_lt: ID
+  userIdMin_lt: ID
+  userIdMax_lt: ID
+  userId_gte: ID
+  userIdMin_gte: ID
+  userIdMax_gte: ID
+  userId_lte: ID
+  userIdMin_lte: ID
+  userIdMax_lte: ID
+  userId_in: [ID!]
+  userIdMin_in: [ID!]
+  userIdMax_in: [ID!]
   userId_null: Boolean
   updatedAt: Time
   updatedAtMin: Time
@@ -7758,7 +7749,7 @@ func (ec *executionContext) _Person_userId(ctx context.Context, field graphql.Co
 	}
 	res := resTmp.(*string)
 	fc.Result = res
-	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+	return ec.marshalOID2ᚖstring(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Person_updatedAt(ctx context.Context, field graphql.CollectedField, obj *Person) (ret graphql.Marshaler) {
@@ -22416,7 +22407,7 @@ func (ec *executionContext) unmarshalInputPersonFilterType(ctx context.Context, 
 			var err error
 
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("userId"))
-			it.UserID, err = ec.unmarshalOString2ᚖstring(ctx, v)
+			it.UserID, err = ec.unmarshalOID2ᚖstring(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -22424,7 +22415,7 @@ func (ec *executionContext) unmarshalInputPersonFilterType(ctx context.Context, 
 			var err error
 
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("userIdMin"))
-			it.UserIDMin, err = ec.unmarshalOString2ᚖstring(ctx, v)
+			it.UserIDMin, err = ec.unmarshalOID2ᚖstring(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -22432,7 +22423,7 @@ func (ec *executionContext) unmarshalInputPersonFilterType(ctx context.Context, 
 			var err error
 
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("userIdMax"))
-			it.UserIDMax, err = ec.unmarshalOString2ᚖstring(ctx, v)
+			it.UserIDMax, err = ec.unmarshalOID2ᚖstring(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -22440,7 +22431,7 @@ func (ec *executionContext) unmarshalInputPersonFilterType(ctx context.Context, 
 			var err error
 
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("userId_ne"))
-			it.UserIDNe, err = ec.unmarshalOString2ᚖstring(ctx, v)
+			it.UserIDNe, err = ec.unmarshalOID2ᚖstring(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -22448,7 +22439,7 @@ func (ec *executionContext) unmarshalInputPersonFilterType(ctx context.Context, 
 			var err error
 
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("userIdMin_ne"))
-			it.UserIDMinNe, err = ec.unmarshalOString2ᚖstring(ctx, v)
+			it.UserIDMinNe, err = ec.unmarshalOID2ᚖstring(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -22456,7 +22447,7 @@ func (ec *executionContext) unmarshalInputPersonFilterType(ctx context.Context, 
 			var err error
 
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("userIdMax_ne"))
-			it.UserIDMaxNe, err = ec.unmarshalOString2ᚖstring(ctx, v)
+			it.UserIDMaxNe, err = ec.unmarshalOID2ᚖstring(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -22464,7 +22455,7 @@ func (ec *executionContext) unmarshalInputPersonFilterType(ctx context.Context, 
 			var err error
 
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("userId_gt"))
-			it.UserIDGt, err = ec.unmarshalOString2ᚖstring(ctx, v)
+			it.UserIDGt, err = ec.unmarshalOID2ᚖstring(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -22472,7 +22463,7 @@ func (ec *executionContext) unmarshalInputPersonFilterType(ctx context.Context, 
 			var err error
 
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("userIdMin_gt"))
-			it.UserIDMinGt, err = ec.unmarshalOString2ᚖstring(ctx, v)
+			it.UserIDMinGt, err = ec.unmarshalOID2ᚖstring(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -22480,7 +22471,7 @@ func (ec *executionContext) unmarshalInputPersonFilterType(ctx context.Context, 
 			var err error
 
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("userIdMax_gt"))
-			it.UserIDMaxGt, err = ec.unmarshalOString2ᚖstring(ctx, v)
+			it.UserIDMaxGt, err = ec.unmarshalOID2ᚖstring(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -22488,7 +22479,7 @@ func (ec *executionContext) unmarshalInputPersonFilterType(ctx context.Context, 
 			var err error
 
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("userId_lt"))
-			it.UserIDLt, err = ec.unmarshalOString2ᚖstring(ctx, v)
+			it.UserIDLt, err = ec.unmarshalOID2ᚖstring(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -22496,7 +22487,7 @@ func (ec *executionContext) unmarshalInputPersonFilterType(ctx context.Context, 
 			var err error
 
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("userIdMin_lt"))
-			it.UserIDMinLt, err = ec.unmarshalOString2ᚖstring(ctx, v)
+			it.UserIDMinLt, err = ec.unmarshalOID2ᚖstring(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -22504,7 +22495,7 @@ func (ec *executionContext) unmarshalInputPersonFilterType(ctx context.Context, 
 			var err error
 
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("userIdMax_lt"))
-			it.UserIDMaxLt, err = ec.unmarshalOString2ᚖstring(ctx, v)
+			it.UserIDMaxLt, err = ec.unmarshalOID2ᚖstring(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -22512,7 +22503,7 @@ func (ec *executionContext) unmarshalInputPersonFilterType(ctx context.Context, 
 			var err error
 
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("userId_gte"))
-			it.UserIDGte, err = ec.unmarshalOString2ᚖstring(ctx, v)
+			it.UserIDGte, err = ec.unmarshalOID2ᚖstring(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -22520,7 +22511,7 @@ func (ec *executionContext) unmarshalInputPersonFilterType(ctx context.Context, 
 			var err error
 
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("userIdMin_gte"))
-			it.UserIDMinGte, err = ec.unmarshalOString2ᚖstring(ctx, v)
+			it.UserIDMinGte, err = ec.unmarshalOID2ᚖstring(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -22528,7 +22519,7 @@ func (ec *executionContext) unmarshalInputPersonFilterType(ctx context.Context, 
 			var err error
 
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("userIdMax_gte"))
-			it.UserIDMaxGte, err = ec.unmarshalOString2ᚖstring(ctx, v)
+			it.UserIDMaxGte, err = ec.unmarshalOID2ᚖstring(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -22536,7 +22527,7 @@ func (ec *executionContext) unmarshalInputPersonFilterType(ctx context.Context, 
 			var err error
 
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("userId_lte"))
-			it.UserIDLte, err = ec.unmarshalOString2ᚖstring(ctx, v)
+			it.UserIDLte, err = ec.unmarshalOID2ᚖstring(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -22544,7 +22535,7 @@ func (ec *executionContext) unmarshalInputPersonFilterType(ctx context.Context, 
 			var err error
 
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("userIdMin_lte"))
-			it.UserIDMinLte, err = ec.unmarshalOString2ᚖstring(ctx, v)
+			it.UserIDMinLte, err = ec.unmarshalOID2ᚖstring(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -22552,7 +22543,7 @@ func (ec *executionContext) unmarshalInputPersonFilterType(ctx context.Context, 
 			var err error
 
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("userIdMax_lte"))
-			it.UserIDMaxLte, err = ec.unmarshalOString2ᚖstring(ctx, v)
+			it.UserIDMaxLte, err = ec.unmarshalOID2ᚖstring(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -22560,7 +22551,7 @@ func (ec *executionContext) unmarshalInputPersonFilterType(ctx context.Context, 
 			var err error
 
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("userId_in"))
-			it.UserIDIn, err = ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			it.UserIDIn, err = ec.unmarshalOID2ᚕstringᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -22568,7 +22559,7 @@ func (ec *executionContext) unmarshalInputPersonFilterType(ctx context.Context, 
 			var err error
 
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("userIdMin_in"))
-			it.UserIDMinIn, err = ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			it.UserIDMinIn, err = ec.unmarshalOID2ᚕstringᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -22576,79 +22567,7 @@ func (ec *executionContext) unmarshalInputPersonFilterType(ctx context.Context, 
 			var err error
 
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("userIdMax_in"))
-			it.UserIDMaxIn, err = ec.unmarshalOString2ᚕstringᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-		case "userId_like":
-			var err error
-
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("userId_like"))
-			it.UserIDLike, err = ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-		case "userIdMin_like":
-			var err error
-
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("userIdMin_like"))
-			it.UserIDMinLike, err = ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-		case "userIdMax_like":
-			var err error
-
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("userIdMax_like"))
-			it.UserIDMaxLike, err = ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-		case "userId_prefix":
-			var err error
-
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("userId_prefix"))
-			it.UserIDPrefix, err = ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-		case "userIdMin_prefix":
-			var err error
-
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("userIdMin_prefix"))
-			it.UserIDMinPrefix, err = ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-		case "userIdMax_prefix":
-			var err error
-
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("userIdMax_prefix"))
-			it.UserIDMaxPrefix, err = ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-		case "userId_suffix":
-			var err error
-
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("userId_suffix"))
-			it.UserIDSuffix, err = ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-		case "userIdMin_suffix":
-			var err error
-
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("userIdMin_suffix"))
-			it.UserIDMinSuffix, err = ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-		case "userIdMax_suffix":
-			var err error
-
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("userIdMax_suffix"))
-			it.UserIDMaxSuffix, err = ec.unmarshalOString2ᚖstring(ctx, v)
+			it.UserIDMaxIn, err = ec.unmarshalOID2ᚕstringᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}

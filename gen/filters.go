@@ -4231,21 +4231,6 @@ func (f *PersonFilterType) WhereContent(dialect gorm.Dialect, aliasPrefix string
 		values = append(values, f.UserIDIn)
 	}
 
-	if f.UserIDLike != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("userId")+" LIKE ?")
-		values = append(values, strings.Replace(strings.Replace(*f.UserIDLike, "?", "_", -1), "*", "%", -1))
-	}
-
-	if f.UserIDPrefix != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("userId")+" LIKE ?")
-		values = append(values, fmt.Sprintf("%s%%", *f.UserIDPrefix))
-	}
-
-	if f.UserIDSuffix != nil {
-		conditions = append(conditions, aliasPrefix+dialect.Quote("userId")+" LIKE ?")
-		values = append(values, fmt.Sprintf("%%%s", *f.UserIDSuffix))
-	}
-
 	if f.UserIDNull != nil {
 		if *f.UserIDNull {
 			conditions = append(conditions, aliasPrefix+dialect.Quote("userId")+" IS NULL")
@@ -5642,36 +5627,6 @@ func (f *PersonFilterType) HavingContent(dialect gorm.Dialect, aliasPrefix strin
 	if f.UserIDMaxIn != nil {
 		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("userId")+") IN (?)")
 		values = append(values, f.UserIDMaxIn)
-	}
-
-	if f.UserIDMinLike != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("userId")+") LIKE ?")
-		values = append(values, strings.Replace(strings.Replace(*f.UserIDMinLike, "?", "_", -1), "*", "%", -1))
-	}
-
-	if f.UserIDMaxLike != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("userId")+") LIKE ?")
-		values = append(values, strings.Replace(strings.Replace(*f.UserIDMaxLike, "?", "_", -1), "*", "%", -1))
-	}
-
-	if f.UserIDMinPrefix != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("userId")+") LIKE ?")
-		values = append(values, fmt.Sprintf("%s%%", *f.UserIDMinPrefix))
-	}
-
-	if f.UserIDMaxPrefix != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("userId")+") LIKE ?")
-		values = append(values, fmt.Sprintf("%s%%", *f.UserIDMaxPrefix))
-	}
-
-	if f.UserIDMinSuffix != nil {
-		conditions = append(conditions, "Min("+aliasPrefix+dialect.Quote("userId")+") LIKE ?")
-		values = append(values, fmt.Sprintf("%%%s", *f.UserIDMinSuffix))
-	}
-
-	if f.UserIDMaxSuffix != nil {
-		conditions = append(conditions, "Max("+aliasPrefix+dialect.Quote("userId")+") LIKE ?")
-		values = append(values, fmt.Sprintf("%%%s", *f.UserIDMaxSuffix))
 	}
 
 	if f.UpdatedAtMin != nil {

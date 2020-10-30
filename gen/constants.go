@@ -104,7 +104,7 @@ type Person {
   deliveries: [Delivery!]!
   deliveriesSent: [Delivery!]!
   deliveriesReceived: [Delivery!]!
-  userId: String
+  userId: ID
   updatedAt: Time
   createdAt: Time!
   updatedBy: ID
@@ -942,7 +942,7 @@ input PersonCreateInput {
   nickName: String
   description: String
   location: String
-  userId: String
+  userId: ID
   deliveriesIds: [ID!]
   deliveriesSentIds: [ID!]
   deliveriesReceivedIds: [ID!]
@@ -960,7 +960,7 @@ input PersonUpdateInput {
   nickName: String
   description: String
   location: String
-  userId: String
+  userId: ID
   deliveriesIds: [ID!]
   deliveriesSentIds: [ID!]
   deliveriesReceivedIds: [ID!]
@@ -1389,36 +1389,27 @@ input PersonFilterType {
   locationMin_suffix: String
   locationMax_suffix: String
   location_null: Boolean
-  userId: String
-  userIdMin: String
-  userIdMax: String
-  userId_ne: String
-  userIdMin_ne: String
-  userIdMax_ne: String
-  userId_gt: String
-  userIdMin_gt: String
-  userIdMax_gt: String
-  userId_lt: String
-  userIdMin_lt: String
-  userIdMax_lt: String
-  userId_gte: String
-  userIdMin_gte: String
-  userIdMax_gte: String
-  userId_lte: String
-  userIdMin_lte: String
-  userIdMax_lte: String
-  userId_in: [String!]
-  userIdMin_in: [String!]
-  userIdMax_in: [String!]
-  userId_like: String
-  userIdMin_like: String
-  userIdMax_like: String
-  userId_prefix: String
-  userIdMin_prefix: String
-  userIdMax_prefix: String
-  userId_suffix: String
-  userIdMin_suffix: String
-  userIdMax_suffix: String
+  userId: ID
+  userIdMin: ID
+  userIdMax: ID
+  userId_ne: ID
+  userIdMin_ne: ID
+  userIdMax_ne: ID
+  userId_gt: ID
+  userIdMin_gt: ID
+  userIdMax_gt: ID
+  userId_lt: ID
+  userIdMin_lt: ID
+  userIdMax_lt: ID
+  userId_gte: ID
+  userIdMin_gte: ID
+  userIdMax_gte: ID
+  userId_lte: ID
+  userIdMin_lte: ID
+  userIdMax_lte: ID
+  userId_in: [ID!]
+  userIdMin_in: [ID!]
+  userIdMax_in: [ID!]
   userId_null: Boolean
   updatedAt: Time
   updatedAtMin: Time

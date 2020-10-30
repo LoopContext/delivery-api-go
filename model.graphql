@@ -37,7 +37,7 @@ type Person @entity {
   deliveries: [Delivery!]! @relationship(inverse: "deliver")
   deliveriesSent: [Delivery!]! @relationship(inverse: "sender")
   deliveriesReceived: [Delivery!]! @relationship(inverse: "receiver")
-  userId: String @column(index: "useridx") #Comes from auth-api
+  userId: ID @column(index: "useridx") #Comes from auth-api
 }
 
 type DeliveryType @entity {
