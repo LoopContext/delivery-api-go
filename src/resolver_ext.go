@@ -14,10 +14,21 @@ const (
 // Deliveries method
 func (r *QueryResolver) Deliveries(ctx context.Context, offset *int, limit *int, q *string, sort []*gen.DeliverySortType, filter *gen.DeliveryFilterType) (*gen.DeliveryResultType, error) {
 	jwtClaims := gen.GetJWTClaimsFromContext(ctx)
-	if gen.HasRole(jwtClaims, "admin") && gen.HasPermission(jwtClaims, "deliveries", gen.JWTPermissionConstList[:1]) {
-		return r.GeneratedQueryResolver.Deliveries(ctx, offset, limit, q, sort, filter)
+	if !gen.HasPermission(jwtClaims, "deliveries", gen.JWTPermissionConstList[:1]) {
+		return nil, fmt.Errorf(jwtTokenPermissionErrMsg, gen.JWTPermissionConstList, "deliveries")
 	}
-	return nil, fmt.Errorf(jwtTokenPermissionErrMsg, gen.JWTPermissionConstList, "deliveries")
+	if !gen.HasRole(jwtClaims, "admin") {
+		if filter != nil && filter.Sender != nil {
+			filter.Sender.ID = &jwtClaims.Subject
+		} else {
+			filter = &gen.DeliveryFilterType{
+				Sender: &gen.PersonFilterType{
+					ID: &jwtClaims.Subject,
+				},
+			}
+		}
+	}
+	return r.GeneratedQueryResolver.Deliveries(ctx, offset, limit, q, sort, filter)
 }
 
 // CreateDelivery method
@@ -149,15 +160,6 @@ func (r *MutationResolver) DeleteAllPeople(ctx context.Context) (ok bool, err er
 	return false, fmt.Errorf(jwtTokenPermissionErrMsg, gen.JWTPermissionConstDelete, "people")
 }
 
-// DeliveryTypes method
-func (r *QueryResolver) DeliveryTypes(ctx context.Context, offset *int, limit *int, q *string, sort []*gen.DeliveryTypeSortType, filter *gen.DeliveryTypeFilterType) (*gen.DeliveryTypeResultType, error) {
-	jwtClaims := gen.GetJWTClaimsFromContext(ctx)
-	if gen.HasRole(jwtClaims, "admin") && gen.HasPermission(jwtClaims, "delivery_types", gen.JWTPermissionConstList[:1]) {
-		return r.GeneratedQueryResolver.DeliveryTypes(ctx, offset, limit, q, sort, filter)
-	}
-	return nil, fmt.Errorf(jwtTokenPermissionErrMsg, gen.JWTPermissionConstList, "delivery_types")
-}
-
 // CreateDeliveryType method
 func (r *MutationResolver) CreateDeliveryType(ctx context.Context, input map[string]interface{}) (item *gen.DeliveryType, err error) {
 	jwtClaims := gen.GetJWTClaimsFromContext(ctx)
@@ -203,15 +205,6 @@ func (r *MutationResolver) DeleteAllDeliveryTypes(ctx context.Context) (ok bool,
 	return false, fmt.Errorf(jwtTokenPermissionErrMsg, gen.JWTPermissionConstDelete, "delivery_types")
 }
 
-// DeliveryChannels method
-func (r *QueryResolver) DeliveryChannels(ctx context.Context, offset *int, limit *int, q *string, sort []*gen.DeliveryChannelSortType, filter *gen.DeliveryChannelFilterType) (*gen.DeliveryChannelResultType, error) {
-	jwtClaims := gen.GetJWTClaimsFromContext(ctx)
-	if gen.HasRole(jwtClaims, "admin") && gen.HasPermission(jwtClaims, "delivery_channels", gen.JWTPermissionConstList[:1]) {
-		return r.GeneratedQueryResolver.DeliveryChannels(ctx, offset, limit, q, sort, filter)
-	}
-	return nil, fmt.Errorf(jwtTokenPermissionErrMsg, gen.JWTPermissionConstList, "delivery_channels")
-}
-
 // CreateDeliveryChannel method
 func (r *MutationResolver) CreateDeliveryChannel(ctx context.Context, input map[string]interface{}) (item *gen.DeliveryChannel, err error) {
 	jwtClaims := gen.GetJWTClaimsFromContext(ctx)
@@ -255,15 +248,6 @@ func (r *MutationResolver) DeleteAllDeliveryChannels(ctx context.Context) (ok bo
 		return r.GeneratedMutationResolver.DeleteAllDeliveryChannels(ctx)
 	}
 	return false, fmt.Errorf(jwtTokenPermissionErrMsg, gen.JWTPermissionConstDelete, "delivery_channels")
-}
-
-// VehicleTypes method
-func (r *QueryResolver) VehicleTypes(ctx context.Context, offset *int, limit *int, q *string, sort []*gen.VehicleTypeSortType, filter *gen.VehicleTypeFilterType) (*gen.VehicleTypeResultType, error) {
-	jwtClaims := gen.GetJWTClaimsFromContext(ctx)
-	if gen.HasRole(jwtClaims, "admin") && gen.HasPermission(jwtClaims, "vehicle_types", gen.JWTPermissionConstList[:1]) {
-		return r.GeneratedQueryResolver.VehicleTypes(ctx, offset, limit, q, sort, filter)
-	}
-	return nil, fmt.Errorf(jwtTokenPermissionErrMsg, gen.JWTPermissionConstList, "vehicle_types")
 }
 
 // CreateVehicleType method
