@@ -33,6 +33,9 @@ type DeliveryChannelFilterType struct {
 	IDIn                 []string                     `json:"id_in"`
 	IDMinIn              []string                     `json:"idMin_in"`
 	IDMaxIn              []string                     `json:"idMax_in"`
+	IDNotIn              []string                     `json:"id_not_in"`
+	IDMinNotIn           []string                     `json:"idMin_not_in"`
+	IDMaxNotIn           []string                     `json:"idMax_not_in"`
 	IDNull               *bool                        `json:"id_null"`
 	Name                 *string                      `json:"name"`
 	NameMin              *string                      `json:"nameMin"`
@@ -55,6 +58,9 @@ type DeliveryChannelFilterType struct {
 	NameIn               []string                     `json:"name_in"`
 	NameMinIn            []string                     `json:"nameMin_in"`
 	NameMaxIn            []string                     `json:"nameMax_in"`
+	NameNotIn            []string                     `json:"name_not_in"`
+	NameMinNotIn         []string                     `json:"nameMin_not_in"`
+	NameMaxNotIn         []string                     `json:"nameMax_not_in"`
 	NameLike             *string                      `json:"name_like"`
 	NameMinLike          *string                      `json:"nameMin_like"`
 	NameMaxLike          *string                      `json:"nameMax_like"`
@@ -86,6 +92,9 @@ type DeliveryChannelFilterType struct {
 	DescriptionIn        []string                     `json:"description_in"`
 	DescriptionMinIn     []string                     `json:"descriptionMin_in"`
 	DescriptionMaxIn     []string                     `json:"descriptionMax_in"`
+	DescriptionNotIn     []string                     `json:"description_not_in"`
+	DescriptionMinNotIn  []string                     `json:"descriptionMin_not_in"`
+	DescriptionMaxNotIn  []string                     `json:"descriptionMax_not_in"`
 	DescriptionLike      *string                      `json:"description_like"`
 	DescriptionMinLike   *string                      `json:"descriptionMin_like"`
 	DescriptionMaxLike   *string                      `json:"descriptionMax_like"`
@@ -117,6 +126,9 @@ type DeliveryChannelFilterType struct {
 	DeliveryIDIn         []string                     `json:"deliveryId_in"`
 	DeliveryIDMinIn      []string                     `json:"deliveryIdMin_in"`
 	DeliveryIDMaxIn      []string                     `json:"deliveryIdMax_in"`
+	DeliveryIDNotIn      []string                     `json:"deliveryId_not_in"`
+	DeliveryIDMinNotIn   []string                     `json:"deliveryIdMin_not_in"`
+	DeliveryIDMaxNotIn   []string                     `json:"deliveryIdMax_not_in"`
 	DeliveryIDNull       *bool                        `json:"deliveryId_null"`
 	UpdatedAt            *time.Time                   `json:"updatedAt"`
 	UpdatedAtMin         *time.Time                   `json:"updatedAtMin"`
@@ -139,6 +151,9 @@ type DeliveryChannelFilterType struct {
 	UpdatedAtIn          []*time.Time                 `json:"updatedAt_in"`
 	UpdatedAtMinIn       []*time.Time                 `json:"updatedAtMin_in"`
 	UpdatedAtMaxIn       []*time.Time                 `json:"updatedAtMax_in"`
+	UpdatedAtNotIn       []*time.Time                 `json:"updatedAt_not_in"`
+	UpdatedAtMinNotIn    []*time.Time                 `json:"updatedAtMin_not_in"`
+	UpdatedAtMaxNotIn    []*time.Time                 `json:"updatedAtMax_not_in"`
 	UpdatedAtNull        *bool                        `json:"updatedAt_null"`
 	CreatedAt            *time.Time                   `json:"createdAt"`
 	CreatedAtMin         *time.Time                   `json:"createdAtMin"`
@@ -161,6 +176,9 @@ type DeliveryChannelFilterType struct {
 	CreatedAtIn          []*time.Time                 `json:"createdAt_in"`
 	CreatedAtMinIn       []*time.Time                 `json:"createdAtMin_in"`
 	CreatedAtMaxIn       []*time.Time                 `json:"createdAtMax_in"`
+	CreatedAtNotIn       []*time.Time                 `json:"createdAt_not_in"`
+	CreatedAtMinNotIn    []*time.Time                 `json:"createdAtMin_not_in"`
+	CreatedAtMaxNotIn    []*time.Time                 `json:"createdAtMax_not_in"`
 	CreatedAtNull        *bool                        `json:"createdAt_null"`
 	UpdatedBy            *string                      `json:"updatedBy"`
 	UpdatedByMin         *string                      `json:"updatedByMin"`
@@ -183,6 +201,9 @@ type DeliveryChannelFilterType struct {
 	UpdatedByIn          []string                     `json:"updatedBy_in"`
 	UpdatedByMinIn       []string                     `json:"updatedByMin_in"`
 	UpdatedByMaxIn       []string                     `json:"updatedByMax_in"`
+	UpdatedByNotIn       []string                     `json:"updatedBy_not_in"`
+	UpdatedByMinNotIn    []string                     `json:"updatedByMin_not_in"`
+	UpdatedByMaxNotIn    []string                     `json:"updatedByMax_not_in"`
 	UpdatedByNull        *bool                        `json:"updatedBy_null"`
 	CreatedBy            *string                      `json:"createdBy"`
 	CreatedByMin         *string                      `json:"createdByMin"`
@@ -205,6 +226,9 @@ type DeliveryChannelFilterType struct {
 	CreatedByIn          []string                     `json:"createdBy_in"`
 	CreatedByMinIn       []string                     `json:"createdByMin_in"`
 	CreatedByMaxIn       []string                     `json:"createdByMax_in"`
+	CreatedByNotIn       []string                     `json:"createdBy_not_in"`
+	CreatedByMinNotIn    []string                     `json:"createdByMin_not_in"`
+	CreatedByMaxNotIn    []string                     `json:"createdByMax_not_in"`
 	CreatedByNull        *bool                        `json:"createdBy_null"`
 	Delivery             *DeliveryFilterType          `json:"delivery"`
 }
@@ -261,6 +285,9 @@ type DeliveryFilterType struct {
 	IDIn                      []string                   `json:"id_in"`
 	IDMinIn                   []string                   `json:"idMin_in"`
 	IDMaxIn                   []string                   `json:"idMax_in"`
+	IDNotIn                   []string                   `json:"id_not_in"`
+	IDMinNotIn                []string                   `json:"idMin_not_in"`
+	IDMaxNotIn                []string                   `json:"idMax_not_in"`
 	IDNull                    *bool                      `json:"id_null"`
 	PaymentID                 *string                    `json:"paymentId"`
 	PaymentIDMin              *string                    `json:"paymentIdMin"`
@@ -283,6 +310,9 @@ type DeliveryFilterType struct {
 	PaymentIDIn               []string                   `json:"paymentId_in"`
 	PaymentIDMinIn            []string                   `json:"paymentIdMin_in"`
 	PaymentIDMaxIn            []string                   `json:"paymentIdMax_in"`
+	PaymentIDNotIn            []string                   `json:"paymentId_not_in"`
+	PaymentIDMinNotIn         []string                   `json:"paymentIdMin_not_in"`
+	PaymentIDMaxNotIn         []string                   `json:"paymentIdMax_not_in"`
 	PaymentIDNull             *bool                      `json:"paymentId_null"`
 	PaymentTotal              *float64                   `json:"paymentTotal"`
 	PaymentTotalMin           *float64                   `json:"paymentTotalMin"`
@@ -312,6 +342,10 @@ type DeliveryFilterType struct {
 	PaymentTotalMinIn         []float64                  `json:"paymentTotalMin_in"`
 	PaymentTotalMaxIn         []float64                  `json:"paymentTotalMax_in"`
 	PaymentTotalAvgIn         []float64                  `json:"paymentTotalAvg_in"`
+	PaymentTotalNotIn         []float64                  `json:"paymentTotal_not_in"`
+	PaymentTotalMinNotIn      []float64                  `json:"paymentTotalMin_not_in"`
+	PaymentTotalMaxNotIn      []float64                  `json:"paymentTotalMax_not_in"`
+	PaymentTotalAvgNotIn      []float64                  `json:"paymentTotalAvg_not_in"`
 	PaymentTotalNull          *bool                      `json:"paymentTotal_null"`
 	PaymentOnDeliver          *bool                      `json:"paymentOnDeliver"`
 	PaymentOnDeliverMin       *bool                      `json:"paymentOnDeliverMin"`
@@ -334,6 +368,9 @@ type DeliveryFilterType struct {
 	PaymentOnDeliverIn        []bool                     `json:"paymentOnDeliver_in"`
 	PaymentOnDeliverMinIn     []bool                     `json:"paymentOnDeliverMin_in"`
 	PaymentOnDeliverMaxIn     []bool                     `json:"paymentOnDeliverMax_in"`
+	PaymentOnDeliverNotIn     []bool                     `json:"paymentOnDeliver_not_in"`
+	PaymentOnDeliverMinNotIn  []bool                     `json:"paymentOnDeliverMin_not_in"`
+	PaymentOnDeliverMaxNotIn  []bool                     `json:"paymentOnDeliverMax_not_in"`
 	PaymentOnDeliverNull      *bool                      `json:"paymentOnDeliver_null"`
 	CollectDateTime           *time.Time                 `json:"collectDateTime"`
 	CollectDateTimeMin        *time.Time                 `json:"collectDateTimeMin"`
@@ -356,6 +393,9 @@ type DeliveryFilterType struct {
 	CollectDateTimeIn         []*time.Time               `json:"collectDateTime_in"`
 	CollectDateTimeMinIn      []*time.Time               `json:"collectDateTimeMin_in"`
 	CollectDateTimeMaxIn      []*time.Time               `json:"collectDateTimeMax_in"`
+	CollectDateTimeNotIn      []*time.Time               `json:"collectDateTime_not_in"`
+	CollectDateTimeMinNotIn   []*time.Time               `json:"collectDateTimeMin_not_in"`
+	CollectDateTimeMaxNotIn   []*time.Time               `json:"collectDateTimeMax_not_in"`
 	CollectDateTimeNull       *bool                      `json:"collectDateTime_null"`
 	CollectAddress            *string                    `json:"collectAddress"`
 	CollectAddressMin         *string                    `json:"collectAddressMin"`
@@ -378,6 +418,9 @@ type DeliveryFilterType struct {
 	CollectAddressIn          []string                   `json:"collectAddress_in"`
 	CollectAddressMinIn       []string                   `json:"collectAddressMin_in"`
 	CollectAddressMaxIn       []string                   `json:"collectAddressMax_in"`
+	CollectAddressNotIn       []string                   `json:"collectAddress_not_in"`
+	CollectAddressMinNotIn    []string                   `json:"collectAddressMin_not_in"`
+	CollectAddressMaxNotIn    []string                   `json:"collectAddressMax_not_in"`
 	CollectAddressLike        *string                    `json:"collectAddress_like"`
 	CollectAddressMinLike     *string                    `json:"collectAddressMin_like"`
 	CollectAddressMaxLike     *string                    `json:"collectAddressMax_like"`
@@ -409,6 +452,9 @@ type DeliveryFilterType struct {
 	CollectPointIn            []string                   `json:"collectPoint_in"`
 	CollectPointMinIn         []string                   `json:"collectPointMin_in"`
 	CollectPointMaxIn         []string                   `json:"collectPointMax_in"`
+	CollectPointNotIn         []string                   `json:"collectPoint_not_in"`
+	CollectPointMinNotIn      []string                   `json:"collectPointMin_not_in"`
+	CollectPointMaxNotIn      []string                   `json:"collectPointMax_not_in"`
 	CollectPointLike          *string                    `json:"collectPoint_like"`
 	CollectPointMinLike       *string                    `json:"collectPointMin_like"`
 	CollectPointMaxLike       *string                    `json:"collectPointMax_like"`
@@ -440,6 +486,9 @@ type DeliveryFilterType struct {
 	DropDateTimeIn            []*time.Time               `json:"dropDateTime_in"`
 	DropDateTimeMinIn         []*time.Time               `json:"dropDateTimeMin_in"`
 	DropDateTimeMaxIn         []*time.Time               `json:"dropDateTimeMax_in"`
+	DropDateTimeNotIn         []*time.Time               `json:"dropDateTime_not_in"`
+	DropDateTimeMinNotIn      []*time.Time               `json:"dropDateTimeMin_not_in"`
+	DropDateTimeMaxNotIn      []*time.Time               `json:"dropDateTimeMax_not_in"`
 	DropDateTimeNull          *bool                      `json:"dropDateTime_null"`
 	DropAddress               *string                    `json:"dropAddress"`
 	DropAddressMin            *string                    `json:"dropAddressMin"`
@@ -462,6 +511,9 @@ type DeliveryFilterType struct {
 	DropAddressIn             []string                   `json:"dropAddress_in"`
 	DropAddressMinIn          []string                   `json:"dropAddressMin_in"`
 	DropAddressMaxIn          []string                   `json:"dropAddressMax_in"`
+	DropAddressNotIn          []string                   `json:"dropAddress_not_in"`
+	DropAddressMinNotIn       []string                   `json:"dropAddressMin_not_in"`
+	DropAddressMaxNotIn       []string                   `json:"dropAddressMax_not_in"`
 	DropAddressLike           *string                    `json:"dropAddress_like"`
 	DropAddressMinLike        *string                    `json:"dropAddressMin_like"`
 	DropAddressMaxLike        *string                    `json:"dropAddressMax_like"`
@@ -493,6 +545,9 @@ type DeliveryFilterType struct {
 	DropPointIn               []string                   `json:"dropPoint_in"`
 	DropPointMinIn            []string                   `json:"dropPointMin_in"`
 	DropPointMaxIn            []string                   `json:"dropPointMax_in"`
+	DropPointNotIn            []string                   `json:"dropPoint_not_in"`
+	DropPointMinNotIn         []string                   `json:"dropPointMin_not_in"`
+	DropPointMaxNotIn         []string                   `json:"dropPointMax_not_in"`
 	DropPointLike             *string                    `json:"dropPoint_like"`
 	DropPointMinLike          *string                    `json:"dropPointMin_like"`
 	DropPointMaxLike          *string                    `json:"dropPointMax_like"`
@@ -524,6 +579,9 @@ type DeliveryFilterType struct {
 	ExpectedDistanceIn        []string                   `json:"expectedDistance_in"`
 	ExpectedDistanceMinIn     []string                   `json:"expectedDistanceMin_in"`
 	ExpectedDistanceMaxIn     []string                   `json:"expectedDistanceMax_in"`
+	ExpectedDistanceNotIn     []string                   `json:"expectedDistance_not_in"`
+	ExpectedDistanceMinNotIn  []string                   `json:"expectedDistanceMin_not_in"`
+	ExpectedDistanceMaxNotIn  []string                   `json:"expectedDistanceMax_not_in"`
 	ExpectedDistanceLike      *string                    `json:"expectedDistance_like"`
 	ExpectedDistanceMinLike   *string                    `json:"expectedDistanceMin_like"`
 	ExpectedDistanceMaxLike   *string                    `json:"expectedDistanceMax_like"`
@@ -562,6 +620,10 @@ type DeliveryFilterType struct {
 	ExpectedCostMinIn         []float64                  `json:"expectedCostMin_in"`
 	ExpectedCostMaxIn         []float64                  `json:"expectedCostMax_in"`
 	ExpectedCostAvgIn         []float64                  `json:"expectedCostAvg_in"`
+	ExpectedCostNotIn         []float64                  `json:"expectedCost_not_in"`
+	ExpectedCostMinNotIn      []float64                  `json:"expectedCostMin_not_in"`
+	ExpectedCostMaxNotIn      []float64                  `json:"expectedCostMax_not_in"`
+	ExpectedCostAvgNotIn      []float64                  `json:"expectedCostAvg_not_in"`
 	ExpectedCostNull          *bool                      `json:"expectedCost_null"`
 	Completed                 *bool                      `json:"completed"`
 	CompletedMin              *bool                      `json:"completedMin"`
@@ -584,6 +646,9 @@ type DeliveryFilterType struct {
 	CompletedIn               []bool                     `json:"completed_in"`
 	CompletedMinIn            []bool                     `json:"completedMin_in"`
 	CompletedMaxIn            []bool                     `json:"completedMax_in"`
+	CompletedNotIn            []bool                     `json:"completed_not_in"`
+	CompletedMinNotIn         []bool                     `json:"completedMin_not_in"`
+	CompletedMaxNotIn         []bool                     `json:"completedMax_not_in"`
 	CompletedNull             *bool                      `json:"completed_null"`
 	SmsToken                  *string                    `json:"smsToken"`
 	SmsTokenMin               *string                    `json:"smsTokenMin"`
@@ -606,6 +671,9 @@ type DeliveryFilterType struct {
 	SmsTokenIn                []string                   `json:"smsToken_in"`
 	SmsTokenMinIn             []string                   `json:"smsTokenMin_in"`
 	SmsTokenMaxIn             []string                   `json:"smsTokenMax_in"`
+	SmsTokenNotIn             []string                   `json:"smsToken_not_in"`
+	SmsTokenMinNotIn          []string                   `json:"smsTokenMin_not_in"`
+	SmsTokenMaxNotIn          []string                   `json:"smsTokenMax_not_in"`
 	SmsTokenLike              *string                    `json:"smsToken_like"`
 	SmsTokenMinLike           *string                    `json:"smsTokenMin_like"`
 	SmsTokenMaxLike           *string                    `json:"smsTokenMax_like"`
@@ -637,6 +705,9 @@ type DeliveryFilterType struct {
 	StatusIn                  []string                   `json:"status_in"`
 	StatusMinIn               []string                   `json:"statusMin_in"`
 	StatusMaxIn               []string                   `json:"statusMax_in"`
+	StatusNotIn               []string                   `json:"status_not_in"`
+	StatusMinNotIn            []string                   `json:"statusMin_not_in"`
+	StatusMaxNotIn            []string                   `json:"statusMax_not_in"`
 	StatusLike                *string                    `json:"status_like"`
 	StatusMinLike             *string                    `json:"statusMin_like"`
 	StatusMaxLike             *string                    `json:"statusMax_like"`
@@ -668,6 +739,9 @@ type DeliveryFilterType struct {
 	SenderIDIn                []string                   `json:"senderId_in"`
 	SenderIDMinIn             []string                   `json:"senderIdMin_in"`
 	SenderIDMaxIn             []string                   `json:"senderIdMax_in"`
+	SenderIDNotIn             []string                   `json:"senderId_not_in"`
+	SenderIDMinNotIn          []string                   `json:"senderIdMin_not_in"`
+	SenderIDMaxNotIn          []string                   `json:"senderIdMax_not_in"`
 	SenderIDNull              *bool                      `json:"senderId_null"`
 	ReceiverID                *string                    `json:"receiverId"`
 	ReceiverIDMin             *string                    `json:"receiverIdMin"`
@@ -690,6 +764,9 @@ type DeliveryFilterType struct {
 	ReceiverIDIn              []string                   `json:"receiverId_in"`
 	ReceiverIDMinIn           []string                   `json:"receiverIdMin_in"`
 	ReceiverIDMaxIn           []string                   `json:"receiverIdMax_in"`
+	ReceiverIDNotIn           []string                   `json:"receiverId_not_in"`
+	ReceiverIDMinNotIn        []string                   `json:"receiverIdMin_not_in"`
+	ReceiverIDMaxNotIn        []string                   `json:"receiverIdMax_not_in"`
 	ReceiverIDNull            *bool                      `json:"receiverId_null"`
 	DeliverID                 *string                    `json:"deliverId"`
 	DeliverIDMin              *string                    `json:"deliverIdMin"`
@@ -712,6 +789,9 @@ type DeliveryFilterType struct {
 	DeliverIDIn               []string                   `json:"deliverId_in"`
 	DeliverIDMinIn            []string                   `json:"deliverIdMin_in"`
 	DeliverIDMaxIn            []string                   `json:"deliverIdMax_in"`
+	DeliverIDNotIn            []string                   `json:"deliverId_not_in"`
+	DeliverIDMinNotIn         []string                   `json:"deliverIdMin_not_in"`
+	DeliverIDMaxNotIn         []string                   `json:"deliverIdMax_not_in"`
 	DeliverIDNull             *bool                      `json:"deliverId_null"`
 	VehicleTypeID             *string                    `json:"vehicleTypeId"`
 	VehicleTypeIDMin          *string                    `json:"vehicleTypeIdMin"`
@@ -734,6 +814,9 @@ type DeliveryFilterType struct {
 	VehicleTypeIDIn           []string                   `json:"vehicleTypeId_in"`
 	VehicleTypeIDMinIn        []string                   `json:"vehicleTypeIdMin_in"`
 	VehicleTypeIDMaxIn        []string                   `json:"vehicleTypeIdMax_in"`
+	VehicleTypeIDNotIn        []string                   `json:"vehicleTypeId_not_in"`
+	VehicleTypeIDMinNotIn     []string                   `json:"vehicleTypeIdMin_not_in"`
+	VehicleTypeIDMaxNotIn     []string                   `json:"vehicleTypeIdMax_not_in"`
 	VehicleTypeIDNull         *bool                      `json:"vehicleTypeId_null"`
 	DeliveryTypeID            *string                    `json:"deliveryTypeId"`
 	DeliveryTypeIDMin         *string                    `json:"deliveryTypeIdMin"`
@@ -756,6 +839,9 @@ type DeliveryFilterType struct {
 	DeliveryTypeIDIn          []string                   `json:"deliveryTypeId_in"`
 	DeliveryTypeIDMinIn       []string                   `json:"deliveryTypeIdMin_in"`
 	DeliveryTypeIDMaxIn       []string                   `json:"deliveryTypeIdMax_in"`
+	DeliveryTypeIDNotIn       []string                   `json:"deliveryTypeId_not_in"`
+	DeliveryTypeIDMinNotIn    []string                   `json:"deliveryTypeIdMin_not_in"`
+	DeliveryTypeIDMaxNotIn    []string                   `json:"deliveryTypeIdMax_not_in"`
 	DeliveryTypeIDNull        *bool                      `json:"deliveryTypeId_null"`
 	DeliveryChannelID         *string                    `json:"deliveryChannelId"`
 	DeliveryChannelIDMin      *string                    `json:"deliveryChannelIdMin"`
@@ -778,6 +864,9 @@ type DeliveryFilterType struct {
 	DeliveryChannelIDIn       []string                   `json:"deliveryChannelId_in"`
 	DeliveryChannelIDMinIn    []string                   `json:"deliveryChannelIdMin_in"`
 	DeliveryChannelIDMaxIn    []string                   `json:"deliveryChannelIdMax_in"`
+	DeliveryChannelIDNotIn    []string                   `json:"deliveryChannelId_not_in"`
+	DeliveryChannelIDMinNotIn []string                   `json:"deliveryChannelIdMin_not_in"`
+	DeliveryChannelIDMaxNotIn []string                   `json:"deliveryChannelIdMax_not_in"`
 	DeliveryChannelIDNull     *bool                      `json:"deliveryChannelId_null"`
 	UpdatedAt                 *time.Time                 `json:"updatedAt"`
 	UpdatedAtMin              *time.Time                 `json:"updatedAtMin"`
@@ -800,6 +889,9 @@ type DeliveryFilterType struct {
 	UpdatedAtIn               []*time.Time               `json:"updatedAt_in"`
 	UpdatedAtMinIn            []*time.Time               `json:"updatedAtMin_in"`
 	UpdatedAtMaxIn            []*time.Time               `json:"updatedAtMax_in"`
+	UpdatedAtNotIn            []*time.Time               `json:"updatedAt_not_in"`
+	UpdatedAtMinNotIn         []*time.Time               `json:"updatedAtMin_not_in"`
+	UpdatedAtMaxNotIn         []*time.Time               `json:"updatedAtMax_not_in"`
 	UpdatedAtNull             *bool                      `json:"updatedAt_null"`
 	CreatedAt                 *time.Time                 `json:"createdAt"`
 	CreatedAtMin              *time.Time                 `json:"createdAtMin"`
@@ -822,6 +914,9 @@ type DeliveryFilterType struct {
 	CreatedAtIn               []*time.Time               `json:"createdAt_in"`
 	CreatedAtMinIn            []*time.Time               `json:"createdAtMin_in"`
 	CreatedAtMaxIn            []*time.Time               `json:"createdAtMax_in"`
+	CreatedAtNotIn            []*time.Time               `json:"createdAt_not_in"`
+	CreatedAtMinNotIn         []*time.Time               `json:"createdAtMin_not_in"`
+	CreatedAtMaxNotIn         []*time.Time               `json:"createdAtMax_not_in"`
 	CreatedAtNull             *bool                      `json:"createdAt_null"`
 	UpdatedBy                 *string                    `json:"updatedBy"`
 	UpdatedByMin              *string                    `json:"updatedByMin"`
@@ -844,6 +939,9 @@ type DeliveryFilterType struct {
 	UpdatedByIn               []string                   `json:"updatedBy_in"`
 	UpdatedByMinIn            []string                   `json:"updatedByMin_in"`
 	UpdatedByMaxIn            []string                   `json:"updatedByMax_in"`
+	UpdatedByNotIn            []string                   `json:"updatedBy_not_in"`
+	UpdatedByMinNotIn         []string                   `json:"updatedByMin_not_in"`
+	UpdatedByMaxNotIn         []string                   `json:"updatedByMax_not_in"`
 	UpdatedByNull             *bool                      `json:"updatedBy_null"`
 	CreatedBy                 *string                    `json:"createdBy"`
 	CreatedByMin              *string                    `json:"createdByMin"`
@@ -866,6 +964,9 @@ type DeliveryFilterType struct {
 	CreatedByIn               []string                   `json:"createdBy_in"`
 	CreatedByMinIn            []string                   `json:"createdByMin_in"`
 	CreatedByMaxIn            []string                   `json:"createdByMax_in"`
+	CreatedByNotIn            []string                   `json:"createdBy_not_in"`
+	CreatedByMinNotIn         []string                   `json:"createdByMin_not_in"`
+	CreatedByMaxNotIn         []string                   `json:"createdByMax_not_in"`
 	CreatedByNull             *bool                      `json:"createdBy_null"`
 	Sender                    *PersonFilterType          `json:"sender"`
 	Receiver                  *PersonFilterType          `json:"receiver"`
@@ -985,6 +1086,9 @@ type DeliveryTypeFilterType struct {
 	IDIn                 []string                  `json:"id_in"`
 	IDMinIn              []string                  `json:"idMin_in"`
 	IDMaxIn              []string                  `json:"idMax_in"`
+	IDNotIn              []string                  `json:"id_not_in"`
+	IDMinNotIn           []string                  `json:"idMin_not_in"`
+	IDMaxNotIn           []string                  `json:"idMax_not_in"`
 	IDNull               *bool                     `json:"id_null"`
 	Name                 *string                   `json:"name"`
 	NameMin              *string                   `json:"nameMin"`
@@ -1007,6 +1111,9 @@ type DeliveryTypeFilterType struct {
 	NameIn               []string                  `json:"name_in"`
 	NameMinIn            []string                  `json:"nameMin_in"`
 	NameMaxIn            []string                  `json:"nameMax_in"`
+	NameNotIn            []string                  `json:"name_not_in"`
+	NameMinNotIn         []string                  `json:"nameMin_not_in"`
+	NameMaxNotIn         []string                  `json:"nameMax_not_in"`
 	NameLike             *string                   `json:"name_like"`
 	NameMinLike          *string                   `json:"nameMin_like"`
 	NameMaxLike          *string                   `json:"nameMax_like"`
@@ -1038,6 +1145,9 @@ type DeliveryTypeFilterType struct {
 	DescriptionIn        []string                  `json:"description_in"`
 	DescriptionMinIn     []string                  `json:"descriptionMin_in"`
 	DescriptionMaxIn     []string                  `json:"descriptionMax_in"`
+	DescriptionNotIn     []string                  `json:"description_not_in"`
+	DescriptionMinNotIn  []string                  `json:"descriptionMin_not_in"`
+	DescriptionMaxNotIn  []string                  `json:"descriptionMax_not_in"`
 	DescriptionLike      *string                   `json:"description_like"`
 	DescriptionMinLike   *string                   `json:"descriptionMin_like"`
 	DescriptionMaxLike   *string                   `json:"descriptionMax_like"`
@@ -1069,6 +1179,9 @@ type DeliveryTypeFilterType struct {
 	DeliveryIDIn         []string                  `json:"deliveryId_in"`
 	DeliveryIDMinIn      []string                  `json:"deliveryIdMin_in"`
 	DeliveryIDMaxIn      []string                  `json:"deliveryIdMax_in"`
+	DeliveryIDNotIn      []string                  `json:"deliveryId_not_in"`
+	DeliveryIDMinNotIn   []string                  `json:"deliveryIdMin_not_in"`
+	DeliveryIDMaxNotIn   []string                  `json:"deliveryIdMax_not_in"`
 	DeliveryIDNull       *bool                     `json:"deliveryId_null"`
 	UpdatedAt            *time.Time                `json:"updatedAt"`
 	UpdatedAtMin         *time.Time                `json:"updatedAtMin"`
@@ -1091,6 +1204,9 @@ type DeliveryTypeFilterType struct {
 	UpdatedAtIn          []*time.Time              `json:"updatedAt_in"`
 	UpdatedAtMinIn       []*time.Time              `json:"updatedAtMin_in"`
 	UpdatedAtMaxIn       []*time.Time              `json:"updatedAtMax_in"`
+	UpdatedAtNotIn       []*time.Time              `json:"updatedAt_not_in"`
+	UpdatedAtMinNotIn    []*time.Time              `json:"updatedAtMin_not_in"`
+	UpdatedAtMaxNotIn    []*time.Time              `json:"updatedAtMax_not_in"`
 	UpdatedAtNull        *bool                     `json:"updatedAt_null"`
 	CreatedAt            *time.Time                `json:"createdAt"`
 	CreatedAtMin         *time.Time                `json:"createdAtMin"`
@@ -1113,6 +1229,9 @@ type DeliveryTypeFilterType struct {
 	CreatedAtIn          []*time.Time              `json:"createdAt_in"`
 	CreatedAtMinIn       []*time.Time              `json:"createdAtMin_in"`
 	CreatedAtMaxIn       []*time.Time              `json:"createdAtMax_in"`
+	CreatedAtNotIn       []*time.Time              `json:"createdAt_not_in"`
+	CreatedAtMinNotIn    []*time.Time              `json:"createdAtMin_not_in"`
+	CreatedAtMaxNotIn    []*time.Time              `json:"createdAtMax_not_in"`
 	CreatedAtNull        *bool                     `json:"createdAt_null"`
 	UpdatedBy            *string                   `json:"updatedBy"`
 	UpdatedByMin         *string                   `json:"updatedByMin"`
@@ -1135,6 +1254,9 @@ type DeliveryTypeFilterType struct {
 	UpdatedByIn          []string                  `json:"updatedBy_in"`
 	UpdatedByMinIn       []string                  `json:"updatedByMin_in"`
 	UpdatedByMaxIn       []string                  `json:"updatedByMax_in"`
+	UpdatedByNotIn       []string                  `json:"updatedBy_not_in"`
+	UpdatedByMinNotIn    []string                  `json:"updatedByMin_not_in"`
+	UpdatedByMaxNotIn    []string                  `json:"updatedByMax_not_in"`
 	UpdatedByNull        *bool                     `json:"updatedBy_null"`
 	CreatedBy            *string                   `json:"createdBy"`
 	CreatedByMin         *string                   `json:"createdByMin"`
@@ -1157,6 +1279,9 @@ type DeliveryTypeFilterType struct {
 	CreatedByIn          []string                  `json:"createdBy_in"`
 	CreatedByMinIn       []string                  `json:"createdByMin_in"`
 	CreatedByMaxIn       []string                  `json:"createdByMax_in"`
+	CreatedByNotIn       []string                  `json:"createdBy_not_in"`
+	CreatedByMinNotIn    []string                  `json:"createdByMin_not_in"`
+	CreatedByMaxNotIn    []string                  `json:"createdByMax_not_in"`
 	CreatedByNull        *bool                     `json:"createdBy_null"`
 	Delivery             *DeliveryFilterType       `json:"delivery"`
 }
@@ -1213,6 +1338,9 @@ type PersonFilterType struct {
 	IDIn                 []string            `json:"id_in"`
 	IDMinIn              []string            `json:"idMin_in"`
 	IDMaxIn              []string            `json:"idMax_in"`
+	IDNotIn              []string            `json:"id_not_in"`
+	IDMinNotIn           []string            `json:"idMin_not_in"`
+	IDMaxNotIn           []string            `json:"idMax_not_in"`
 	IDNull               *bool               `json:"id_null"`
 	Deliver              *bool               `json:"deliver"`
 	DeliverMin           *bool               `json:"deliverMin"`
@@ -1235,6 +1363,9 @@ type PersonFilterType struct {
 	DeliverIn            []bool              `json:"deliver_in"`
 	DeliverMinIn         []bool              `json:"deliverMin_in"`
 	DeliverMaxIn         []bool              `json:"deliverMax_in"`
+	DeliverNotIn         []bool              `json:"deliver_not_in"`
+	DeliverMinNotIn      []bool              `json:"deliverMin_not_in"`
+	DeliverMaxNotIn      []bool              `json:"deliverMax_not_in"`
 	DeliverNull          *bool               `json:"deliver_null"`
 	Email                *string             `json:"email"`
 	EmailMin             *string             `json:"emailMin"`
@@ -1257,6 +1388,9 @@ type PersonFilterType struct {
 	EmailIn              []string            `json:"email_in"`
 	EmailMinIn           []string            `json:"emailMin_in"`
 	EmailMaxIn           []string            `json:"emailMax_in"`
+	EmailNotIn           []string            `json:"email_not_in"`
+	EmailMinNotIn        []string            `json:"emailMin_not_in"`
+	EmailMaxNotIn        []string            `json:"emailMax_not_in"`
 	EmailLike            *string             `json:"email_like"`
 	EmailMinLike         *string             `json:"emailMin_like"`
 	EmailMaxLike         *string             `json:"emailMax_like"`
@@ -1288,6 +1422,9 @@ type PersonFilterType struct {
 	PhoneIn              []string            `json:"phone_in"`
 	PhoneMinIn           []string            `json:"phoneMin_in"`
 	PhoneMaxIn           []string            `json:"phoneMax_in"`
+	PhoneNotIn           []string            `json:"phone_not_in"`
+	PhoneMinNotIn        []string            `json:"phoneMin_not_in"`
+	PhoneMaxNotIn        []string            `json:"phoneMax_not_in"`
 	PhoneLike            *string             `json:"phone_like"`
 	PhoneMinLike         *string             `json:"phoneMin_like"`
 	PhoneMaxLike         *string             `json:"phoneMax_like"`
@@ -1319,6 +1456,9 @@ type PersonFilterType struct {
 	DocumentNoIn         []string            `json:"documentNo_in"`
 	DocumentNoMinIn      []string            `json:"documentNoMin_in"`
 	DocumentNoMaxIn      []string            `json:"documentNoMax_in"`
+	DocumentNoNotIn      []string            `json:"documentNo_not_in"`
+	DocumentNoMinNotIn   []string            `json:"documentNoMin_not_in"`
+	DocumentNoMaxNotIn   []string            `json:"documentNoMax_not_in"`
 	DocumentNoLike       *string             `json:"documentNo_like"`
 	DocumentNoMinLike    *string             `json:"documentNoMin_like"`
 	DocumentNoMaxLike    *string             `json:"documentNoMax_like"`
@@ -1350,6 +1490,9 @@ type PersonFilterType struct {
 	AvatarURLIn          []string            `json:"avatarURL_in"`
 	AvatarURLMinIn       []string            `json:"avatarURLMin_in"`
 	AvatarURLMaxIn       []string            `json:"avatarURLMax_in"`
+	AvatarURLNotIn       []string            `json:"avatarURL_not_in"`
+	AvatarURLMinNotIn    []string            `json:"avatarURLMin_not_in"`
+	AvatarURLMaxNotIn    []string            `json:"avatarURLMax_not_in"`
 	AvatarURLLike        *string             `json:"avatarURL_like"`
 	AvatarURLMinLike     *string             `json:"avatarURLMin_like"`
 	AvatarURLMaxLike     *string             `json:"avatarURLMax_like"`
@@ -1381,6 +1524,9 @@ type PersonFilterType struct {
 	DisplayNameIn        []string            `json:"displayName_in"`
 	DisplayNameMinIn     []string            `json:"displayNameMin_in"`
 	DisplayNameMaxIn     []string            `json:"displayNameMax_in"`
+	DisplayNameNotIn     []string            `json:"displayName_not_in"`
+	DisplayNameMinNotIn  []string            `json:"displayNameMin_not_in"`
+	DisplayNameMaxNotIn  []string            `json:"displayNameMax_not_in"`
 	DisplayNameLike      *string             `json:"displayName_like"`
 	DisplayNameMinLike   *string             `json:"displayNameMin_like"`
 	DisplayNameMaxLike   *string             `json:"displayNameMax_like"`
@@ -1412,6 +1558,9 @@ type PersonFilterType struct {
 	FirstNameIn          []string            `json:"firstName_in"`
 	FirstNameMinIn       []string            `json:"firstNameMin_in"`
 	FirstNameMaxIn       []string            `json:"firstNameMax_in"`
+	FirstNameNotIn       []string            `json:"firstName_not_in"`
+	FirstNameMinNotIn    []string            `json:"firstNameMin_not_in"`
+	FirstNameMaxNotIn    []string            `json:"firstNameMax_not_in"`
 	FirstNameLike        *string             `json:"firstName_like"`
 	FirstNameMinLike     *string             `json:"firstNameMin_like"`
 	FirstNameMaxLike     *string             `json:"firstNameMax_like"`
@@ -1443,6 +1592,9 @@ type PersonFilterType struct {
 	LastNameIn           []string            `json:"lastName_in"`
 	LastNameMinIn        []string            `json:"lastNameMin_in"`
 	LastNameMaxIn        []string            `json:"lastNameMax_in"`
+	LastNameNotIn        []string            `json:"lastName_not_in"`
+	LastNameMinNotIn     []string            `json:"lastNameMin_not_in"`
+	LastNameMaxNotIn     []string            `json:"lastNameMax_not_in"`
 	LastNameLike         *string             `json:"lastName_like"`
 	LastNameMinLike      *string             `json:"lastNameMin_like"`
 	LastNameMaxLike      *string             `json:"lastNameMax_like"`
@@ -1474,6 +1626,9 @@ type PersonFilterType struct {
 	NickNameIn           []string            `json:"nickName_in"`
 	NickNameMinIn        []string            `json:"nickNameMin_in"`
 	NickNameMaxIn        []string            `json:"nickNameMax_in"`
+	NickNameNotIn        []string            `json:"nickName_not_in"`
+	NickNameMinNotIn     []string            `json:"nickNameMin_not_in"`
+	NickNameMaxNotIn     []string            `json:"nickNameMax_not_in"`
 	NickNameLike         *string             `json:"nickName_like"`
 	NickNameMinLike      *string             `json:"nickNameMin_like"`
 	NickNameMaxLike      *string             `json:"nickNameMax_like"`
@@ -1505,6 +1660,9 @@ type PersonFilterType struct {
 	DescriptionIn        []string            `json:"description_in"`
 	DescriptionMinIn     []string            `json:"descriptionMin_in"`
 	DescriptionMaxIn     []string            `json:"descriptionMax_in"`
+	DescriptionNotIn     []string            `json:"description_not_in"`
+	DescriptionMinNotIn  []string            `json:"descriptionMin_not_in"`
+	DescriptionMaxNotIn  []string            `json:"descriptionMax_not_in"`
 	DescriptionLike      *string             `json:"description_like"`
 	DescriptionMinLike   *string             `json:"descriptionMin_like"`
 	DescriptionMaxLike   *string             `json:"descriptionMax_like"`
@@ -1536,6 +1694,9 @@ type PersonFilterType struct {
 	LocationIn           []string            `json:"location_in"`
 	LocationMinIn        []string            `json:"locationMin_in"`
 	LocationMaxIn        []string            `json:"locationMax_in"`
+	LocationNotIn        []string            `json:"location_not_in"`
+	LocationMinNotIn     []string            `json:"locationMin_not_in"`
+	LocationMaxNotIn     []string            `json:"locationMax_not_in"`
 	LocationLike         *string             `json:"location_like"`
 	LocationMinLike      *string             `json:"locationMin_like"`
 	LocationMaxLike      *string             `json:"locationMax_like"`
@@ -1567,6 +1728,9 @@ type PersonFilterType struct {
 	UserIDIn             []string            `json:"userId_in"`
 	UserIDMinIn          []string            `json:"userIdMin_in"`
 	UserIDMaxIn          []string            `json:"userIdMax_in"`
+	UserIDNotIn          []string            `json:"userId_not_in"`
+	UserIDMinNotIn       []string            `json:"userIdMin_not_in"`
+	UserIDMaxNotIn       []string            `json:"userIdMax_not_in"`
 	UserIDNull           *bool               `json:"userId_null"`
 	UpdatedAt            *time.Time          `json:"updatedAt"`
 	UpdatedAtMin         *time.Time          `json:"updatedAtMin"`
@@ -1589,6 +1753,9 @@ type PersonFilterType struct {
 	UpdatedAtIn          []*time.Time        `json:"updatedAt_in"`
 	UpdatedAtMinIn       []*time.Time        `json:"updatedAtMin_in"`
 	UpdatedAtMaxIn       []*time.Time        `json:"updatedAtMax_in"`
+	UpdatedAtNotIn       []*time.Time        `json:"updatedAt_not_in"`
+	UpdatedAtMinNotIn    []*time.Time        `json:"updatedAtMin_not_in"`
+	UpdatedAtMaxNotIn    []*time.Time        `json:"updatedAtMax_not_in"`
 	UpdatedAtNull        *bool               `json:"updatedAt_null"`
 	CreatedAt            *time.Time          `json:"createdAt"`
 	CreatedAtMin         *time.Time          `json:"createdAtMin"`
@@ -1611,6 +1778,9 @@ type PersonFilterType struct {
 	CreatedAtIn          []*time.Time        `json:"createdAt_in"`
 	CreatedAtMinIn       []*time.Time        `json:"createdAtMin_in"`
 	CreatedAtMaxIn       []*time.Time        `json:"createdAtMax_in"`
+	CreatedAtNotIn       []*time.Time        `json:"createdAt_not_in"`
+	CreatedAtMinNotIn    []*time.Time        `json:"createdAtMin_not_in"`
+	CreatedAtMaxNotIn    []*time.Time        `json:"createdAtMax_not_in"`
 	CreatedAtNull        *bool               `json:"createdAt_null"`
 	UpdatedBy            *string             `json:"updatedBy"`
 	UpdatedByMin         *string             `json:"updatedByMin"`
@@ -1633,6 +1803,9 @@ type PersonFilterType struct {
 	UpdatedByIn          []string            `json:"updatedBy_in"`
 	UpdatedByMinIn       []string            `json:"updatedByMin_in"`
 	UpdatedByMaxIn       []string            `json:"updatedByMax_in"`
+	UpdatedByNotIn       []string            `json:"updatedBy_not_in"`
+	UpdatedByMinNotIn    []string            `json:"updatedByMin_not_in"`
+	UpdatedByMaxNotIn    []string            `json:"updatedByMax_not_in"`
 	UpdatedByNull        *bool               `json:"updatedBy_null"`
 	CreatedBy            *string             `json:"createdBy"`
 	CreatedByMin         *string             `json:"createdByMin"`
@@ -1655,6 +1828,9 @@ type PersonFilterType struct {
 	CreatedByIn          []string            `json:"createdBy_in"`
 	CreatedByMinIn       []string            `json:"createdByMin_in"`
 	CreatedByMaxIn       []string            `json:"createdByMax_in"`
+	CreatedByNotIn       []string            `json:"createdBy_not_in"`
+	CreatedByMinNotIn    []string            `json:"createdByMin_not_in"`
+	CreatedByMaxNotIn    []string            `json:"createdByMax_not_in"`
 	CreatedByNull        *bool               `json:"createdBy_null"`
 	Deliveries           *DeliveryFilterType `json:"deliveries"`
 	DeliveriesSent       *DeliveryFilterType `json:"deliveriesSent"`
@@ -1751,6 +1927,9 @@ type VehicleTypeFilterType struct {
 	IDIn                 []string                 `json:"id_in"`
 	IDMinIn              []string                 `json:"idMin_in"`
 	IDMaxIn              []string                 `json:"idMax_in"`
+	IDNotIn              []string                 `json:"id_not_in"`
+	IDMinNotIn           []string                 `json:"idMin_not_in"`
+	IDMaxNotIn           []string                 `json:"idMax_not_in"`
 	IDNull               *bool                    `json:"id_null"`
 	Name                 *string                  `json:"name"`
 	NameMin              *string                  `json:"nameMin"`
@@ -1773,6 +1952,9 @@ type VehicleTypeFilterType struct {
 	NameIn               []string                 `json:"name_in"`
 	NameMinIn            []string                 `json:"nameMin_in"`
 	NameMaxIn            []string                 `json:"nameMax_in"`
+	NameNotIn            []string                 `json:"name_not_in"`
+	NameMinNotIn         []string                 `json:"nameMin_not_in"`
+	NameMaxNotIn         []string                 `json:"nameMax_not_in"`
 	NameLike             *string                  `json:"name_like"`
 	NameMinLike          *string                  `json:"nameMin_like"`
 	NameMaxLike          *string                  `json:"nameMax_like"`
@@ -1804,6 +1986,9 @@ type VehicleTypeFilterType struct {
 	DescriptionIn        []string                 `json:"description_in"`
 	DescriptionMinIn     []string                 `json:"descriptionMin_in"`
 	DescriptionMaxIn     []string                 `json:"descriptionMax_in"`
+	DescriptionNotIn     []string                 `json:"description_not_in"`
+	DescriptionMinNotIn  []string                 `json:"descriptionMin_not_in"`
+	DescriptionMaxNotIn  []string                 `json:"descriptionMax_not_in"`
 	DescriptionLike      *string                  `json:"description_like"`
 	DescriptionMinLike   *string                  `json:"descriptionMin_like"`
 	DescriptionMaxLike   *string                  `json:"descriptionMax_like"`
@@ -1835,6 +2020,9 @@ type VehicleTypeFilterType struct {
 	DeliveryIDIn         []string                 `json:"deliveryId_in"`
 	DeliveryIDMinIn      []string                 `json:"deliveryIdMin_in"`
 	DeliveryIDMaxIn      []string                 `json:"deliveryIdMax_in"`
+	DeliveryIDNotIn      []string                 `json:"deliveryId_not_in"`
+	DeliveryIDMinNotIn   []string                 `json:"deliveryIdMin_not_in"`
+	DeliveryIDMaxNotIn   []string                 `json:"deliveryIdMax_not_in"`
 	DeliveryIDNull       *bool                    `json:"deliveryId_null"`
 	UpdatedAt            *time.Time               `json:"updatedAt"`
 	UpdatedAtMin         *time.Time               `json:"updatedAtMin"`
@@ -1857,6 +2045,9 @@ type VehicleTypeFilterType struct {
 	UpdatedAtIn          []*time.Time             `json:"updatedAt_in"`
 	UpdatedAtMinIn       []*time.Time             `json:"updatedAtMin_in"`
 	UpdatedAtMaxIn       []*time.Time             `json:"updatedAtMax_in"`
+	UpdatedAtNotIn       []*time.Time             `json:"updatedAt_not_in"`
+	UpdatedAtMinNotIn    []*time.Time             `json:"updatedAtMin_not_in"`
+	UpdatedAtMaxNotIn    []*time.Time             `json:"updatedAtMax_not_in"`
 	UpdatedAtNull        *bool                    `json:"updatedAt_null"`
 	CreatedAt            *time.Time               `json:"createdAt"`
 	CreatedAtMin         *time.Time               `json:"createdAtMin"`
@@ -1879,6 +2070,9 @@ type VehicleTypeFilterType struct {
 	CreatedAtIn          []*time.Time             `json:"createdAt_in"`
 	CreatedAtMinIn       []*time.Time             `json:"createdAtMin_in"`
 	CreatedAtMaxIn       []*time.Time             `json:"createdAtMax_in"`
+	CreatedAtNotIn       []*time.Time             `json:"createdAt_not_in"`
+	CreatedAtMinNotIn    []*time.Time             `json:"createdAtMin_not_in"`
+	CreatedAtMaxNotIn    []*time.Time             `json:"createdAtMax_not_in"`
 	CreatedAtNull        *bool                    `json:"createdAt_null"`
 	UpdatedBy            *string                  `json:"updatedBy"`
 	UpdatedByMin         *string                  `json:"updatedByMin"`
@@ -1901,6 +2095,9 @@ type VehicleTypeFilterType struct {
 	UpdatedByIn          []string                 `json:"updatedBy_in"`
 	UpdatedByMinIn       []string                 `json:"updatedByMin_in"`
 	UpdatedByMaxIn       []string                 `json:"updatedByMax_in"`
+	UpdatedByNotIn       []string                 `json:"updatedBy_not_in"`
+	UpdatedByMinNotIn    []string                 `json:"updatedByMin_not_in"`
+	UpdatedByMaxNotIn    []string                 `json:"updatedByMax_not_in"`
 	UpdatedByNull        *bool                    `json:"updatedBy_null"`
 	CreatedBy            *string                  `json:"createdBy"`
 	CreatedByMin         *string                  `json:"createdByMin"`
@@ -1923,6 +2120,9 @@ type VehicleTypeFilterType struct {
 	CreatedByIn          []string                 `json:"createdBy_in"`
 	CreatedByMinIn       []string                 `json:"createdByMin_in"`
 	CreatedByMaxIn       []string                 `json:"createdByMax_in"`
+	CreatedByNotIn       []string                 `json:"createdBy_not_in"`
+	CreatedByMinNotIn    []string                 `json:"createdByMin_not_in"`
+	CreatedByMaxNotIn    []string                 `json:"createdByMax_not_in"`
 	CreatedByNull        *bool                    `json:"createdBy_null"`
 	Delivery             *DeliveryFilterType      `json:"delivery"`
 }

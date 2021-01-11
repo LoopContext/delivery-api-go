@@ -50,9 +50,6 @@ func QueryDeliveryHandler(ctx context.Context, r *GeneratedResolver, opts QueryD
 		},
 	}
 	qb := r.GetDB(ctx)
-	if qb == nil {
-		qb = r.DB.Query()
-	}
 	if opts.ID != nil {
 		qb = qb.Where(TableName("deliveries")+".id = ?", *opts.ID)
 	}
@@ -86,7 +83,7 @@ type QueryDeliveriesHandlerOptions struct {
 	Filter *DeliveryFilterType
 }
 
-// Deliveries ...
+// Deliveries handler options
 func (r *GeneratedQueryResolver) Deliveries(ctx context.Context, offset *int, limit *int, q *string, sort []*DeliverySortType, filter *DeliveryFilterType) (*DeliveryResultType, error) {
 	opts := QueryDeliveriesHandlerOptions{
 		Offset: offset,
@@ -96,6 +93,32 @@ func (r *GeneratedQueryResolver) Deliveries(ctx context.Context, offset *int, li
 		Filter: filter,
 	}
 	return r.Handlers.QueryDeliveries(ctx, r.GeneratedResolver, opts)
+}
+
+// DeliveriesItems handler
+func (r *GeneratedResolver) DeliveriesItems(ctx context.Context, opts QueryDeliveriesHandlerOptions) (res []*Delivery, err error) {
+	resultType, err := r.Handlers.QueryDeliveries(ctx, r, opts)
+	if err != nil {
+		return
+	}
+	err = resultType.GetItems(ctx, r.GetDB(ctx), GetItemsOptions{
+		Alias: TableName("deliveries"),
+	}, &res)
+	if err != nil {
+		return
+	}
+	return
+}
+
+// DeliveriesCount handler
+func (r *GeneratedResolver) DeliveriesCount(ctx context.Context, opts QueryDeliveriesHandlerOptions) (count int, err error) {
+	resultType, err := r.Handlers.QueryDeliveries(ctx, r, opts)
+	if err != nil {
+		return
+	}
+	return resultType.GetCount(ctx, r.GetDB(ctx), GetItemsOptions{
+		Alias: TableName("deliveries"),
+	}, &Delivery{})
 }
 
 // QueryDeliveriesHandler handler
@@ -140,7 +163,7 @@ func (r *GeneratedDeliveryResultTypeResolver) Items(ctx context.Context, obj *De
 			"VehicleType",
 		},
 	}
-	err = obj.GetItems(ctx, r.DB.db, otps, &items)
+	err = obj.GetItems(ctx, r.GetDB(ctx), otps, &items)
 
 	for _, item := range items {
 
@@ -173,7 +196,7 @@ func (r *GeneratedDeliveryResultTypeResolver) Count(ctx context.Context, obj *De
 			"VehicleType",
 		},
 	}
-	return obj.GetCount(ctx, r.DB.db, opts, &Delivery{})
+	return obj.GetCount(ctx, r.GetDB(ctx), opts, &Delivery{})
 }
 
 // GeneratedDeliveryResolver struct
@@ -377,9 +400,6 @@ func QueryPersonHandler(ctx context.Context, r *GeneratedResolver, opts QueryPer
 		},
 	}
 	qb := r.GetDB(ctx)
-	if qb == nil {
-		qb = r.DB.Query()
-	}
 	if opts.ID != nil {
 		qb = qb.Where(TableName("people")+".id = ?", *opts.ID)
 	}
@@ -408,7 +428,7 @@ type QueryPeopleHandlerOptions struct {
 	Filter *PersonFilterType
 }
 
-// People ...
+// People handler options
 func (r *GeneratedQueryResolver) People(ctx context.Context, offset *int, limit *int, q *string, sort []*PersonSortType, filter *PersonFilterType) (*PersonResultType, error) {
 	opts := QueryPeopleHandlerOptions{
 		Offset: offset,
@@ -418,6 +438,32 @@ func (r *GeneratedQueryResolver) People(ctx context.Context, offset *int, limit 
 		Filter: filter,
 	}
 	return r.Handlers.QueryPeople(ctx, r.GeneratedResolver, opts)
+}
+
+// PeopleItems handler
+func (r *GeneratedResolver) PeopleItems(ctx context.Context, opts QueryPeopleHandlerOptions) (res []*Person, err error) {
+	resultType, err := r.Handlers.QueryPeople(ctx, r, opts)
+	if err != nil {
+		return
+	}
+	err = resultType.GetItems(ctx, r.GetDB(ctx), GetItemsOptions{
+		Alias: TableName("people"),
+	}, &res)
+	if err != nil {
+		return
+	}
+	return
+}
+
+// PeopleCount handler
+func (r *GeneratedResolver) PeopleCount(ctx context.Context, opts QueryPeopleHandlerOptions) (count int, err error) {
+	resultType, err := r.Handlers.QueryPeople(ctx, r, opts)
+	if err != nil {
+		return
+	}
+	return resultType.GetCount(ctx, r.GetDB(ctx), GetItemsOptions{
+		Alias: TableName("people"),
+	}, &Person{})
 }
 
 // QueryPeopleHandler handler
@@ -457,7 +503,7 @@ func (r *GeneratedPersonResultTypeResolver) Items(ctx context.Context, obj *Pers
 		Alias:      TableName("people"),
 		Preloaders: []string{},
 	}
-	err = obj.GetItems(ctx, r.DB.db, otps, &items)
+	err = obj.GetItems(ctx, r.GetDB(ctx), otps, &items)
 
 	uniqueItems := []*Person{}
 	idMap := map[string]bool{}
@@ -477,7 +523,7 @@ func (r *GeneratedPersonResultTypeResolver) Count(ctx context.Context, obj *Pers
 		Alias:      TableName("people"),
 		Preloaders: []string{},
 	}
-	return obj.GetCount(ctx, r.DB.db, opts, &Person{})
+	return obj.GetCount(ctx, r.GetDB(ctx), opts, &Person{})
 }
 
 // GeneratedPersonResolver struct
@@ -493,9 +539,6 @@ func PersonDeliveriesHandler(ctx context.Context, r *GeneratedResolver, obj *Per
 
 	items := []*Delivery{}
 	db := r.GetDB(ctx)
-	if db == nil {
-		db = r.DB.Query()
-	}
 	err = db.Model(obj).Related(&items, "Deliveries").Error
 	res = items
 
@@ -508,9 +551,6 @@ func (r *GeneratedPersonResolver) DeliveriesIds(ctx context.Context, obj *Person
 
 	items := []*Delivery{}
 	db := r.GetDB(ctx)
-	if db == nil {
-		db = r.DB.Query()
-	}
 	err = db.Model(obj).Select(TableName("deliveries")+".id").Related(&items, "Deliveries").Error
 
 	for _, item := range items {
@@ -557,9 +597,6 @@ func PersonDeliveriesSentHandler(ctx context.Context, r *GeneratedResolver, obj 
 
 	items := []*Delivery{}
 	db := r.GetDB(ctx)
-	if db == nil {
-		db = r.DB.Query()
-	}
 	err = db.Model(obj).Related(&items, "DeliveriesSent").Error
 	res = items
 
@@ -572,9 +609,6 @@ func (r *GeneratedPersonResolver) DeliveriesSentIds(ctx context.Context, obj *Pe
 
 	items := []*Delivery{}
 	db := r.GetDB(ctx)
-	if db == nil {
-		db = r.DB.Query()
-	}
 	err = db.Model(obj).Select(TableName("deliveries")+".id").Related(&items, "DeliveriesSent").Error
 
 	for _, item := range items {
@@ -621,9 +655,6 @@ func PersonDeliveriesReceivedHandler(ctx context.Context, r *GeneratedResolver, 
 
 	items := []*Delivery{}
 	db := r.GetDB(ctx)
-	if db == nil {
-		db = r.DB.Query()
-	}
 	err = db.Model(obj).Related(&items, "DeliveriesReceived").Error
 	res = items
 
@@ -636,9 +667,6 @@ func (r *GeneratedPersonResolver) DeliveriesReceivedIds(ctx context.Context, obj
 
 	items := []*Delivery{}
 	db := r.GetDB(ctx)
-	if db == nil {
-		db = r.DB.Query()
-	}
 	err = db.Model(obj).Select(TableName("deliveries")+".id").Related(&items, "DeliveriesReceived").Error
 
 	for _, item := range items {
@@ -713,9 +741,6 @@ func QueryDeliveryTypeHandler(ctx context.Context, r *GeneratedResolver, opts Qu
 		},
 	}
 	qb := r.GetDB(ctx)
-	if qb == nil {
-		qb = r.DB.Query()
-	}
 	if opts.ID != nil {
 		qb = qb.Where(TableName("delivery_types")+".id = ?", *opts.ID)
 	}
@@ -744,7 +769,7 @@ type QueryDeliveryTypesHandlerOptions struct {
 	Filter *DeliveryTypeFilterType
 }
 
-// DeliveryTypes ...
+// DeliveryTypes handler options
 func (r *GeneratedQueryResolver) DeliveryTypes(ctx context.Context, offset *int, limit *int, q *string, sort []*DeliveryTypeSortType, filter *DeliveryTypeFilterType) (*DeliveryTypeResultType, error) {
 	opts := QueryDeliveryTypesHandlerOptions{
 		Offset: offset,
@@ -754,6 +779,32 @@ func (r *GeneratedQueryResolver) DeliveryTypes(ctx context.Context, offset *int,
 		Filter: filter,
 	}
 	return r.Handlers.QueryDeliveryTypes(ctx, r.GeneratedResolver, opts)
+}
+
+// DeliveryTypesItems handler
+func (r *GeneratedResolver) DeliveryTypesItems(ctx context.Context, opts QueryDeliveryTypesHandlerOptions) (res []*DeliveryType, err error) {
+	resultType, err := r.Handlers.QueryDeliveryTypes(ctx, r, opts)
+	if err != nil {
+		return
+	}
+	err = resultType.GetItems(ctx, r.GetDB(ctx), GetItemsOptions{
+		Alias: TableName("delivery_types"),
+	}, &res)
+	if err != nil {
+		return
+	}
+	return
+}
+
+// DeliveryTypesCount handler
+func (r *GeneratedResolver) DeliveryTypesCount(ctx context.Context, opts QueryDeliveryTypesHandlerOptions) (count int, err error) {
+	resultType, err := r.Handlers.QueryDeliveryTypes(ctx, r, opts)
+	if err != nil {
+		return
+	}
+	return resultType.GetCount(ctx, r.GetDB(ctx), GetItemsOptions{
+		Alias: TableName("delivery_types"),
+	}, &DeliveryType{})
 }
 
 // QueryDeliveryTypesHandler handler
@@ -793,7 +844,7 @@ func (r *GeneratedDeliveryTypeResultTypeResolver) Items(ctx context.Context, obj
 		Alias:      TableName("delivery_types"),
 		Preloaders: []string{},
 	}
-	err = obj.GetItems(ctx, r.DB.db, otps, &items)
+	err = obj.GetItems(ctx, r.GetDB(ctx), otps, &items)
 
 	uniqueItems := []*DeliveryType{}
 	idMap := map[string]bool{}
@@ -813,7 +864,7 @@ func (r *GeneratedDeliveryTypeResultTypeResolver) Count(ctx context.Context, obj
 		Alias:      TableName("delivery_types"),
 		Preloaders: []string{},
 	}
-	return obj.GetCount(ctx, r.DB.db, opts, &DeliveryType{})
+	return obj.GetCount(ctx, r.GetDB(ctx), opts, &DeliveryType{})
 }
 
 // GeneratedDeliveryTypeResolver struct
@@ -876,9 +927,6 @@ func QueryDeliveryChannelHandler(ctx context.Context, r *GeneratedResolver, opts
 		},
 	}
 	qb := r.GetDB(ctx)
-	if qb == nil {
-		qb = r.DB.Query()
-	}
 	if opts.ID != nil {
 		qb = qb.Where(TableName("delivery_channels")+".id = ?", *opts.ID)
 	}
@@ -907,7 +955,7 @@ type QueryDeliveryChannelsHandlerOptions struct {
 	Filter *DeliveryChannelFilterType
 }
 
-// DeliveryChannels ...
+// DeliveryChannels handler options
 func (r *GeneratedQueryResolver) DeliveryChannels(ctx context.Context, offset *int, limit *int, q *string, sort []*DeliveryChannelSortType, filter *DeliveryChannelFilterType) (*DeliveryChannelResultType, error) {
 	opts := QueryDeliveryChannelsHandlerOptions{
 		Offset: offset,
@@ -917,6 +965,32 @@ func (r *GeneratedQueryResolver) DeliveryChannels(ctx context.Context, offset *i
 		Filter: filter,
 	}
 	return r.Handlers.QueryDeliveryChannels(ctx, r.GeneratedResolver, opts)
+}
+
+// DeliveryChannelsItems handler
+func (r *GeneratedResolver) DeliveryChannelsItems(ctx context.Context, opts QueryDeliveryChannelsHandlerOptions) (res []*DeliveryChannel, err error) {
+	resultType, err := r.Handlers.QueryDeliveryChannels(ctx, r, opts)
+	if err != nil {
+		return
+	}
+	err = resultType.GetItems(ctx, r.GetDB(ctx), GetItemsOptions{
+		Alias: TableName("delivery_channels"),
+	}, &res)
+	if err != nil {
+		return
+	}
+	return
+}
+
+// DeliveryChannelsCount handler
+func (r *GeneratedResolver) DeliveryChannelsCount(ctx context.Context, opts QueryDeliveryChannelsHandlerOptions) (count int, err error) {
+	resultType, err := r.Handlers.QueryDeliveryChannels(ctx, r, opts)
+	if err != nil {
+		return
+	}
+	return resultType.GetCount(ctx, r.GetDB(ctx), GetItemsOptions{
+		Alias: TableName("delivery_channels"),
+	}, &DeliveryChannel{})
 }
 
 // QueryDeliveryChannelsHandler handler
@@ -956,7 +1030,7 @@ func (r *GeneratedDeliveryChannelResultTypeResolver) Items(ctx context.Context, 
 		Alias:      TableName("delivery_channels"),
 		Preloaders: []string{},
 	}
-	err = obj.GetItems(ctx, r.DB.db, otps, &items)
+	err = obj.GetItems(ctx, r.GetDB(ctx), otps, &items)
 
 	uniqueItems := []*DeliveryChannel{}
 	idMap := map[string]bool{}
@@ -976,7 +1050,7 @@ func (r *GeneratedDeliveryChannelResultTypeResolver) Count(ctx context.Context, 
 		Alias:      TableName("delivery_channels"),
 		Preloaders: []string{},
 	}
-	return obj.GetCount(ctx, r.DB.db, opts, &DeliveryChannel{})
+	return obj.GetCount(ctx, r.GetDB(ctx), opts, &DeliveryChannel{})
 }
 
 // GeneratedDeliveryChannelResolver struct
@@ -1039,9 +1113,6 @@ func QueryVehicleTypeHandler(ctx context.Context, r *GeneratedResolver, opts Que
 		},
 	}
 	qb := r.GetDB(ctx)
-	if qb == nil {
-		qb = r.DB.Query()
-	}
 	if opts.ID != nil {
 		qb = qb.Where(TableName("vehicle_types")+".id = ?", *opts.ID)
 	}
@@ -1070,7 +1141,7 @@ type QueryVehicleTypesHandlerOptions struct {
 	Filter *VehicleTypeFilterType
 }
 
-// VehicleTypes ...
+// VehicleTypes handler options
 func (r *GeneratedQueryResolver) VehicleTypes(ctx context.Context, offset *int, limit *int, q *string, sort []*VehicleTypeSortType, filter *VehicleTypeFilterType) (*VehicleTypeResultType, error) {
 	opts := QueryVehicleTypesHandlerOptions{
 		Offset: offset,
@@ -1080,6 +1151,32 @@ func (r *GeneratedQueryResolver) VehicleTypes(ctx context.Context, offset *int, 
 		Filter: filter,
 	}
 	return r.Handlers.QueryVehicleTypes(ctx, r.GeneratedResolver, opts)
+}
+
+// VehicleTypesItems handler
+func (r *GeneratedResolver) VehicleTypesItems(ctx context.Context, opts QueryVehicleTypesHandlerOptions) (res []*VehicleType, err error) {
+	resultType, err := r.Handlers.QueryVehicleTypes(ctx, r, opts)
+	if err != nil {
+		return
+	}
+	err = resultType.GetItems(ctx, r.GetDB(ctx), GetItemsOptions{
+		Alias: TableName("vehicle_types"),
+	}, &res)
+	if err != nil {
+		return
+	}
+	return
+}
+
+// VehicleTypesCount handler
+func (r *GeneratedResolver) VehicleTypesCount(ctx context.Context, opts QueryVehicleTypesHandlerOptions) (count int, err error) {
+	resultType, err := r.Handlers.QueryVehicleTypes(ctx, r, opts)
+	if err != nil {
+		return
+	}
+	return resultType.GetCount(ctx, r.GetDB(ctx), GetItemsOptions{
+		Alias: TableName("vehicle_types"),
+	}, &VehicleType{})
 }
 
 // QueryVehicleTypesHandler handler
@@ -1119,7 +1216,7 @@ func (r *GeneratedVehicleTypeResultTypeResolver) Items(ctx context.Context, obj 
 		Alias:      TableName("vehicle_types"),
 		Preloaders: []string{},
 	}
-	err = obj.GetItems(ctx, r.DB.db, otps, &items)
+	err = obj.GetItems(ctx, r.GetDB(ctx), otps, &items)
 
 	uniqueItems := []*VehicleType{}
 	idMap := map[string]bool{}
@@ -1139,7 +1236,7 @@ func (r *GeneratedVehicleTypeResultTypeResolver) Count(ctx context.Context, obj 
 		Alias:      TableName("vehicle_types"),
 		Preloaders: []string{},
 	}
-	return obj.GetCount(ctx, r.DB.db, opts, &VehicleType{})
+	return obj.GetCount(ctx, r.GetDB(ctx), opts, &VehicleType{})
 }
 
 // GeneratedVehicleTypeResolver struct

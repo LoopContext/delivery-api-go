@@ -101,6 +101,7 @@ func jwtFromHeader(req *http.Request, key string) (string, error) {
 	}
 
 	parts := strings.SplitN(authHeader, " ", 2)
+	log.Debug().Msgf("tokenStr: %s", authHeader)
 	if !(len(parts) == 2 && parts[0] == TokenAuthHeaderName) {
 		return "", ErrInvalidAuthHeader
 	}

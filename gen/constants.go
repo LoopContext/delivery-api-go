@@ -310,6 +310,9 @@ input DeliveryFilterType {
   id_in: [ID!]
   idMin_in: [ID!]
   idMax_in: [ID!]
+  id_not_in: [ID!]
+  idMin_not_in: [ID!]
+  idMax_not_in: [ID!]
   id_null: Boolean
   paymentId: ID
   paymentIdMin: ID
@@ -332,6 +335,9 @@ input DeliveryFilterType {
   paymentId_in: [ID!]
   paymentIdMin_in: [ID!]
   paymentIdMax_in: [ID!]
+  paymentId_not_in: [ID!]
+  paymentIdMin_not_in: [ID!]
+  paymentIdMax_not_in: [ID!]
   paymentId_null: Boolean
   paymentTotal: Float
   paymentTotalMin: Float
@@ -361,6 +367,10 @@ input DeliveryFilterType {
   paymentTotalMin_in: [Float!]
   paymentTotalMax_in: [Float!]
   paymentTotalAvg_in: [Float!]
+  paymentTotal_not_in: [Float!]
+  paymentTotalMin_not_in: [Float!]
+  paymentTotalMax_not_in: [Float!]
+  paymentTotalAvg_not_in: [Float!]
   paymentTotal_null: Boolean
   paymentOnDeliver: Boolean
   paymentOnDeliverMin: Boolean
@@ -383,6 +393,9 @@ input DeliveryFilterType {
   paymentOnDeliver_in: [Boolean!]
   paymentOnDeliverMin_in: [Boolean!]
   paymentOnDeliverMax_in: [Boolean!]
+  paymentOnDeliver_not_in: [Boolean!]
+  paymentOnDeliverMin_not_in: [Boolean!]
+  paymentOnDeliverMax_not_in: [Boolean!]
   paymentOnDeliver_null: Boolean
   collectDateTime: Time
   collectDateTimeMin: Time
@@ -405,6 +418,9 @@ input DeliveryFilterType {
   collectDateTime_in: [Time!]
   collectDateTimeMin_in: [Time!]
   collectDateTimeMax_in: [Time!]
+  collectDateTime_not_in: [Time!]
+  collectDateTimeMin_not_in: [Time!]
+  collectDateTimeMax_not_in: [Time!]
   collectDateTime_null: Boolean
   collectAddress: String
   collectAddressMin: String
@@ -427,6 +443,9 @@ input DeliveryFilterType {
   collectAddress_in: [String!]
   collectAddressMin_in: [String!]
   collectAddressMax_in: [String!]
+  collectAddress_not_in: [String!]
+  collectAddressMin_not_in: [String!]
+  collectAddressMax_not_in: [String!]
   collectAddress_like: String
   collectAddressMin_like: String
   collectAddressMax_like: String
@@ -458,6 +477,9 @@ input DeliveryFilterType {
   collectPoint_in: [String!]
   collectPointMin_in: [String!]
   collectPointMax_in: [String!]
+  collectPoint_not_in: [String!]
+  collectPointMin_not_in: [String!]
+  collectPointMax_not_in: [String!]
   collectPoint_like: String
   collectPointMin_like: String
   collectPointMax_like: String
@@ -489,6 +511,9 @@ input DeliveryFilterType {
   dropDateTime_in: [Time!]
   dropDateTimeMin_in: [Time!]
   dropDateTimeMax_in: [Time!]
+  dropDateTime_not_in: [Time!]
+  dropDateTimeMin_not_in: [Time!]
+  dropDateTimeMax_not_in: [Time!]
   dropDateTime_null: Boolean
   dropAddress: String
   dropAddressMin: String
@@ -511,6 +536,9 @@ input DeliveryFilterType {
   dropAddress_in: [String!]
   dropAddressMin_in: [String!]
   dropAddressMax_in: [String!]
+  dropAddress_not_in: [String!]
+  dropAddressMin_not_in: [String!]
+  dropAddressMax_not_in: [String!]
   dropAddress_like: String
   dropAddressMin_like: String
   dropAddressMax_like: String
@@ -542,6 +570,9 @@ input DeliveryFilterType {
   dropPoint_in: [String!]
   dropPointMin_in: [String!]
   dropPointMax_in: [String!]
+  dropPoint_not_in: [String!]
+  dropPointMin_not_in: [String!]
+  dropPointMax_not_in: [String!]
   dropPoint_like: String
   dropPointMin_like: String
   dropPointMax_like: String
@@ -573,6 +604,9 @@ input DeliveryFilterType {
   expectedDistance_in: [String!]
   expectedDistanceMin_in: [String!]
   expectedDistanceMax_in: [String!]
+  expectedDistance_not_in: [String!]
+  expectedDistanceMin_not_in: [String!]
+  expectedDistanceMax_not_in: [String!]
   expectedDistance_like: String
   expectedDistanceMin_like: String
   expectedDistanceMax_like: String
@@ -611,6 +645,10 @@ input DeliveryFilterType {
   expectedCostMin_in: [Float!]
   expectedCostMax_in: [Float!]
   expectedCostAvg_in: [Float!]
+  expectedCost_not_in: [Float!]
+  expectedCostMin_not_in: [Float!]
+  expectedCostMax_not_in: [Float!]
+  expectedCostAvg_not_in: [Float!]
   expectedCost_null: Boolean
   completed: Boolean
   completedMin: Boolean
@@ -633,6 +671,9 @@ input DeliveryFilterType {
   completed_in: [Boolean!]
   completedMin_in: [Boolean!]
   completedMax_in: [Boolean!]
+  completed_not_in: [Boolean!]
+  completedMin_not_in: [Boolean!]
+  completedMax_not_in: [Boolean!]
   completed_null: Boolean
   smsToken: String
   smsTokenMin: String
@@ -655,6 +696,9 @@ input DeliveryFilterType {
   smsToken_in: [String!]
   smsTokenMin_in: [String!]
   smsTokenMax_in: [String!]
+  smsToken_not_in: [String!]
+  smsTokenMin_not_in: [String!]
+  smsTokenMax_not_in: [String!]
   smsToken_like: String
   smsTokenMin_like: String
   smsTokenMax_like: String
@@ -686,6 +730,9 @@ input DeliveryFilterType {
   status_in: [String!]
   statusMin_in: [String!]
   statusMax_in: [String!]
+  status_not_in: [String!]
+  statusMin_not_in: [String!]
+  statusMax_not_in: [String!]
   status_like: String
   statusMin_like: String
   statusMax_like: String
@@ -717,6 +764,9 @@ input DeliveryFilterType {
   senderId_in: [ID!]
   senderIdMin_in: [ID!]
   senderIdMax_in: [ID!]
+  senderId_not_in: [ID!]
+  senderIdMin_not_in: [ID!]
+  senderIdMax_not_in: [ID!]
   senderId_null: Boolean
   receiverId: ID
   receiverIdMin: ID
@@ -739,6 +789,9 @@ input DeliveryFilterType {
   receiverId_in: [ID!]
   receiverIdMin_in: [ID!]
   receiverIdMax_in: [ID!]
+  receiverId_not_in: [ID!]
+  receiverIdMin_not_in: [ID!]
+  receiverIdMax_not_in: [ID!]
   receiverId_null: Boolean
   deliverId: ID
   deliverIdMin: ID
@@ -761,6 +814,9 @@ input DeliveryFilterType {
   deliverId_in: [ID!]
   deliverIdMin_in: [ID!]
   deliverIdMax_in: [ID!]
+  deliverId_not_in: [ID!]
+  deliverIdMin_not_in: [ID!]
+  deliverIdMax_not_in: [ID!]
   deliverId_null: Boolean
   vehicleTypeId: ID
   vehicleTypeIdMin: ID
@@ -783,6 +839,9 @@ input DeliveryFilterType {
   vehicleTypeId_in: [ID!]
   vehicleTypeIdMin_in: [ID!]
   vehicleTypeIdMax_in: [ID!]
+  vehicleTypeId_not_in: [ID!]
+  vehicleTypeIdMin_not_in: [ID!]
+  vehicleTypeIdMax_not_in: [ID!]
   vehicleTypeId_null: Boolean
   deliveryTypeId: ID
   deliveryTypeIdMin: ID
@@ -805,6 +864,9 @@ input DeliveryFilterType {
   deliveryTypeId_in: [ID!]
   deliveryTypeIdMin_in: [ID!]
   deliveryTypeIdMax_in: [ID!]
+  deliveryTypeId_not_in: [ID!]
+  deliveryTypeIdMin_not_in: [ID!]
+  deliveryTypeIdMax_not_in: [ID!]
   deliveryTypeId_null: Boolean
   deliveryChannelId: ID
   deliveryChannelIdMin: ID
@@ -827,6 +889,9 @@ input DeliveryFilterType {
   deliveryChannelId_in: [ID!]
   deliveryChannelIdMin_in: [ID!]
   deliveryChannelIdMax_in: [ID!]
+  deliveryChannelId_not_in: [ID!]
+  deliveryChannelIdMin_not_in: [ID!]
+  deliveryChannelIdMax_not_in: [ID!]
   deliveryChannelId_null: Boolean
   updatedAt: Time
   updatedAtMin: Time
@@ -849,6 +914,9 @@ input DeliveryFilterType {
   updatedAt_in: [Time!]
   updatedAtMin_in: [Time!]
   updatedAtMax_in: [Time!]
+  updatedAt_not_in: [Time!]
+  updatedAtMin_not_in: [Time!]
+  updatedAtMax_not_in: [Time!]
   updatedAt_null: Boolean
   createdAt: Time
   createdAtMin: Time
@@ -871,6 +939,9 @@ input DeliveryFilterType {
   createdAt_in: [Time!]
   createdAtMin_in: [Time!]
   createdAtMax_in: [Time!]
+  createdAt_not_in: [Time!]
+  createdAtMin_not_in: [Time!]
+  createdAtMax_not_in: [Time!]
   createdAt_null: Boolean
   updatedBy: ID
   updatedByMin: ID
@@ -893,6 +964,9 @@ input DeliveryFilterType {
   updatedBy_in: [ID!]
   updatedByMin_in: [ID!]
   updatedByMax_in: [ID!]
+  updatedBy_not_in: [ID!]
+  updatedByMin_not_in: [ID!]
+  updatedByMax_not_in: [ID!]
   updatedBy_null: Boolean
   createdBy: ID
   createdByMin: ID
@@ -915,6 +989,9 @@ input DeliveryFilterType {
   createdBy_in: [ID!]
   createdByMin_in: [ID!]
   createdByMax_in: [ID!]
+  createdBy_not_in: [ID!]
+  createdByMin_not_in: [ID!]
+  createdByMax_not_in: [ID!]
   createdBy_null: Boolean
   sender: PersonFilterType
   receiver: PersonFilterType
@@ -1056,6 +1133,9 @@ input PersonFilterType {
   id_in: [ID!]
   idMin_in: [ID!]
   idMax_in: [ID!]
+  id_not_in: [ID!]
+  idMin_not_in: [ID!]
+  idMax_not_in: [ID!]
   id_null: Boolean
   deliver: Boolean
   deliverMin: Boolean
@@ -1078,6 +1158,9 @@ input PersonFilterType {
   deliver_in: [Boolean!]
   deliverMin_in: [Boolean!]
   deliverMax_in: [Boolean!]
+  deliver_not_in: [Boolean!]
+  deliverMin_not_in: [Boolean!]
+  deliverMax_not_in: [Boolean!]
   deliver_null: Boolean
   email: String
   emailMin: String
@@ -1100,6 +1183,9 @@ input PersonFilterType {
   email_in: [String!]
   emailMin_in: [String!]
   emailMax_in: [String!]
+  email_not_in: [String!]
+  emailMin_not_in: [String!]
+  emailMax_not_in: [String!]
   email_like: String
   emailMin_like: String
   emailMax_like: String
@@ -1131,6 +1217,9 @@ input PersonFilterType {
   phone_in: [String!]
   phoneMin_in: [String!]
   phoneMax_in: [String!]
+  phone_not_in: [String!]
+  phoneMin_not_in: [String!]
+  phoneMax_not_in: [String!]
   phone_like: String
   phoneMin_like: String
   phoneMax_like: String
@@ -1162,6 +1251,9 @@ input PersonFilterType {
   documentNo_in: [String!]
   documentNoMin_in: [String!]
   documentNoMax_in: [String!]
+  documentNo_not_in: [String!]
+  documentNoMin_not_in: [String!]
+  documentNoMax_not_in: [String!]
   documentNo_like: String
   documentNoMin_like: String
   documentNoMax_like: String
@@ -1193,6 +1285,9 @@ input PersonFilterType {
   avatarURL_in: [String!]
   avatarURLMin_in: [String!]
   avatarURLMax_in: [String!]
+  avatarURL_not_in: [String!]
+  avatarURLMin_not_in: [String!]
+  avatarURLMax_not_in: [String!]
   avatarURL_like: String
   avatarURLMin_like: String
   avatarURLMax_like: String
@@ -1224,6 +1319,9 @@ input PersonFilterType {
   displayName_in: [String!]
   displayNameMin_in: [String!]
   displayNameMax_in: [String!]
+  displayName_not_in: [String!]
+  displayNameMin_not_in: [String!]
+  displayNameMax_not_in: [String!]
   displayName_like: String
   displayNameMin_like: String
   displayNameMax_like: String
@@ -1255,6 +1353,9 @@ input PersonFilterType {
   firstName_in: [String!]
   firstNameMin_in: [String!]
   firstNameMax_in: [String!]
+  firstName_not_in: [String!]
+  firstNameMin_not_in: [String!]
+  firstNameMax_not_in: [String!]
   firstName_like: String
   firstNameMin_like: String
   firstNameMax_like: String
@@ -1286,6 +1387,9 @@ input PersonFilterType {
   lastName_in: [String!]
   lastNameMin_in: [String!]
   lastNameMax_in: [String!]
+  lastName_not_in: [String!]
+  lastNameMin_not_in: [String!]
+  lastNameMax_not_in: [String!]
   lastName_like: String
   lastNameMin_like: String
   lastNameMax_like: String
@@ -1317,6 +1421,9 @@ input PersonFilterType {
   nickName_in: [String!]
   nickNameMin_in: [String!]
   nickNameMax_in: [String!]
+  nickName_not_in: [String!]
+  nickNameMin_not_in: [String!]
+  nickNameMax_not_in: [String!]
   nickName_like: String
   nickNameMin_like: String
   nickNameMax_like: String
@@ -1348,6 +1455,9 @@ input PersonFilterType {
   description_in: [String!]
   descriptionMin_in: [String!]
   descriptionMax_in: [String!]
+  description_not_in: [String!]
+  descriptionMin_not_in: [String!]
+  descriptionMax_not_in: [String!]
   description_like: String
   descriptionMin_like: String
   descriptionMax_like: String
@@ -1379,6 +1489,9 @@ input PersonFilterType {
   location_in: [String!]
   locationMin_in: [String!]
   locationMax_in: [String!]
+  location_not_in: [String!]
+  locationMin_not_in: [String!]
+  locationMax_not_in: [String!]
   location_like: String
   locationMin_like: String
   locationMax_like: String
@@ -1410,6 +1523,9 @@ input PersonFilterType {
   userId_in: [ID!]
   userIdMin_in: [ID!]
   userIdMax_in: [ID!]
+  userId_not_in: [ID!]
+  userIdMin_not_in: [ID!]
+  userIdMax_not_in: [ID!]
   userId_null: Boolean
   updatedAt: Time
   updatedAtMin: Time
@@ -1432,6 +1548,9 @@ input PersonFilterType {
   updatedAt_in: [Time!]
   updatedAtMin_in: [Time!]
   updatedAtMax_in: [Time!]
+  updatedAt_not_in: [Time!]
+  updatedAtMin_not_in: [Time!]
+  updatedAtMax_not_in: [Time!]
   updatedAt_null: Boolean
   createdAt: Time
   createdAtMin: Time
@@ -1454,6 +1573,9 @@ input PersonFilterType {
   createdAt_in: [Time!]
   createdAtMin_in: [Time!]
   createdAtMax_in: [Time!]
+  createdAt_not_in: [Time!]
+  createdAtMin_not_in: [Time!]
+  createdAtMax_not_in: [Time!]
   createdAt_null: Boolean
   updatedBy: ID
   updatedByMin: ID
@@ -1476,6 +1598,9 @@ input PersonFilterType {
   updatedBy_in: [ID!]
   updatedByMin_in: [ID!]
   updatedByMax_in: [ID!]
+  updatedBy_not_in: [ID!]
+  updatedByMin_not_in: [ID!]
+  updatedByMax_not_in: [ID!]
   updatedBy_null: Boolean
   createdBy: ID
   createdByMin: ID
@@ -1498,6 +1623,9 @@ input PersonFilterType {
   createdBy_in: [ID!]
   createdByMin_in: [ID!]
   createdByMax_in: [ID!]
+  createdBy_not_in: [ID!]
+  createdByMin_not_in: [ID!]
+  createdByMax_not_in: [ID!]
   createdBy_null: Boolean
   deliveries: DeliveryFilterType
   deliveriesSent: DeliveryFilterType
@@ -1574,6 +1702,9 @@ input DeliveryTypeFilterType {
   id_in: [ID!]
   idMin_in: [ID!]
   idMax_in: [ID!]
+  id_not_in: [ID!]
+  idMin_not_in: [ID!]
+  idMax_not_in: [ID!]
   id_null: Boolean
   name: String
   nameMin: String
@@ -1596,6 +1727,9 @@ input DeliveryTypeFilterType {
   name_in: [String!]
   nameMin_in: [String!]
   nameMax_in: [String!]
+  name_not_in: [String!]
+  nameMin_not_in: [String!]
+  nameMax_not_in: [String!]
   name_like: String
   nameMin_like: String
   nameMax_like: String
@@ -1627,6 +1761,9 @@ input DeliveryTypeFilterType {
   description_in: [String!]
   descriptionMin_in: [String!]
   descriptionMax_in: [String!]
+  description_not_in: [String!]
+  descriptionMin_not_in: [String!]
+  descriptionMax_not_in: [String!]
   description_like: String
   descriptionMin_like: String
   descriptionMax_like: String
@@ -1658,6 +1795,9 @@ input DeliveryTypeFilterType {
   deliveryId_in: [ID!]
   deliveryIdMin_in: [ID!]
   deliveryIdMax_in: [ID!]
+  deliveryId_not_in: [ID!]
+  deliveryIdMin_not_in: [ID!]
+  deliveryIdMax_not_in: [ID!]
   deliveryId_null: Boolean
   updatedAt: Time
   updatedAtMin: Time
@@ -1680,6 +1820,9 @@ input DeliveryTypeFilterType {
   updatedAt_in: [Time!]
   updatedAtMin_in: [Time!]
   updatedAtMax_in: [Time!]
+  updatedAt_not_in: [Time!]
+  updatedAtMin_not_in: [Time!]
+  updatedAtMax_not_in: [Time!]
   updatedAt_null: Boolean
   createdAt: Time
   createdAtMin: Time
@@ -1702,6 +1845,9 @@ input DeliveryTypeFilterType {
   createdAt_in: [Time!]
   createdAtMin_in: [Time!]
   createdAtMax_in: [Time!]
+  createdAt_not_in: [Time!]
+  createdAtMin_not_in: [Time!]
+  createdAtMax_not_in: [Time!]
   createdAt_null: Boolean
   updatedBy: ID
   updatedByMin: ID
@@ -1724,6 +1870,9 @@ input DeliveryTypeFilterType {
   updatedBy_in: [ID!]
   updatedByMin_in: [ID!]
   updatedByMax_in: [ID!]
+  updatedBy_not_in: [ID!]
+  updatedByMin_not_in: [ID!]
+  updatedByMax_not_in: [ID!]
   updatedBy_null: Boolean
   createdBy: ID
   createdByMin: ID
@@ -1746,6 +1895,9 @@ input DeliveryTypeFilterType {
   createdBy_in: [ID!]
   createdByMin_in: [ID!]
   createdByMax_in: [ID!]
+  createdBy_not_in: [ID!]
+  createdByMin_not_in: [ID!]
+  createdByMax_not_in: [ID!]
   createdBy_null: Boolean
   delivery: DeliveryFilterType
 }
@@ -1820,6 +1972,9 @@ input DeliveryChannelFilterType {
   id_in: [ID!]
   idMin_in: [ID!]
   idMax_in: [ID!]
+  id_not_in: [ID!]
+  idMin_not_in: [ID!]
+  idMax_not_in: [ID!]
   id_null: Boolean
   name: String
   nameMin: String
@@ -1842,6 +1997,9 @@ input DeliveryChannelFilterType {
   name_in: [String!]
   nameMin_in: [String!]
   nameMax_in: [String!]
+  name_not_in: [String!]
+  nameMin_not_in: [String!]
+  nameMax_not_in: [String!]
   name_like: String
   nameMin_like: String
   nameMax_like: String
@@ -1873,6 +2031,9 @@ input DeliveryChannelFilterType {
   description_in: [String!]
   descriptionMin_in: [String!]
   descriptionMax_in: [String!]
+  description_not_in: [String!]
+  descriptionMin_not_in: [String!]
+  descriptionMax_not_in: [String!]
   description_like: String
   descriptionMin_like: String
   descriptionMax_like: String
@@ -1904,6 +2065,9 @@ input DeliveryChannelFilterType {
   deliveryId_in: [ID!]
   deliveryIdMin_in: [ID!]
   deliveryIdMax_in: [ID!]
+  deliveryId_not_in: [ID!]
+  deliveryIdMin_not_in: [ID!]
+  deliveryIdMax_not_in: [ID!]
   deliveryId_null: Boolean
   updatedAt: Time
   updatedAtMin: Time
@@ -1926,6 +2090,9 @@ input DeliveryChannelFilterType {
   updatedAt_in: [Time!]
   updatedAtMin_in: [Time!]
   updatedAtMax_in: [Time!]
+  updatedAt_not_in: [Time!]
+  updatedAtMin_not_in: [Time!]
+  updatedAtMax_not_in: [Time!]
   updatedAt_null: Boolean
   createdAt: Time
   createdAtMin: Time
@@ -1948,6 +2115,9 @@ input DeliveryChannelFilterType {
   createdAt_in: [Time!]
   createdAtMin_in: [Time!]
   createdAtMax_in: [Time!]
+  createdAt_not_in: [Time!]
+  createdAtMin_not_in: [Time!]
+  createdAtMax_not_in: [Time!]
   createdAt_null: Boolean
   updatedBy: ID
   updatedByMin: ID
@@ -1970,6 +2140,9 @@ input DeliveryChannelFilterType {
   updatedBy_in: [ID!]
   updatedByMin_in: [ID!]
   updatedByMax_in: [ID!]
+  updatedBy_not_in: [ID!]
+  updatedByMin_not_in: [ID!]
+  updatedByMax_not_in: [ID!]
   updatedBy_null: Boolean
   createdBy: ID
   createdByMin: ID
@@ -1992,6 +2165,9 @@ input DeliveryChannelFilterType {
   createdBy_in: [ID!]
   createdByMin_in: [ID!]
   createdByMax_in: [ID!]
+  createdBy_not_in: [ID!]
+  createdByMin_not_in: [ID!]
+  createdByMax_not_in: [ID!]
   createdBy_null: Boolean
   delivery: DeliveryFilterType
 }
@@ -2066,6 +2242,9 @@ input VehicleTypeFilterType {
   id_in: [ID!]
   idMin_in: [ID!]
   idMax_in: [ID!]
+  id_not_in: [ID!]
+  idMin_not_in: [ID!]
+  idMax_not_in: [ID!]
   id_null: Boolean
   name: String
   nameMin: String
@@ -2088,6 +2267,9 @@ input VehicleTypeFilterType {
   name_in: [String!]
   nameMin_in: [String!]
   nameMax_in: [String!]
+  name_not_in: [String!]
+  nameMin_not_in: [String!]
+  nameMax_not_in: [String!]
   name_like: String
   nameMin_like: String
   nameMax_like: String
@@ -2119,6 +2301,9 @@ input VehicleTypeFilterType {
   description_in: [String!]
   descriptionMin_in: [String!]
   descriptionMax_in: [String!]
+  description_not_in: [String!]
+  descriptionMin_not_in: [String!]
+  descriptionMax_not_in: [String!]
   description_like: String
   descriptionMin_like: String
   descriptionMax_like: String
@@ -2150,6 +2335,9 @@ input VehicleTypeFilterType {
   deliveryId_in: [ID!]
   deliveryIdMin_in: [ID!]
   deliveryIdMax_in: [ID!]
+  deliveryId_not_in: [ID!]
+  deliveryIdMin_not_in: [ID!]
+  deliveryIdMax_not_in: [ID!]
   deliveryId_null: Boolean
   updatedAt: Time
   updatedAtMin: Time
@@ -2172,6 +2360,9 @@ input VehicleTypeFilterType {
   updatedAt_in: [Time!]
   updatedAtMin_in: [Time!]
   updatedAtMax_in: [Time!]
+  updatedAt_not_in: [Time!]
+  updatedAtMin_not_in: [Time!]
+  updatedAtMax_not_in: [Time!]
   updatedAt_null: Boolean
   createdAt: Time
   createdAtMin: Time
@@ -2194,6 +2385,9 @@ input VehicleTypeFilterType {
   createdAt_in: [Time!]
   createdAtMin_in: [Time!]
   createdAtMax_in: [Time!]
+  createdAt_not_in: [Time!]
+  createdAtMin_not_in: [Time!]
+  createdAtMax_not_in: [Time!]
   createdAt_null: Boolean
   updatedBy: ID
   updatedByMin: ID
@@ -2216,6 +2410,9 @@ input VehicleTypeFilterType {
   updatedBy_in: [ID!]
   updatedByMin_in: [ID!]
   updatedByMax_in: [ID!]
+  updatedBy_not_in: [ID!]
+  updatedByMin_not_in: [ID!]
+  updatedByMax_not_in: [ID!]
   updatedBy_null: Boolean
   createdBy: ID
   createdByMin: ID
@@ -2238,6 +2435,9 @@ input VehicleTypeFilterType {
   createdBy_in: [ID!]
   createdByMin_in: [ID!]
   createdByMax_in: [ID!]
+  createdBy_not_in: [ID!]
+  createdByMin_not_in: [ID!]
+  createdByMax_not_in: [ID!]
   createdBy_null: Boolean
   delivery: DeliveryFilterType
 }

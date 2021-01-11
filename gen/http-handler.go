@@ -23,7 +23,6 @@ import (
 
 // GetHTTPServeMux HTTP Mux
 func GetHTTPServeMux(r ResolverRoot, db *DB, migrations []*gormigrate.Migration) *mux.Router {
-
 	mux := mux.NewRouter()
 
 	executableSchema := NewExecutableSchema(Config{Resolvers: r})

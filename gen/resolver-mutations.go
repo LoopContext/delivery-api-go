@@ -3,6 +3,7 @@ package gen
 import (
 	"context"
 	"fmt"
+	"os"
 	"time"
 
 	"github.com/gofrs/uuid"
@@ -19,7 +20,7 @@ type MutationEvents struct {
 
 // EnrichContextWithMutations method
 func EnrichContextWithMutations(ctx context.Context, r *GeneratedResolver) context.Context {
-	_ctx := context.WithValue(ctx, KeyMutationTransaction, r.DB.db.Begin())
+	_ctx := context.WithValue(ctx, KeyMutationTransaction, r.GetDB(ctx).Begin())
 	_ctx = context.WithValue(_ctx, KeyMutationEvents, &MutationEvents{})
 	return _ctx
 }
@@ -478,6 +479,10 @@ func (r *GeneratedMutationResolver) DeleteAllDeliveries(ctx context.Context) (bo
 
 // DeleteAllDeliveriesHandler handler
 func DeleteAllDeliveriesHandler(ctx context.Context, r *GeneratedResolver) (bool, error) {
+	// delete all resolvers are primarily used for
+	if os.Getenv("ENABLE_DELETE_ALL_RESOLVERS") == "" {
+		return false, fmt.Errorf("delete all resolver is not enabled (ENABLE_DELETE_ALL_RESOLVERS not specified)")
+	}
 	tx := r.GetDB(ctx)
 	err := tx.Delete(&Delivery{}).Error
 	if err != nil {
@@ -845,6 +850,10 @@ func (r *GeneratedMutationResolver) DeleteAllPeople(ctx context.Context) (bool, 
 
 // DeleteAllPeopleHandler handler
 func DeleteAllPeopleHandler(ctx context.Context, r *GeneratedResolver) (bool, error) {
+	// delete all resolvers are primarily used for
+	if os.Getenv("ENABLE_DELETE_ALL_RESOLVERS") == "" {
+		return false, fmt.Errorf("delete all resolver is not enabled (ENABLE_DELETE_ALL_RESOLVERS not specified)")
+	}
 	tx := r.GetDB(ctx)
 	err := tx.Delete(&Person{}).Error
 	if err != nil {
@@ -1062,6 +1071,10 @@ func (r *GeneratedMutationResolver) DeleteAllDeliveryTypes(ctx context.Context) 
 
 // DeleteAllDeliveryTypesHandler handler
 func DeleteAllDeliveryTypesHandler(ctx context.Context, r *GeneratedResolver) (bool, error) {
+	// delete all resolvers are primarily used for
+	if os.Getenv("ENABLE_DELETE_ALL_RESOLVERS") == "" {
+		return false, fmt.Errorf("delete all resolver is not enabled (ENABLE_DELETE_ALL_RESOLVERS not specified)")
+	}
 	tx := r.GetDB(ctx)
 	err := tx.Delete(&DeliveryType{}).Error
 	if err != nil {
@@ -1279,6 +1292,10 @@ func (r *GeneratedMutationResolver) DeleteAllDeliveryChannels(ctx context.Contex
 
 // DeleteAllDeliveryChannelsHandler handler
 func DeleteAllDeliveryChannelsHandler(ctx context.Context, r *GeneratedResolver) (bool, error) {
+	// delete all resolvers are primarily used for
+	if os.Getenv("ENABLE_DELETE_ALL_RESOLVERS") == "" {
+		return false, fmt.Errorf("delete all resolver is not enabled (ENABLE_DELETE_ALL_RESOLVERS not specified)")
+	}
 	tx := r.GetDB(ctx)
 	err := tx.Delete(&DeliveryChannel{}).Error
 	if err != nil {
@@ -1496,6 +1513,10 @@ func (r *GeneratedMutationResolver) DeleteAllVehicleTypes(ctx context.Context) (
 
 // DeleteAllVehicleTypesHandler handler
 func DeleteAllVehicleTypesHandler(ctx context.Context, r *GeneratedResolver) (bool, error) {
+	// delete all resolvers are primarily used for
+	if os.Getenv("ENABLE_DELETE_ALL_RESOLVERS") == "" {
+		return false, fmt.Errorf("delete all resolver is not enabled (ENABLE_DELETE_ALL_RESOLVERS not specified)")
+	}
 	tx := r.GetDB(ctx)
 	err := tx.Delete(&VehicleType{}).Error
 	if err != nil {
