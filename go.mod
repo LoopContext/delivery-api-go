@@ -15,8 +15,8 @@ require (
 	github.com/graph-gophers/dataloader v5.0.0+incompatible
 	github.com/jinzhu/gorm v1.9.16
 	github.com/loopcontext/cloudevents-aws-transport v1.0.9
-	github.com/loopcontext/go-graphql-orm v0.0.0-20210107174913-2b205ecbd491
-	github.com/mitchellh/mapstructure v1.4.0
+	github.com/loopcontext/go-graphql-orm v0.0.0-20210302221454-2d745f04c960
+	github.com/mitchellh/mapstructure v1.4.1
 	github.com/rs/cors v1.7.0
 	github.com/rs/zerolog v1.20.0
 	github.com/urfave/cli v1.22.5
